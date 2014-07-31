@@ -1,0 +1,665 @@
+prepareSample('s04t',3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a>  
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a>  
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    415        13701      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+uiopen('C:\MatLab\EBSD\src\log.txt',1)
+uiopen('C:\MatLab\EBSD\src\viewSamples_fin.m',1)
+viewSamples_fin
+{??? Input argument "thr" is undefined.
+
+Error in ==> <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples_fin.m',19,0)">viewSamples_fin at 19</a>
+viewSamples( samples, parts, skip, thr, mgs, save);
+} 
+viewSamples_fin(2,0);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a>  
+  Comment: Prometey_01.tx
+  Properties: ci, iq, x, y
+  Phase Orientations    Mineral Symmetry Crystal reference frame
+      0        56287 notIndexed                                 
+      1          145         Au     m-3m                        
+      2        92027         Fe     m-3m                        
+      3          537         Cm     m-3m                        
+ 
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a>  
+  Comment: Prometey_01.tx
+  Properties: ci, iq, x, y
+  Phase Orientations    Mineral Symmetry Crystal reference frame
+      0        56287 notIndexed                                 
+      1          145         Au     m-3m                        
+      2        92027         Fe     m-3m                        
+      3          537         Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a>  
+  comment: Prometey_01.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations    Mineral Symmetry Crystal reference frame
+      0      0            0 notIndexed                                 
+      1      0            0         Au     m-3m                        
+      2  10922        92027         Fe     m-3m                        
+      3      0            0         Cm     m-3m                        
+ 
+.......................
+.......................
+.......................
+{Warning: selected phase does not contain any boundaries} 
+> In <a href="matlab: opentoline('C:\MatLab\MTEX\mtex-3.3beta1\qta\@GrainSet\calcBoundaryMisorientation.m',81,1)">GrainSet.calcBoundaryMisorientation at 81</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',132,1)">viewGrains at 132</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewAll.m',58,1)">viewAll at 58</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples.m',54,1)">viewSamples at 54</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples_fin.m',19,1)">viewSamples_fin at 19</a>
+{Warning: selected phase does not contain any boundaries} 
+> In <a href="matlab: opentoline('C:\MatLab\MTEX\mtex-3.3beta1\qta\@GrainSet\calcBoundaryMisorientation.m',81,1)">GrainSet.calcBoundaryMisorientation at 81</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',139,1)">viewGrains at 139</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewAll.m',58,1)">viewAll at 58</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples.m',54,1)">viewSamples at 54</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples_fin.m',19,1)">viewSamples_fin at 19</a>
+Skip 2
+Skip 3
+uiopen('C:\MatLab\EBSD\src\load\p03_load.m',1)
+dairy on
+{??? Undefined function or method 'dairy' for input arguments of type 'char'.
+} 
+diary on
+viewSamples_fin(2,0);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a>  
+  Comment: Prometey_01.tx
+  Properties: ci, iq, x, y
+  Phase Orientations    Mineral Symmetry Crystal reference frame
+      0        56287 notIndexed                                 
+      1          145         Au     m-3m                        
+      2        92027         Fe     m-3m                        
+      3          537         Cm     m-3m                        
+ 
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a>  
+  Comment: Prometey_01.tx
+  Properties: ci, iq, x, y
+  Phase Orientations    Mineral Symmetry Crystal reference frame
+      0        56287 notIndexed                                 
+      1          145         Au     m-3m                        
+      2        92027         Fe     m-3m                        
+      3          537         Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a>  
+  comment: Prometey_01.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations    Mineral Symmetry Crystal reference frame
+      0      0            0 notIndexed                                 
+      1      0            0         Au     m-3m                        
+      2  10922        92027         Fe     m-3m                        
+      3      0            0         Cm     m-3m                        
+ 
+.......................
+.......................
+.......................
+{Warning: selected phase does not contain any boundaries} 
+> In <a href="matlab: opentoline('C:\MatLab\MTEX\mtex-3.3beta1\qta\@GrainSet\calcBoundaryMisorientation.m',81,1)">GrainSet.calcBoundaryMisorientation at 81</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',132,1)">viewGrains at 132</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewAll.m',58,1)">viewAll at 58</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples.m',54,1)">viewSamples at 54</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples_fin.m',19,1)">viewSamples_fin at 19</a>
+{Warning: selected phase does not contain any boundaries} 
+> In <a href="matlab: opentoline('C:\MatLab\MTEX\mtex-3.3beta1\qta\@GrainSet\calcBoundaryMisorientation.m',81,1)">GrainSet.calcBoundaryMisorientation at 81</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',139,1)">viewGrains at 139</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewAll.m',58,1)">viewAll at 58</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples.m',54,1)">viewSamples at 54</a>
+  In <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewSamples_fin.m',19,1)">viewSamples_fin at 19</a>
+Skip 2
+Skip 3
+diary on
+diary('log.txt')
+ebsd = p04_load()
+Loading EBSD data from ".\Prometey\11-5_50\11_5.txt": 
+Done
+Saved
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a>  
+  Comment: 11_5.tx
+  Properties: ci, fit, iq, sem, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      0          823      Fe     m-3m                        
+ 
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: 11_5.tx
+  Properties: ci, fit, iq, sem, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      0          823      Fe     m-3m                        
+ 
+plot(ebsd)
+plot(ebsd)
+prepareSample('s04t', 3,4)
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a>  
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    415        13701      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+ 
+ans = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ans)">show methods</a>, <a href="matlab:plot(ans)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+plot(ans)
+[ebsd, grains, grains_full] = prepareSample('s04t', 3,4)
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a>  
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    415        13701      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    415        13701      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+ 
+grains_full = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains_full)">show methods</a>, <a href="matlab:plot(grains_full)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      1            2      Au     m-3m                        
+      2   1079        14635      Fe     m-3m                        
+      3      4            4      Cm     m-3m                        
+ 
+plot(grains)
+plot(grains_full)
+plot(grains_full(grainSize(grains_full) >= sml))
+{??? Undefined function or variable 'sml'.
+} 
+plot(grains_full(grainSize(grains_full) >= 4))
+plot(grains_full)
+plot(grains_full(grainSize(grains_full) >= 4))
+viewGrains('s04t', 0, 0, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+<a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',195,1)">195 </a>    figure();
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+f = [1,2,3,45,4,65,3,65,73,6,7];
+num2str(f)
+
+ans =
+
+1   2   3  45   4  65   3  65  73   6   7
+
+mat2str(f)
+
+ans =
+
+[1 2 3 45 4 65 3 65 73 6 7]
+
+num2str(f)
+
+ans =
+
+1   2   3  45   4  65   3  65  73   6   7
+
+intstr(f)
+{??? Undefined function or method 'intstr' for input arguments of type
+'double'.
+} 
+num2str(f)
+
+ans =
+
+1   2   3  45   4  65   3  65  73   6   7
+
+num2str(f')
+
+ans =
+
+ 1
+ 2
+ 3
+45
+ 4
+65
+ 3
+65
+73
+ 6
+ 7
+
+viewGrains('s04t', 0, 0, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+<a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',195,1)">195 </a>    figure();
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+{??? Undefined function or variable 'bestOR'.
+
+Error in ==> <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',202,0)">viewGrains at 202</a>
+    fid = fopen([OutDir '\' prefix2 'fKOG_' bestOR '.txt'],'w');
+} 
+viewGrains('s04t', 0, 0, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+<a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',195,1)">195 </a>    figure();
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbcont; end
+dbclear ('C:\MatLab\EBSD\src\viewGrains.m', '195')
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+27   20   27   16   29  144   56   75   38    7   20   10   39  151   19   87   20   29   12   26   15   59   37if system_dependent('IsDebugMode')==1, dbstep; end
+{??? Error using ==> fclose
+Invalid file identifier.  Use fopen to generate a valid file identifier.
+
+Error in ==> <a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',205,0)">viewGrains at 205</a>
+    fclose(fid);
+} 
+viewGrains('s04t', 0, 0, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+<a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',203,1)">203 </a>    fid = fopen(fname,'w');
+viewGrains('s04t', 0, 0, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+<a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',203,1)">203 </a>    fid = fopen(fname,'w');
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbquit; end
+dbquit all
+close all; viewGrains('s04t', 0, 0, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+<a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',203,1)">203 </a>    [fid, err] = fopen(fname,'w');
+if system_dependent('IsDebugMode')==1, dbstep; end
+fname
+
+fname =
+
+C:\MatLab\EBSD\src\..\out\img\s04t\grains_1\s04t_0_bnd_3_4fKOG_M1.txt
+
+dbquit all
+close all; viewGrains('s04t', 0, 0, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+close all; viewGrains('s04t', 0, 1, 0, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+close all; viewGrains('s04t', 0, 0, 1, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+<a href="matlab: opentoline('C:\MatLab\EBSD\src\viewGrains.m',210,1)">210 </a>        [fid, err] = fopen(fname,'w');
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+if system_dependent('IsDebugMode')==1, dbstep; end
+27   20   27   16   29  144   56   75   38    7   20   10   39  151   19   87   20   29   12   26   15   59   37f_str
+
+f_str =
+
+27   20   27   16   29  144   56   75   38    7   20   10   39  151   19   87   20   29   12   26   15   59   37
+
+if system_dependent('IsDebugMode')==1, dbcont; end
+close all; viewGrains('s04t', 0, 0, 1, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+close all; viewGrains('s04t', 0, 0, 1, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+close all; viewGrains('s04t', 0, 0, 1, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+close all; viewGrains('s04t', 0, 0, 1, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+close all; viewGrains('s04t', 0, 0, 1, 3,4);
+ 
+ebsd = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/EBSD_index.html','-helpbrowser')">EBSD</a> (<a href="matlab:docmethods(ebsd)">show methods</a>, <a href="matlab:plot(ebsd)">plot</a>)
+  Comment: X100-2_4.tx
+  Properties: ci, iq, x, y
+  Phase Orientations Mineral Symmetry Crystal reference frame
+      1            2      Au     m-3m                        
+      2        14635      Fe     m-3m                        
+      3            4      Cm     m-3m                        
+ 
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+  I'm removing all not indexed phases. The option "keepNotIndexed" keeps them.
+ 
+grains = <a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/Grain2d_index.html','-helpbrowser')">Grain2d</a>-<a href="matlab:web('jar:file:///C:/MatLab/MTEX/mtex-3.3beta1/help/mtex/help.jar!/GrainSet_index.html','-helpbrowser')">Set</a> (<a href="matlab:docmethods(grains)">show methods</a>, <a href="matlab:plot(grains)">plot</a>)
+  comment: X100-2_4.tx
+  grain properties: boundaryEdgeOrder
+  EBSD properties: ci, iq, x, y, mis2mean
+  Phase Grains Orientations Mineral Symmetry Crystal reference frame
+      1      0            0      Au     m-3m                        
+      2    416        13703      Fe     m-3m                        
+      3      0            0      Cm     m-3m                        
+ 
+uiopen('C:\MatLab\EBSD\src\func\save2disk.m',1)
+uiopen('C:\MatLab\EBSD\src\func\save2disk.m', true);
+uiopen('C:\MatLab\EBSD\src\func\savedist.m',1)
+uiopen('C:\MatLab\EBSD\src\func\saveimg.m',1)
