@@ -44,7 +44,8 @@ end
 
 ORmat = getOR('KS');
 
-[ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2, 'onlyFirst', 'combineClose');
+[ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2,...
+    'secondOrderNeighbors', 'onlyFirst', 'combineClose', 'useWeightFunc');
 
 colorFragments(grains, frg_info{1});
 

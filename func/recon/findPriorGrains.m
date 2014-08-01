@@ -36,7 +36,7 @@ o = get(grains, 'mean');
 
 for i = 1:length(frg)
 	oi = o(frg{i});
-    [~, ~, oup, ~] = findUniqueParent(oi, ORmat, thr, Nv, w0, PRm, varargin{:});
+    [~, ~, oup, ~] = findUniqueParent(oi, ones(1,length(oi)), ORmat, thr, Nv, w0, PRm, varargin{:});
     if isa(oup, 'orientation')
         frg_po(i) = oup;
     end
