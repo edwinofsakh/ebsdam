@@ -14,9 +14,11 @@ sr = 1; % save results
 fc = 1; % close figure
 
 % Plot main view of EBSD data
-figure;
-plot(ebsd,'antipodal','r',zvector);
-saveimg(sr,fc,outdir,sid,'ebsd','png',comment);
+if (isdebug)
+    figure;
+    plot(ebsd,'antipodal','r',zvector);
+    saveimg(sr,fc,outdir,sid,'ebsd','png',comment);
+end
 
 %% Filtration
 % Remove points having "bad" values of properies. Use ImageQuality,
@@ -44,48 +46,59 @@ for i = 1:length(par)
 end
 
 % Plot normalized properties
-for i = 1:length(par)
-    figure;
-    plot(ebsd,'property',vm{i})
-    saveimg(sr,fc,outdir,sid,['par_' par{i}],'png',comment);
+if (isfulldebug)
+    for i = 1:length(par)
+        figure;
+        plot(ebsd,'property',vm{i})
+        saveimg(sr,fc,outdir,sid,['par_' par{i}],'png',comment);
+    end
 end
 
 % Filtration parameter
 q = vm{1}.*vm{2}.*vm{3};
 
 % Plot filtration parameter
-figure;
-plot(ebsd,'property',q,'antipodal','r',zvector);
-saveimg(sr,fc,outdir,sid,'par_q','png',comment);
+if (isfulldebug)
+    figure;
+    plot(ebsd,'property',q,'antipodal','r',zvector);
+    saveimg(sr,fc,outdir,sid,'par_q','png',comment);
+end
 
 % Plot good points
-figure;
-plot(ebsd(q > cr),'antipodal','r',zvector);
-saveimg(sr,fc,outdir,sid,'ebsd_good','png',comment);
+if (isdebug)
+    figure;
+    plot(ebsd(q > cr),'antipodal','r',zvector);
+    saveimg(sr,fc,outdir,sid,'ebsd_good','png',comment);
+end
 
 %% Get grains for good data
 
 % Plot all orientation
-figure;
 o = get(ebsd,'orientation');
-plotAllOrientations(o);
-saveimg(sr,fc,outdir,sid,'ori_all','png',comment);
+if (isdebug)
+    figure;
+    plotAllOrientations(o);
+    saveimg(sr,fc,outdir,sid,'ori_all','png',comment);
+end
 
 % Get and plot only good orientation
-figure;
 grains = getGrains(ebsd(q>cr), 1.5*degree, 1,'unitcell');
 
 o = get(grains,'mean');
+wf = grainSize(grains);
 
-plotAllOrientations(o);
-saveimg(sr,fc,outdir,sid,'ori_best','png',comment);
+if (isdebug)
+    figure;
+    plotAllOrientations(o);
+    saveimg(sr,fc,outdir,sid,'ori_best','png',comment);
+end
 
 clear grains;
 
 %% Reconstruction
 
 % Find parent orientation for good orientations
-[Pmax, PR, opf, gind, op, vnum] = findUniqueParent(o, getOR('M1'), w1*degree, vv, w2*degree, 1.5);
+[Pmax, PR, opf, gind, op, vnum] = findUniqueParent(o, wf, getOR('M1'), w1*degree, vv, w2*degree, 1.5, 'combineClose');
 
 % For success reconstruction plot real and calculation children orientation
 if (isa(opf, 'orientation'))

@@ -9,9 +9,9 @@ Nv  = 3;
 w0  = 5*degree;
 PRm = 1.4;
 
-n = 200;
-vmin = 3;
-vmax = 12;
+n = 1;
+vmin = 23;
+vmax = 24;
 
 %% Prepare
 ma = zeros(1,vmax);
@@ -42,7 +42,7 @@ for j = 1:n
         oi1 = setOriDev(oi, dev);
         m1 = m1 + sum(angle(oi1,oi)/degree)/i;
 
-        [Pmax, PR, oup, gind, op, vnum] = findUniqueParent(oi1, ORm, thr, Nv, w0, PRm, 'onlyFirst');
+        [Pmax, PR, oup, gind, op, vnum] = findUniqueParent(oi1, ones(1,length(oi1)), ORm, thr, Nv, w0, PRm);
         
         if isa(oup, 'orientation')
             if (n == 1)

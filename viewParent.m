@@ -19,13 +19,13 @@ function out = viewParent( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
 out = {};
 
 if ~check_option(tasks, 'realRecon')
-    param = get_option(tasks,'ParentRecParam', [0.4, 2, 5, 4]);
+    param = get_option(tasks,'ParentRecParam', [0.4, 2, 6, 5]);
 
     [ cr, w1, vv, w2 ] = getRegionParams( rid, param );
 
     fishParent(ebsd, cr, sid, w1, vv, w2)
 else 
-    param = get_option(tasks,'ParentRecParam', [5*degree, 4, 1.3, 3*degree, 2*degree, 3*degree, 3*degree,]);
+    param = get_option(tasks,'ParentRecParam', [3*degree, 5, 1.4, 3*degree, 2*degree, 3*degree, 3*degree,]);
     
     ORmat = get_option(varargin, 'optOR', getOR('KS'));
     thr   = param(1);
@@ -36,9 +36,12 @@ else
     w12   = param(6);
     w2    = param(7);
     
-    grains = getGrains(ebsd, 2*degree, 1,'unitcell');
+    grains = getGrains(ebsd, 2*degree, 2,'unitcell');
 
-    [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2, 'onlyFirst', 'combineClose');
+%     [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2, 'onlyFirst', 'combineClose');
+    
+    [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2,...
+    'secondOrderNeighbors', 'onlyFirst', 'combineClose', 'useWeightFunc');
 
     colorFragments(grains, frg_info{1});
 
