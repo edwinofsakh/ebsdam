@@ -15,34 +15,38 @@ n12 = length(frg_info12{1});
 n2 = length(frg_info2{1});
 
 % Try to add grains remained without fragments to the closest fragments
-[ frg_info3 ] = addRemain( grains, frg_info2, ORmat, w2, varargin{:});
+[ frg_info3, nn ] = addRemain( grains, frg_info2, ORmat, w2, varargin{:});
 n3 = length(frg_info3{1});
 
-% Postprocessing
+%% Postprocessing
 frg_info4 = frg_info3;
 
+% Remove empty fragments
 ll = cellfun(@length, frg_info3{1});
 ind = (ll > 0);
 
 frg = frg_info4{1};
 frg_po = frg_info4{2};
-grn_frg = frg_info4{3};
-grn_po = frg_info4{4};
 
 frg = frg(ind);
 frg_po = frg_po(ind);
 
-o = get(grains, 'mean');
+frg_info4{1} = frg;
+frg_info4{2} = frg_po;
 
-for i = 1:length(frg)
-	oi = o(frg{i});
-    [~, ~, oup, ~] = findUniqueParent(oi, ones(1,length(oi)), ORmat, thr, Nv, w0, PRm, varargin{:});
-    if isa(oup, 'orientation')
-        frg_po(i) = oup;
+% Refine orientation
+if check_option(varargin, 'refineOri')
+    o = get(grains, 'mean');
+
+    for i = 1:length(frg)
+        oi = o(frg{i});
+        [~, ~, oup, ~] = findUniqueParent(oi, ones(1,length(oi)), ORmat, thr, Nv, w0, PRm, varargin{:});
+        if isa(oup, 'orientation')
+            frg_po(i) = oup;
+        end
     end
+    frg_info4{2} = frg_po;
 end
-
-frg_info4{4} = frg_po;
 
 frg_info =  frg_info4;
 end

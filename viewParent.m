@@ -23,7 +23,7 @@ if ~check_option(tasks, 'realRecon')
 
     [ cr, w1, vv, w2 ] = getRegionParams( rid, param );
 
-    fishParent(ebsd, cr, sid, w1, vv, w2)
+    fishParent(ebsd, cr, sid, rid, w1, vv, w2);
 else 
     param = get_option(tasks,'ParentRecParam', [3*degree, 5, 1.4, 3*degree, 2*degree, 3*degree, 3*degree,]);
     

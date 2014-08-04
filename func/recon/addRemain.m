@@ -1,4 +1,4 @@
-function [ frg_info1 ] = addRemain( grains, frg_info0, ORmat, w, varargin )
+function [ frg_info1, nn ] = addRemain( grains, frg_info0, ORmat, w, varargin )
 % Add remaining orientation to the closest fragment
 %   (?? Add orientation for grains remained after reconstruction ??)
 %   (!! Never Used !!)
@@ -77,6 +77,8 @@ rmn = find(prc == 0);
 if (~isempty(rmn))
     plotBoundary(grains,'ext'); hold on; plot(grains(rmn)); hold off;
 end
+
+nn = length(rmn);
 
 frg_info1 = {frg1, frg_po0, grn_frg1, grn_po1};
 end

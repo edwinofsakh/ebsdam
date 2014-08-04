@@ -105,7 +105,6 @@ ma = angle(op\op);
 if check_option(varargin, 'onlyFirst')
     [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(1, ma, op, opi, wf, n, np, nv, w0);
 else
-    warning('Maybe bad funciton.');
     [Pp, rci, rvi, ppo, Ds] =      CheckParents(   ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin);
 end
 
@@ -122,7 +121,8 @@ Ds  = Ds(IX);
 
 % Max probability
 Pmax = Ps(1);
-opf = mean(ppo{1});
+% opf = mean(ppo{1});
+opf = ppo{1};
 
 if (isfulldebug)
     figure;
@@ -240,50 +240,65 @@ function [Pp, rci, rvi, ppo, Ds] = CheckParents(ma, op, opi, wf, n, np, nv, w0, 
 %   nv  - number of varinats
 %   w0  - maximal deviation between parents
 
-% Probability of potential parents
-Pp  = zeros(1,np);  % probability of parent
-Ds  = zeros(1,np);  % probable parent orientation 
-rci = cell(1,np);   % relevant child index
-rvi = cell(1,np);   % relevant varinat index
-ppo = cell(1,np);   % probable parent orientation 
+if (0)
+    % Probability of potential parents
+    Pp  = zeros(1,np);  % probability of parent
+    Ds  = zeros(1,np);  % probable parent orientation 
+    rci = cell(1,np);   % relevant child index
+    rvi = cell(1,np);   % relevant varinat index
+    ppo = cell(1,np);   % probable parent orientation 
 
-for i = 1:n
-    j = (i-1)*nv+(1:nv);
-	[Pp(j), rci(j), rvi(j), ppo(j), Ds(j)] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
+    for i = 1:n
+        j = (i-1)*nv+(1:nv);
+        [Pp(j), rci(j), rvi(j), ppo(j), Ds(j)] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
+    end
+else
+    % Probability of potential parents
+    iPp  = cell(1,n);   % probability of parent
+    iDs  = cell(1,n);   % probable parent orientation 
+    irci = cell(1,n);   % relevant child index
+    irvi = cell(1,n);   % relevant varinat index
+    ippo = cell(1,n);   % probable parent orientation 
+
+    bad = zeros(1,n);
+    Pi = zeros(1,n);
+    Pmax = 0;
+    imax = 0;
+
+    for i = 1:n
+        [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
+
+        [Ps,IX] = sort(Pp,'descend');
+        rci = rci(IX);
+        rvi = rvi(IX);
+        ppo = ppo(IX);
+        Ds  = Ds(IX);
+
+        [goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin);
+
+        if goodProbRatio
+            if (Ps(1) > Pmax)
+                Pmax  = Ps(1);
+                imax  = i;
+            end
+            
+            Pi(i) = Ps(1);
+            iPp{i}  = Ps;
+            irci{i} = rci;
+            irvi{i} = rvi;
+            ippo{i} = ppo;
+            iDs{i}  = Ds;
+        else
+            bad(i) = 1;
+        end
+    end
+    
+    Pp  = iPp{imax};
+    rci = irci{imax};
+    rvi = irvi{imax};
+    ppo = ippo{imax};
+    Ds  = iDs{imax};
 end
-
-
-% % Probability of potential parents
-% iPp  = cell(1,n);  % probability of parent
-% iDs  = cell(1,n);  % probable parent orientation 
-% irci = cell(1,n);   % relevant child index
-% irvi = cell(1,n);   % relevant varinat index
-% ippo = cell(1,n);   % probable parent orientation 
-% 
-% bad = zeros(1,n);
-% 
-% for i = 1:n
-% 	[Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
-%     
-%     [Ps,IX] = sort(Pp,'descend');
-%     rci = rci(IX);
-%     rvi = rvi(IX);
-%     ppo = ppo(IX);
-%     Ds  = Ds(IX);
-% 
-%     [goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin);
-%     
-%     if goodProbRatio
-%         iPp{i}  = Ps;
-%         irci{i} = rci;
-%         irvi{i} = irvi;
-%         ippo{i} = ippo;
-%         iDs{i}  = iDs;
-%     else
-%         bad(i) = 1;
-%     end
-% end
-
 end
 
 

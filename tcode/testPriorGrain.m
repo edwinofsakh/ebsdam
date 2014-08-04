@@ -10,13 +10,22 @@ w12  = 2*degree;
 w2  = 2*degree;
 PRm = 1.4;
 
-[X, Y, in, in_xy] = gridPriorGrains(N, sqrt(3)/2, 0.5, 'dev', 0.6);
-[ebsd, ori0] = Grid2EBSD(X,Y, 20, 'prior', in, 'crop', 'center', 'dev', dev);
-plotpdf(ori0,Miller(1,0,0), 'antipodal', 'MarkerSize',4);
+ORmat = getOR('KS');
+
+if (0)
+    [X, Y, in, in_xy] = gridPriorGrains(N, sqrt(3)/2, 0.5, 'dev', 0.6);
+    [ebsd, ori0] = Grid2EBSD(X,Y, 20, 'OR', ORmat, 'prior', in, 'crop', 'center', 'dev', dev);
+    plotpdf(ori0,Miller(1,0,0), 'antipodal', 'MarkerSize',4);
+
+    grains = getGrains(ebsd, 0.05*degree, 0, 'unitcell');
+else
+    S = load('save2.mat', 'ebsd', 'ori0', 'grains');
+    ebsd   = S.ebsd;
+    ori0   = S.ori0;
+    grains = S.grains;
+end
 
 ori0
-
-grains = getGrains(ebsd, 0.05*degree, 0, 'unitcell');
 
 plot(ebsd); hold on;
 plotBoundary(grains); hold off;
@@ -42,10 +51,8 @@ end
 % 
 % % [ gf, opp ] = recon_new2( grains, 'M1', 1.5*degree, 4, 1.2, 5*degree, 5*degree);
 
-ORmat = getOR('KS');
-
 [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2,...
-    'secondOrderNeighbors', 'onlyFirst', 'combineClose', 'useWeightFunc');
+    'NOsecondOrderNeighbors', 'onlyFirst', 'combineClose', 'useWeightFunc');
 
 colorFragments(grains, frg_info{1});
 

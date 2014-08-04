@@ -10,6 +10,7 @@ function [ebsd_f, ori0] = Grid2EBSD(X, Y, S, varargin)
 % Input
 %   [X, Y]	- list of coordinates of grains' centers
 %   S       - EBSD filled(rasterisation) parameter
+%   ORm     - orientation matrix
 %
 % Options
 %   dev     - angle deviation for prior grains 
@@ -21,7 +22,7 @@ function [ebsd_f, ori0] = Grid2EBSD(X, Y, S, varargin)
 %   display - plot mesh
 %
 % Example
-%   ebsd_f = Grid2EBSD(X, Y, 20, varargin);
+%   ebsd_f = Grid2EBSD(X, Y, 20, getOR(KS), varargin);
 %
 % See "test\testPriorGrain.m"
 %
@@ -122,9 +123,8 @@ function [ebsd, ori0] = preparePriorGrains(X,Y, prior, varargin)
         display(ori0);
     end
     
+    ORm = get_option(varargin, 'OR',  0, 'double');
     dev = get_option(varargin, 'dev', 0, 'double');
-
-    ORm = getOR('KS');
 
     for i = 1:M
         oi = find(prior{i});
