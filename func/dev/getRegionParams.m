@@ -16,7 +16,7 @@ function [ varargout ] = getRegionParams( rid, param )
 % 17.04.14  Original implementation
 
 if isa(param, 'cell')
-    ind = cellfun(@(x) strcmp(x{1},rid),param);
+    ind = cellfun(@(x) (strcmp(x{1},rid) || strcmp(x{1},'all')),param);
     param = param{ind};
     param = param{2};
     fprintf(1,'Apply region''s parameters.\n');

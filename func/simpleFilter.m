@@ -1,4 +1,4 @@
-function [ ebsd_f ] = simpleFilter( ebsd, cr )
+function [ ebsd_f, vm, q ] = simpleFilter( ebsd, cr )
 % Summary of this function goes here
 %   Detailed explanation goes here
 %

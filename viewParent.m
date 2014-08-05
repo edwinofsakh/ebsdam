@@ -18,25 +18,32 @@ function out = viewParent( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
 
 out = {};
 
+varargin = [varargin tasks];
+
+ORmat = get_option(varargin, 'optOR', getOR('KS'));
+ORmat = getOR(ORmat);
+
 if ~check_option(tasks, 'realRecon')
-    param = get_option(tasks,'ParentRecParam', [0.4, 2, 6, 5]);
+    param = get_option(tasks,'ParentRecParam', [0.4, 2, 6, 5, 1.5]);
 
-    [ cr, w1, vv, w2 ] = getRegionParams( rid, param );
+    [ cr, w1, vv, w2, PRmin ] = getRegionParams( rid, param );
 
-    fishParent(ebsd, cr, sid, rid, w1, vv, w2);
+    fishParent(ebsd, ORmat, cr, sid, rid, w1, vv, w2, PRmin);
 else 
-    param = get_option(tasks,'ParentRecParam', [3*degree, 5, 1.4, 3*degree, 2*degree, 3*degree, 3*degree,]);
+    param = get_option(tasks,'ParentRecParam', [0.2, 3*degree, 5, 1.4, 2*degree, 4*degree, 4*degree, 4*degree,]);
     
-    ORmat = get_option(varargin, 'optOR', getOR('KS'));
-    thr   = param(1);
-    Nv    = param(2);
-    PRm   = param(3);
-    w0    = param(4);
-    w11   = param(5);
-    w12   = param(6);
-    w2    = param(7);
+    cr    = param(1);
+    thr   = param(2);
+    Nv    = param(3);
+    PRm   = param(4);
+    w0    = param(5);
+    w11   = param(6);
+    w12   = param(7);
+    w2    = param(8);
     
-    grains = getGrains(ebsd, 2*degree, 2,'unitcell');
+    ebsd = simpleFilter(ebsd, cr);
+    
+    grains = getGrains(ebsd, 2*degree, 2);
 
 %     [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2, 'onlyFirst', 'combineClose');
     
