@@ -1,4 +1,4 @@
-function [Pmax, PR, opf, gind, op, vnum] = findUniqueParent(ori0, wf0, ORmat, thr, Nv, w0, PRmin, varargin)
+function [Pmax, PR, opf, gind, op, vn] = findUniqueParent(ori0, wf0, ORmat, thr, Nv, w0, PRmin, varargin)
 % Find unique parent for orientations.
 %   Close orientations with misorientation less than 'thr' will be 
 %   combined in group for reduce the amount of calculation. For group 
@@ -13,7 +13,7 @@ function [Pmax, PR, opf, gind, op, vnum] = findUniqueParent(ori0, wf0, ORmat, th
 %   opf     - orientation of unique parent, 0 if not find
 %   gind    - indices of grains in current fragment
 %   op      - orientation of parents
-%   vnum    - number of varinats
+%   vn      - number of varinats
 % 
 % Input
 %   ori0    - set of orienations
@@ -103,9 +103,9 @@ ma = angle(op\op);
 %   rvi - relevant varinat index
 %   ppo - probable parent orientation
 if check_option(varargin, 'onlyFirst')
-    [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(1, ma, op, opi, wf, n, np, nv, w0);
+    [Pp, rci, rvi, ppo, Ds, Vn] = CheckFirstParents(1, ma, op, opi, wf, n, np, nv, w0);
 else
-    [Pp, rci, rvi, ppo, Ds] =      CheckParents(   ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin);
+    [Pp, rci, rvi, ppo, Ds, Vn] =      CheckParents(   ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin);
 end
 
 % P = (sum(mm < w0) - mv)/n;
@@ -118,11 +118,13 @@ rci = rci(IX);
 rvi = rvi(IX);
 ppo = ppo(IX);
 Ds  = Ds(IX);
+Vn  = Vn(IX);
 
 % Max probability
 Pmax = Ps(1);
 % opf = mean(ppo{1});
 opf = ppo{1};
+vn  = Vn(1);
 
 if (isfulldebug)
     figure;
@@ -218,7 +220,7 @@ end
 g = g(1:n);
 end
 
-function [Pp, rci, rvi, ppo, Ds] = CheckParents(ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin)
+function [Pp, rci, rvi, ppo, Ds, Vn] = CheckParents(ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin)
 % !!!Important: May have problem this symmetry (not checked). Let's think:
 % if all children are from one parent orientation. We can reconstructe
 % parent orientation with resepect to symmetry.
@@ -243,6 +245,7 @@ function [Pp, rci, rvi, ppo, Ds] = CheckParents(ma, op, opi, wf, n, np, nv, w0, 
 if (0)
     % Probability of potential parents
     Pp  = zeros(1,np);  % probability of parent
+    Vn  = zeros(1,np);  % number of variants
     Ds  = zeros(1,np);  % probable parent orientation 
     rci = cell(1,np);   % relevant child index
     rvi = cell(1,np);   % relevant varinat index
@@ -250,12 +253,13 @@ if (0)
 
     for i = 1:n
         j = (i-1)*nv+(1:nv);
-        [Pp(j), rci(j), rvi(j), ppo(j), Ds(j)] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
+        [Pp(j), rci(j), rvi(j), ppo(j), Ds(j), Vn(j)] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
     end
 else
     % Probability of potential parents
     iPp  = cell(1,n);   % probability of parent
-    iDs  = cell(1,n);   % probable parent orientation 
+    iDs  = cell(1,n);   % probable parent orientation
+    iVn  = cell(1,n);  % number of variants
     irci = cell(1,n);   % relevant child index
     irvi = cell(1,n);   % relevant varinat index
     ippo = cell(1,n);   % probable parent orientation 
@@ -266,13 +270,14 @@ else
     imax = 0;
 
     for i = 1:n
-        [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
+        [Pp, rci, rvi, ppo, Ds, Vn] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
 
         [Ps,IX] = sort(Pp,'descend');
         rci = rci(IX);
         rvi = rvi(IX);
         ppo = ppo(IX);
         Ds  = Ds(IX);
+        Vn  = Vn(IX);
 
         [goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin);
 
@@ -288,6 +293,7 @@ else
             irvi{i} = rvi;
             ippo{i} = ppo;
             iDs{i}  = Ds;
+            iVn{i}  = Vn;
         else
             bad(i) = 1;
         end
@@ -298,11 +304,12 @@ else
     rvi = irvi{imax};
     ppo = ippo{imax};
     Ds  = iDs{imax};
+    Vn  = iVn{imax};
 end
 end
 
 
-function [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0)
+function [Pp, rci, rvi, ppo, Ds, Vn] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0)
 % !!!Important: this method check only possible parent of first child. Also
 %   this method ignores only real distance between parent, only hitting in 
 %   'w0' region.
@@ -326,6 +333,7 @@ function [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, 
 
 % Probability of potential parents
 Pp  = zeros(1,nv);  % probability of parent
+Vn  = zeros(1,nv);  % number of variants
 Ds  = zeros(1,nv);  % distance to parent from others
 rci = cell(1,nv);   % relevant child index
 rvi = cell(1,nv);   % relevant varinat index
@@ -359,6 +367,7 @@ for k = 1:nv
     % orientation removed at start and current child.
     Pp(k) = sum(wf(rci{k}));
     Ds(k) = sum(ma2(rcl))/length(Pp(k)); % sum of distances between parents
+    Vn(k) = length(unique(rvi{k}));
     
     % Calc index of parent orientation, based on varinat and child numbers
     ppi = i; %(rvi{k}-1)*n+rci{k};

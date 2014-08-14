@@ -30,7 +30,7 @@ if ~check_option(tasks, 'realRecon')
 
     fishParent(ebsd, ORmat, cr, sid, rid, w1, vv, w2, PRmin);
 else 
-    param = get_option(tasks,'ParentRecParam', [0.2, 3*degree, 5, 1.4, 2*degree, 4*degree, 4*degree, 4*degree,]);
+    param = get_option(tasks,'ParentRecParam', [0.2, 2*degree, 6, 1.4, 3*degree, 6*degree, 0*degree, 10*degree,]);
     
     cr    = param(1);
     thr   = param(2);
@@ -48,7 +48,7 @@ else
 %     [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2, 'onlyFirst', 'combineClose');
     
     [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2,...
-    'secondOrderNeighbors', 'onlyFirst', 'combineClose', 'useWeightFunc');
+    'secondOrderNeighbors', 'onlyFirst', 'combineClose');
 
     colorFragments(grains, frg_info{1});
 
@@ -56,5 +56,9 @@ else
     plotpdf(frg_info{2},Miller(1,0,0),'antipodal');
 
     frg_info{2}
+    figure;
+    plotpdf(getVariants(frg_info{2}, getOR('M1'), symmetry('m-3m')),Miller(1,0,0),'antipodal');
+    figure;
+    plotpdf(get(grains,'mean'),Miller(1,0,0),'antipodal');
 end
 end

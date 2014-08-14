@@ -5,9 +5,9 @@ dev = 2*degree;
 thr = 4*degree;
 Nv  = 4;
 w0  = 5*degree;
-w11  = 1*degree;
-w12  = 2*degree;
-w2  = 2*degree;
+w11  = 3*degree;
+w12  = 0*degree;
+w2  = 3*degree;
 PRm = 1.4;
 
 ORmat = getOR('KS');
@@ -19,10 +19,10 @@ if (0)
 
     grains = getGrains(ebsd, 0.05*degree, 0, 'unitcell');
 else
-    S = load('save2.mat', 'ebsd', 'ori0', 'grains');
-    ebsd   = S.ebsd;
-    ori0   = S.ori0;
-    grains = S.grains;
+    [S, ebsd, ori0, grains] = loadResultData('testPriorGrain_save1', 'ebsd', 'ori0', 'grains');
+%     ebsd   = S.ebsd;
+%     ori0   = S.ori0;
+%     grains = S.grains;
 end
 
 ori0

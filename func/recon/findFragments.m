@@ -70,7 +70,7 @@ for i = 1:n
     debugInfo01(grains, ind, oi);
 
     % Try to find orientation of unique parent.
-    [~, ~, oup, indi] = findUniqueParent(oi, wfi, ORmat, thr, Nv, w0, PRm, varargin{:});
+    [Pmax, PR, oup, indi, ~, vn] = findUniqueParent(oi, wfi, ORmat, thr, Nv, w0, PRm, varargin{:});
     
     if (isa(oup, 'orientation'))
         
