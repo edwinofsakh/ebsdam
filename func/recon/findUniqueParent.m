@@ -1,4 +1,4 @@
-function [Pmax, PR, opf, gind, op, vn] = findUniqueParent(ori0, wf0, ORmat, thr, Nv, w0, PRmin, varargin)
+function [Pmax, PR, opf, gind, op, vnum] = findUniqueParent(ori0, wf0, ORmat, thr, Nv, w0, PRmin, varargin)
 % Find unique parent for orientations.
 %   Close orientations with misorientation less than 'thr' will be 
 %   combined in group for reduce the amount of calculation. For group 
@@ -13,7 +13,7 @@ function [Pmax, PR, opf, gind, op, vn] = findUniqueParent(ori0, wf0, ORmat, thr,
 %   opf     - orientation of unique parent, 0 if not find
 %   gind    - indices of grains in current fragment
 %   op      - orientation of parents
-%   vn      - number of varinats
+%   vnum    - indices of varinats
 % 
 % Input
 %   ori0    - set of orienations
@@ -34,6 +34,7 @@ function [Pmax, PR, opf, gind, op, vn] = findUniqueParent(ori0, wf0, ORmat, thr,
 % 17.04.13  Change 'ORname' to 'ORmat'. Fix comments.
 % 28.07.14  Add 'varargin'. Add options 'onlyFirst', 'combineClose'. Some
 %           makeups.
+% 04.08.14? Rewrite CheckParents, now it find the best parent.
 
 
 %% Preparation
@@ -43,6 +44,8 @@ opf  = 0;
 gind = 0;
 op   = 0;
 vnum = 0;
+
+VNmin = Nv;
 
 % Normalize weight function
 wf0  = wf0/sum(wf0);
@@ -59,12 +62,13 @@ if check_option(varargin, 'combineClose')
     n = length(ori);
     dprintf(1,['Number of orientation was changed from ' int2str(n0) ' to ' int2str(n) ' \n']);
 else
-    ori = ori0;
-    gc  = ones(1,n0);
-    gi  = num2cell(1:n0);
-    n   = n0;
+    ori = ori0;             % orientations of groups
+    gc  = ones(1,n0);       % number of orientations in group
+    gi  = num2cell(1:n0);   % indices of orietations in group
+    n   = n0;               % number of groups
 end
 
+% Use weight function
 if check_option(varargin, 'useWeightFunc')
     wf = cellfun(@(x) sum(wf0(x)), gi);
     Pmin = Nv/length(wf);
@@ -73,7 +77,7 @@ else
     Pmin = Nv;
 end
 
-% Check number of variants
+% Check number of variants again
 if n < Nv
     dprintf(1,'Too few variants\n'); return;
 end
@@ -95,6 +99,9 @@ end
 %% Calculation of probabilities of potential parents
 
 % Angle between potential parents
+%  aaa = repmat(op, 1, np);
+%  bbb = repmat(reshape(op,1,np), np,1);
+%  ma = angle(aaa,bbb);
 ma = angle(op\op);
 
 % Check potential parents
@@ -102,10 +109,12 @@ ma = angle(op\op);
 %   rci - relevant child index
 %   rvi - relevant varinat index
 %   ppo - probable parent orientation
+%   Ds  - distance to parent from others
+%   Vn  - number of variants
 if check_option(varargin, 'onlyFirst')
-    [Pp, rci, rvi, ppo, Ds, Vn] = CheckFirstParents(1, ma, op, opi, wf, n, np, nv, w0);
+    [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(1, ma, op, opi, wf, n, np, nv, w0);
 else
-    [Pp, rci, rvi, ppo, Ds, Vn] =      CheckParents(   ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin);
+    [Pp, rci, rvi, ppo, Ds] =      CheckParents(   ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin);
 end
 
 % P = (sum(mm < w0) - mv)/n;
@@ -118,37 +127,31 @@ rci = rci(IX);
 rvi = rvi(IX);
 ppo = ppo(IX);
 Ds  = Ds(IX);
-Vn  = Vn(IX);
 
 % Max probability
 Pmax = Ps(1);
-% opf = mean(ppo{1});
-opf = ppo{1};
-vn  = Vn(1);
+opf = mean(ppo{1});
+% opf = ppo{1};
+% vnum = rvi{1};
+vnum0 = checkVariants(opf, ORmat, CS, ori(rci{1}));
+vn = length(unique(vnum0));
 
-if (isfulldebug)
-    figure;
-    ouppp = cellfun(@(x) mean(x),ppo(1:4), 'UniformOutput', false);
-    ouppp = [ouppp{:}];
-    plotpdf(ouppp,Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'g');
-    hold on;
-    plotpdf(opf,Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'r');
-    hold off;
-end
-
-[goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin);
+debugInfo001(ppo, opf);
 
 % If have only one parent
+[goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin, vn, VNmin);
 if goodProbRatio
     gind = rci{1};
-    vnum = rvi{1};
+    vnum = vnum0;
     op   = ppo{1};
     
+
+    
     if (isfulldebug)
-        hf = figure; plotpdf(getVariants(opf, inv(ORmat), CS), Miller(1,0,0), 'antipodal', 'MarkerSize',4)
-        hold on; plotpdf(ori(gind),Miller(1,0,0), 'antipodal', 'MarkerSize',4);
-        hold on; plotpdf(ori(~gind),Miller(1,0,0), 'antipodal', 'MarkerSize',4);
-        hold on; plotpdf(ppo{1},Miller(1,0,0), 'antipodal', 'MarkerSize',4);
+        hf = figure; plotpdf(getVariants(opf, inv(ORmat), CS), Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'b')
+        hold on; plotpdf(ori(gind),Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'g');
+        hold on; plotpdf(ori(~gind),Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'k');
+        hold on; plotpdf(ppo{1},Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'r');
         hold off;
         close(hf);
     end;
@@ -172,7 +175,7 @@ dprintf(1,'%d-%d-%3.1f\n', n, Pmax, PR);
 end
 
 
-function [bool, PR] = checkRatio(PS, PRmin, Pmin)
+function [bool, PR] = checkRatio(PS, PRmin, Pmin, vn, VNmin)
 % Calculate the ratio of parent probabilities
 if (PS(2) ~= 0)
     PR = PS(1)/PS(2);
@@ -180,7 +183,7 @@ else
     PR = 100*PS(1);
 end
 
-bool = (PR > PRmin) && (PS(1) >= Pmin);
+bool = (PR > PRmin) && (PS(1) >= Pmin) && (vn > VNmin);
 
 end
 
@@ -220,7 +223,7 @@ end
 g = g(1:n);
 end
 
-function [Pp, rci, rvi, ppo, Ds, Vn] = CheckParents(ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin)
+function [Pp, rci, rvi, ppo, Ds] = CheckParents(ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin)
 % !!!Important: May have problem this symmetry (not checked). Let's think:
 % if all children are from one parent orientation. We can reconstructe
 % parent orientation with resepect to symmetry.
@@ -245,7 +248,6 @@ function [Pp, rci, rvi, ppo, Ds, Vn] = CheckParents(ma, op, opi, wf, n, np, nv, 
 if (0)
     % Probability of potential parents
     Pp  = zeros(1,np);  % probability of parent
-    Vn  = zeros(1,np);  % number of variants
     Ds  = zeros(1,np);  % probable parent orientation 
     rci = cell(1,np);   % relevant child index
     rvi = cell(1,np);   % relevant varinat index
@@ -253,13 +255,12 @@ if (0)
 
     for i = 1:n
         j = (i-1)*nv+(1:nv);
-        [Pp(j), rci(j), rvi(j), ppo(j), Ds(j), Vn(j)] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
+        [Pp(j), rci(j), rvi(j), ppo(j), Ds(j)] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
     end
 else
     % Probability of potential parents
     iPp  = cell(1,n);   % probability of parent
     iDs  = cell(1,n);   % probable parent orientation
-    iVn  = cell(1,n);  % number of variants
     irci = cell(1,n);   % relevant child index
     irvi = cell(1,n);   % relevant varinat index
     ippo = cell(1,n);   % probable parent orientation 
@@ -270,14 +271,13 @@ else
     imax = 0;
 
     for i = 1:n
-        [Pp, rci, rvi, ppo, Ds, Vn] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
+        [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0);
 
         [Ps,IX] = sort(Pp,'descend');
         rci = rci(IX);
         rvi = rvi(IX);
         ppo = ppo(IX);
         Ds  = Ds(IX);
-        Vn  = Vn(IX);
 
         [goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin);
 
@@ -293,7 +293,6 @@ else
             irvi{i} = rvi;
             ippo{i} = ppo;
             iDs{i}  = Ds;
-            iVn{i}  = Vn;
         else
             bad(i) = 1;
         end
@@ -304,12 +303,11 @@ else
     rvi = irvi{imax};
     ppo = ippo{imax};
     Ds  = iDs{imax};
-    Vn  = iVn{imax};
 end
 end
 
 
-function [Pp, rci, rvi, ppo, Ds, Vn] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0)
+function [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, nv, w0)
 % !!!Important: this method check only possible parent of first child. Also
 %   this method ignores only real distance between parent, only hitting in 
 %   'w0' region.
@@ -333,7 +331,6 @@ function [Pp, rci, rvi, ppo, Ds, Vn] = CheckFirstParents(i, ma, op, opi, wf, n, 
 
 % Probability of potential parents
 Pp  = zeros(1,nv);  % probability of parent
-Vn  = zeros(1,nv);  % number of variants
 Ds  = zeros(1,nv);  % distance to parent from others
 rci = cell(1,nv);   % relevant child index
 rvi = cell(1,nv);   % relevant varinat index
@@ -367,10 +364,9 @@ for k = 1:nv
     % orientation removed at start and current child.
     Pp(k) = sum(wf(rci{k}));
     Ds(k) = sum(ma2(rcl))/length(Pp(k)); % sum of distances between parents
-    Vn(k) = length(unique(rvi{k}));
     
-    % Calc index of parent orientation, based on varinat and child numbers
-    ppi = i; %(rvi{k}-1)*n+rci{k};
+    % Calc indices of parent orientation, based on varinat and child numbers
+    ppi = (rvi{k}-1)*n+rci{k};
     
     % Get orientation of parents
     ppo{k} = op(ppi);
@@ -385,4 +381,19 @@ for k = 1:nv
     
 end
 
+end
+
+
+function debugInfo001(ppo, opf)
+
+if (isfulldebug)
+    h1 = figure;
+    ouppp = cellfun(@(x) mean(x),ppo(1:4), 'UniformOutput', false);
+    ouppp = [ouppp{:}];
+    plotpdf(ouppp,Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'g');
+    hold on;
+    plotpdf(opf,Miller(1,0,0), 'antipodal', 'MarkerSize',4, 'MarkerColor', 'r');
+    hold off;
+    close(h1);
+end
 end

@@ -22,8 +22,8 @@ function [v, ind] = getVariants(o, ORmat, CS)
 ORr = rotation('matrix', ORmat);
 
 % Some variants
-v = o*CS*ORr;
-v = orientation(v,get(o,'CS'),get(o,'SS'));
+v0 = o*CS*ORr;
+v = orientation(v0,get(o,'CS'),get(o,'SS'));
 ind = repmat(1:length(o),1,size(CS,1))'; % ???
 
 end

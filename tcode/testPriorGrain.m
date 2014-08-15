@@ -26,6 +26,7 @@ else
 end
 
 ori0
+rotation(ori0)
 
 plot(ebsd); hold on;
 plotBoundary(grains); hold off;
@@ -52,7 +53,7 @@ end
 % % [ gf, opp ] = recon_new2( grains, 'M1', 1.5*degree, 4, 1.2, 5*degree, 5*degree);
 
 [ frg_info ] = findPriorGrains(grains, ORmat, thr, Nv, PRm, w0, w11, w12, w2,...
-    'NOsecondOrderNeighbors', 'onlyFirst', 'combineClose', 'useWeightFunc');
+    'NeighborsOrder', 3, 'onlyFirst', 'combineClose', 'NOuseWeightFunc', 'refineOri');
 
 colorFragments(grains, frg_info{1});
 
@@ -60,3 +61,4 @@ figure;
 plotpdf(frg_info{2},Miller(1,0,0),'antipodal');
 
 frg_info{2}
+rotation(frg_info{2})
