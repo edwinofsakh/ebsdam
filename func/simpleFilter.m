@@ -1,15 +1,15 @@
 function [ ebsd_f, vm, q ] = simpleFilter( ebsd, cr )
-% Summary of this function goes here
-%   Detailed explanation goes here
+% Simple filtrarion
 %
 % Syntax
-%   ***
+%   [ ebsd_f, vm, q ] = simpleFilter( ebsd, cr )
 %
 % Output
-%   ***     - ***
+%   ebsd_f  - ***
 %
 % Input
-%   ***     - ***
+%   ebsd    - EBSD data
+%   cr      - filtration criteria
 %
 % Options
 %   ***     - ***

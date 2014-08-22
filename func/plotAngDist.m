@@ -35,6 +35,17 @@ function plotAngDist( mori, lmt, saveres, odir, prefix, fname, ltitle, varargin 
     figure();
     edges = d:d:lmt;
     [n, bin] = histc(ang,edges);
+    
+    if check_option(varargin, 'normLowAngles')
+        n1 = n;
+        j = find(n, 1, 'first');
+        n1(1:j) = n1(j)/j;
+        if sum(n1) == sum(n)
+            test = 1;
+        end
+        n = n1;
+    end
+    
     np = n/sum(n)*100;
     bar1 = bar(edges,np,'histc');
     set(bar1,'FaceColor',[0.7, 0.78, 1])

@@ -34,6 +34,7 @@ thr = thrd*degree;
 % Prepare EBSD region and grains
 ebsd = checkEBSD(sid, ebsd, 'Fe');
 ebsd = getRegion(ebsd, region);
+ebsd = simpleFilter(ebsd, 0.1);
 grains = getGrains(ebsd, thr, mgs);
 
 %% Calculation

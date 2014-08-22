@@ -1,4 +1,4 @@
-function viewSamples( samples, regions, rxy, skip, tasklist, varargin)
+function out = viewSamples( samples, regions, rxy, skip, tasklist, varargin)
 % Collect information about samples
 %   Collect information about samples, some of them can be skipped. Divide 
 %   samples on part by Y.
@@ -116,6 +116,6 @@ for i = 1:length(samples)
         region = 0;
     end
                 
-    viewAll(sid, rid, region, ebsd, tasklist, varargin1{:});
+    out = viewAll(sid, rid, region, ebsd, tasklist, varargin1{:});
 
 end

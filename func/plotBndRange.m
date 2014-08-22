@@ -1,46 +1,63 @@
-function plotBndRange( grains, thr, saveres, odir, prefix, bndType)
+function plotBndRange( grains, thr, saveres, newfig, odir, prefix, bndType, ranges, colors, varargin)
 % Plot boundary map coloring range of misorientation angle
 % 
+% Syntax
+%   plotBndRange( grains, thr, saveres, newfig, odir, prefix, bndType, ranges, colors, varargin)
+%
 % Input
 %   grains  - grains
 %   thr     - boundary detection thershold, in radian
 %   saveres - see main function
 %   odir    - output directory
 %   prefix  - file name prefix
-%   fname   - file name
-%   ltitle  - data title (name 'title' is used)
 %   bndType - possible value: 'allbnd' - all boundary, 'ext' - external, 
 %           	'sub' - internal
+%   ranges  - booundary ranges in style [2 5 10 15]
+%   colors  - color for ranges
+%
 % History
 % 27.03.13  Separate from 'viewGrains'.
 % 14.04.13  Add saveing of comment.
+% 15.08.14  Cleanup. Add dynamic range.
 
     comment = getComment();
     
-    figure();
-    cmap = colormap(lines(5));
-    leg = {};
-    if (thr < 1*degree)
-        hold on, plotBoundary(grains,'property',[ 0  1]*degree  ,'linecolor',cmap(1,:), bndType);
-        leg = [leg , '<1^\circ'];
-        hold on, plotBoundary(grains,'property',[ 1  2]*degree  ,'linecolor',cmap(2,:), bndType);
-        leg = [leg , '1^\circ-2^\circ'];
+    rng = [ranges 90];
+    n = length(rng);
+
+    if (newfig == 1)
+        figure();
+    end
+    
+    if colors == 0
+        cmap = colormap(lines(n-1));
     else
-        if (thr < 2*degree)
-            hold on, plotBoundary(grains,'property',[ 0  2]*degree  ,'linecolor',cmap(3,:), bndType);
-            leg = [leg , '<2^\circ'];
+        cmap = colors;
+    end
+    
+    leg = {};
+    
+    w = [1.2 1.2 1.2];
+    for i = 1:n-1
+        hold on, plotBoundary(grains,'property',[rng(i)  rng(i+1)]*degree, 'linecolor',cmap(i,:), bndType, 'linewidth', w(i), varargin{:});
+        if (rng(i) == 0)
+            leg = [leg , ['<' num2str(rng(i+1)) '^\circ']];
+        elseif (i == n-1)
+            leg = [leg , ['>' num2str(rng(i)) '^\circ']];
+        else
+            leg = [leg , [num2str(rng(i)) '^\circ - ' num2str(rng(i+1)) '^\circ']];
         end
     end
-    hold on, plotBoundary(grains,'property',[ 2  5]*degree ,'linecolor',cmap(4,:), bndType);
-    leg = [leg , '2^\circ-5^\circ'];
-    hold on, plotBoundary(grains,'property',[ 5 12]*degree ,'linecolor',cmap(5,:), bndType);
-    leg = [leg , '5^\circ-12^\circ'];
-    hold on, plotBoundary(grains,'property',[12 90]*degree ,'linecolor','k',       bndType);
-    leg = [leg , '>12^\circ'];
 
+    hold off;
+    
     saveimg( saveres, 0, odir, prefix, ['af_' bndType], 'png', comment);
     
-    legend(leg,'Location','EastOutside');
+	if (newfig == 1)
+        legend(leg,'Location','EastOutside');
+    else
+        legend(['data', leg],'Location','EastOutside');
+    end
 
     saveimg( saveres, 1, odir, prefix, ['af_l' bndType], 'png', comment);
 end

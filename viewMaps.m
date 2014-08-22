@@ -6,8 +6,11 @@ function out = viewMaps( sid, rid, region, ebsd, tasks, varargin )
 %   save - save image to disk
 %
 % Syntax
-%   viewGrains( sid, rid, region, ebsd, tasks, varargin)
+%   out = viewGrains( sid, rid, region, ebsd, tasks, varargin)
 %
+% Output
+%   out     - not used
+% 
 % Input
 %   sid      - sample id: 's01', 's02', 's03', 's04', 't01', 'p01', 'p02'
 %   rid      - region id
@@ -15,11 +18,19 @@ function out = viewMaps( sid, rid, region, ebsd, tasks, varargin )
 %   ebsd     - EBSD (all phases) data if 0, try load useing function "[sid '_load']"
 %   tasks    - list of tasks
 %
+% Options
+%   'doRgnMap'  - mark region on full map
+%   'doOriMap'  - plot orientation maps for X, Y and Z direction
+%   'doPoleMap' - plot pole figure
+%   'doODF'     - calc ODF plot ipdf and ODF section phi2 = 45*degree
+%       'calcKernel' - calc kernel else use kernel('de la Vallee Poussin','HALFWIDTH',6*degree);
+% 
 % History
 % 14.04.13  Add saveing of comment
 % 06.03.14  Add three vectors. Add texture analysis.
 % 26.03.14  New input system.
 % 05.04.14  New output system.
+% 17.08.14  Makeup. Add marking of region on big map.
 
 out = {};
 
@@ -27,16 +38,26 @@ saveres = getpref('ebsdam','saveResult');
 
 OutDir = checkDir(sid, 'maps', saveres);
 
-ebsd = checkEBSD(sid, ebsd, 'Fe');
+ebsd = checkEBSD(sid, ebsd, 0);
 
 comment = getComment();
 
+doRgnMap     = get_option(tasks,'doRgnMap',      0);
 doOriMap     = get_option(tasks,'doOriMap',      0);
 doPoleMap    = get_option(tasks,'doPoleMap',     0);
 doODF        = get_option(tasks,'doODF',         0);
 
 nn = {'1','2','3'};
 vv = {xvector,yvector,zvector};
+
+%% Mark region
+if doRgnMap
+    ebsd_f = checkEBSD(sid, 0, 0);
+    figure();
+    markRegion(ebsd_f, rid, region);
+    saveimg( saveres, 1, OutDir, sid, rid, 'png', comment );
+    clear ebsd_f;
+end
 
 %% Orientation maps (ipdf colorcoding)
 if doOriMap
@@ -64,6 +85,8 @@ end
 
 %% Calculate odf texture analysis
 if doODF
+    varargin = addTaskVars(doODF, varargin);
+    
     if ~ischar(sid)
         warning('Use general sample symmetry.'); %#ok<WNTAG>
     else

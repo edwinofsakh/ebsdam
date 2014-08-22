@@ -1,4 +1,27 @@
 function ebsd_c = getRegion(ebsd, region)
+% Crop region from EBSD data
+%
+% Syntax
+%   ebsd_c = getRegion(ebsd, region)
+%
+% Output
+%   ebsd_c	- cropped EBSD data
+%
+% Input
+%   ebsd	- original EBSD data
+%   region  - region information (0, [x y w h] or [x1 y1; x2 y2; ...])
+%
+% Example
+%   ebsd_c = getRegion(ebsd, [0 0 10 10])
+%
+% See also
+%   ***
+%
+% Used in
+%   ***
+%
+% History
+% 17.08.14  Original implementation
 
 if length(region) == 1 && region == 0
     ebsd_c = ebsd;

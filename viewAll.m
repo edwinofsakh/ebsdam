@@ -1,4 +1,4 @@
-function viewAll( sid, rid, region, ebsd, tasklist, varargin )
+function out0 = viewAll( sid, rid, region, ebsd, tasklist, varargin )
 %Draw all infromation about sample
 %   Draw all infromation about sample
 %
@@ -25,9 +25,8 @@ function viewAll( sid, rid, region, ebsd, tasklist, varargin )
 
 
 % Display sample information
-% disp('----------------------');
 disp(['  ' sid '-' rid]);
-%return;
+
 
 %% Settings
 % Tasks
@@ -51,43 +50,5 @@ for i = 1:length(tasks)
     end
 end
 
-% doMaps      = get_option(tasklist, 'doMaps',     0);
-% doPhases    = get_option(tasklist, 'doPhases',   0);
-% doProps     = get_option(tasklist, 'doProps',    0);
-% doGrains    = get_option(tasklist, 'doGrains',   0);
-% doSizes     = get_option(tasklist, 'doSizes',    0);
-% doOR        = get_option(tasklist, 'doOR',       0);
-% 
-% 
-% %% Processing
-% % View orientation maps
-% if checkTask( doMaps )
-%     viewMaps(sid, rid, region, ebsd, extractTask(doMaps), varargin);
-% end
-% 
-% % View phases maps
-% if checkTask( doPhases )
-%     viewPhases(sid, rid, region, ebsd, extractTask(doPhases), varargin);
-% end
-% 
-% % View Properties information, if it's defined
-% if checkTask( doProps )
-%     viewProps(sid, rid, region, ebsd, extractTask(doProps), varargin);
-% end
-% 
-% % View grains maps
-% if checkTask( doGrains )
-%     viewGrains(sid, rid, region, ebsd, epsilon, extractTask(doGrains), varargin);
-% end
-% 
-% % View grains' size information
-% if checkTask( doSizes )
-% 	viewSizes(sid, rid, region, ebsd, extractTask(doSizes), varargin);
-% end
-% 
-% % View orientation relationship information
-% if checkTask( doOR )
-% 	viewOR(sid, rid, region, ebsd, extractTask(doOR), varargin);
-% end
-
+out0 = out;
 end

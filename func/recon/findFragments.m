@@ -25,7 +25,7 @@ function [ frg_info ] = findFragments( grains, ORmat, thr, Nv, PRm, w0, varargin
 %   w0      - variant misorientation angle limit
 %
 % Options
-%   'secondOrder'   - add second order neighbours
+%   'neighborsOrder'- add second order neighbours
 %   'combineClose'  - combine close orientation in one group
 %   'useWeightFunc' - use weight function
 %   'onlyFirst'     - check variant only for first child

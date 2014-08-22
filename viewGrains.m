@@ -207,12 +207,12 @@ end
 
 % Plot ext boundary colored by mis-angle range
 if doBndExtRange
-    plotBndRange( grains, thr, saveres, OutDir, prefixb, 'ext');
+    plotBndRange( grains, thr, saveres, 1, OutDir, prefixb, 'ext', [ 2  5  15], [0.8 0.8 0.8; 0.5 0.5 0.5; 0 0 0], 'GridOff');
 end
 
 % Plot all boundary colored by mis-angle range
 if doBndAllRange
-    plotBndRange( grains, thr, saveres, OutDir, prefixb, 'allbnd');
+    plotBndRange( grains, thr, saveres, 1, OutDir, prefixb, 'allbnd', [ 2  5  15], [0.8 0.8 0.8; 0.5 0.5 0.5; 0 0 0], 'GridOff');
 end
 
 % Plot boundary colored by mis-angle 

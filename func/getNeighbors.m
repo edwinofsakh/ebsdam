@@ -21,7 +21,7 @@ function [ neighbors ] = getNeighbors( i, pairs, varargin )
 % 09.10.13  Original implementation
 
 % Order of neighbors search
-ord = get_option(varargin, 'NeighborsOrder', 1, 'double');
+ord = get_option(varargin, 'neighborsOrder', 1, 'double');
 
 % First order neighbors
 ind1 = findNeighbors(i, pairs);
@@ -29,7 +29,7 @@ ind1 = findNeighbors(i, pairs);
 % Second order neighbors
 if ord > 1;
     indc = num2cell(ind1);
-    ind2 = cellfun(@(x) getNeighbors(x, pairs, 'NeighborsOrder', ord-1), indc, 'UniformOutput', 0);
+    ind2 = cellfun(@(x) getNeighbors(x, pairs, 'neighborsOrder', ord-1), indc, 'UniformOutput', 0);
     ind2 = cell2mat(ind2);
     ind = unique([ind1; ind2]);
     neighbors = ind(ind ~= i);
