@@ -1,7 +1,26 @@
 function kog = getKOG(phi1, Phi, phi2, varargin)
-% in radian
+% Return misorientations between variants of original orientation.
+%   Misorientation 24x24 symmetry. 
+%
+% Syntax
+%   kog = getKOG(phi1, Phi, phi2, varargin)
+%
+% Output
+%   kog     - misorientations
+%
+% Input
+%   phi1, Phi, phi2 - euler angles in radian
+%
+% Options
+%   not used
+%
+% Used in
+%   optimizeOR2, showOptimOR
+%
+% History
+% 24.03.14  Original implementation
 
-% Calculate misorenation between variants of oreintation relation.
+% Calculate misorenation between variants of orientation relation.
 CS = symmetry('m-3m');
 SS = symmetry('1');
 

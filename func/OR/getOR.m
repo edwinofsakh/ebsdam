@@ -5,6 +5,7 @@ function [ A, o ] = getOR( ORdata )
 % Return matrix of orientaion relation.
 %  Old idea is that it is matrix from 'gamma' (fcc) to 'alpha' (bcc). Now i
 %  think it's matrix from 'alpha' to 'gamma', see parallel planes.
+%  Transform 'alpha' coordinates to 'gamma' coordiantes.
 %
 % From 'Var select in low carbon bainite 2012.pdf'
 %                           Euler angle (phi1, Phi, phi2)
@@ -62,7 +63,6 @@ end
 function [A, o] = name2OR(ORname)
 
 CS = symmetry('m-3m');
-SS = symmetry('m-3m');
 
 switch (ORname)
     case 'KS' % +
@@ -101,39 +101,58 @@ switch (ORname)
         error('Unknown orientation relation: %s', ORname);
 end
 
-o = orientation('matrix', A, CS,SS);
+o = orientation('matrix', A, CS,CS);
+
+r = symmetrise(o);
+
+a1 = unique(CS * Miller( 0, 1, 1));
+a2 = unique(CS * Miller(-1,-1, 1));
+b1 = unique(CS * Miller( 1, 1, 1));
+b2 = unique(CS * Miller(-1, 0, 1));
+
+a1m = [get(a1,'x'), get(a1,'y'), get(a1,'z')];
+b1m = [get(b1,'x'), get(b1,'y'), get(b1,'z')];
+
+a2m = [get(a2,'x'), get(a2,'y'), get(a2,'z')];
+b2m = [get(b2,'x'), get(b2,'y'), get(b2,'z')];
+
+for i = 1:length(r)
+    disp(['i = ' num2str(i) '------']);
+    
+    for j = 1:length(a1)
+        vj = r(i)*a1(j);
+        for k = 1:length(b1)
+            if (norm(vj - b1(k)) < 0.1)
+                disp( [ '[' int2str(a1m(j,:)/0.707107) ']  [' int2str(b1m(k,:)/0.57735) ']']);
+            end
+        end
+    end
+    
+    for j = 1:length(a2)
+        vj = r(i)*a2(j);
+        for k = 1:length(b2)
+            if (norm(vj - b2(k)) < 0.1)
+                disp( [ '[' int2str(a2m(j,:)/0.57735) ']  [' int2str(b2m(k,:)/0.707107) ']']);
+            end
+        end
+    end
+end
 
 end
 
 function [A, o] = mtr2OR(A)
 
 CS = symmetry('m-3m');
-SS = symmetry('m-3m');
 
-o = orientation('matrix', A, CS,SS);
+o = orientation('matrix', A, CS,CS);
 
 end
 
 function [A, o] = euler2OR(EA)
 
 CS = symmetry('m-3m');
-SS = symmetry('m-3m');
 
-o = orientation('euler', EA(1),EA(2),EA(3), CS,SS);
+o = orientation('euler', EA(1),EA(2),EA(3), CS,CS);
 
 A = normalizeOR('ori', {EA});
 end
-
-% ss = symmetry('1');
-% cs = symmetry('m-3m');
-% 
-% oo1 = orientation('matrix', A, cs,ss);
-% oo2 = orientation('matrix', A', cs,ss);
-% 
-% angle(oo1)
-% axis(oo1)
-% angle(oo2)
-% axis(oo2)
-
-% find(all(MMr([2 3 6],:) < 0) & all(MMr([1 4 5 7 8 9],:) > 0))
-
