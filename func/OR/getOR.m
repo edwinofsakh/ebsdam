@@ -103,40 +103,40 @@ end
 
 o = orientation('matrix', A, CS,CS);
 
-r = symmetrise(o);
-
-a1 = unique(CS * Miller( 0, 1, 1));
-a2 = unique(CS * Miller(-1,-1, 1));
-b1 = unique(CS * Miller( 1, 1, 1));
-b2 = unique(CS * Miller(-1, 0, 1));
-
-a1m = [get(a1,'x'), get(a1,'y'), get(a1,'z')];
-b1m = [get(b1,'x'), get(b1,'y'), get(b1,'z')];
-
-a2m = [get(a2,'x'), get(a2,'y'), get(a2,'z')];
-b2m = [get(b2,'x'), get(b2,'y'), get(b2,'z')];
-
-for i = 1:length(r)
-    disp(['i = ' num2str(i) '------']);
-    
-    for j = 1:length(a1)
-        vj = r(i)*a1(j);
-        for k = 1:length(b1)
-            if (norm(vj - b1(k)) < 0.1)
-                disp( [ '[' int2str(a1m(j,:)/0.707107) ']  [' int2str(b1m(k,:)/0.57735) ']']);
-            end
-        end
-    end
-    
-    for j = 1:length(a2)
-        vj = r(i)*a2(j);
-        for k = 1:length(b2)
-            if (norm(vj - b2(k)) < 0.1)
-                disp( [ '[' int2str(a2m(j,:)/0.57735) ']  [' int2str(b2m(k,:)/0.707107) ']']);
-            end
-        end
-    end
-end
+% r = symmetrise(o);
+% 
+% a1 = unique(CS * Miller( 0, 1, 1));
+% a2 = unique(CS * Miller(-1,-1, 1));
+% b1 = unique(CS * Miller( 1, 1, 1));
+% b2 = unique(CS * Miller(-1, 0, 1));
+% 
+% a1m = [get(a1,'x'), get(a1,'y'), get(a1,'z')];
+% b1m = [get(b1,'x'), get(b1,'y'), get(b1,'z')];
+% 
+% a2m = [get(a2,'x'), get(a2,'y'), get(a2,'z')];
+% b2m = [get(b2,'x'), get(b2,'y'), get(b2,'z')];
+% 
+% for i = 1:length(r)
+%     disp(['i = ' num2str(i) '------']);
+%     
+%     for j = 1:length(a1)
+%         vj = r(i)*a1(j);
+%         for k = 1:length(b1)
+%             if (norm(vj - b1(k)) < 0.1)
+%                 disp( [ '[' int2str(a1m(j,:)/0.707107) ']  [' int2str(b1m(k,:)/0.57735) ']']);
+%             end
+%         end
+%     end
+%     
+%     for j = 1:length(a2)
+%         vj = r(i)*a2(j);
+%         for k = 1:length(b2)
+%             if (norm(vj - b2(k)) < 0.1)
+%                 disp( [ '[' int2str(a2m(j,:)/0.57735) ']  [' int2str(b2m(k,:)/0.707107) ']']);
+%             end
+%         end
+%     end
+% end
 
 end
 
