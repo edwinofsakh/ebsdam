@@ -1,5 +1,8 @@
-function [X, Y, in, in_xy] = gridPriorGrains(N, xscale, yshift, varargin)
-% Generate list of coordinates of grains' centers
+function [X, Y, in, in_xy] = gridPriorGrains(N, Np, xscale, yshift, varargin)
+% Generate list of coordinates of grains' centers.
+%   1. Create map of product grains.
+%   2. Create boundary of parent grains.
+%   3. Find product grains inside parent boundary.
 %   For HexGrid     - sqrt(3)/2, 0.5
 %   For SquareGrid  -       1.0, 0.0
 %   For RhombusGrid -       0.5, 0.5
@@ -27,65 +30,84 @@ function [X, Y, in, in_xy] = gridPriorGrains(N, xscale, yshift, varargin)
 % 21.11.13  Original implementation
 % 20.07.14  Add polygon coordinates for output
 
-
-% Generate hexagonal grid
-[X Y] = meshgrid(0:1:N-1);
-n = size(X,1);
-X = X * xscale;
-Y = Y + repmat([0 yshift],[n,n/2]);
+%% Product grains
+% Generate grid
+[X, Y] = meshgrid(0:1:N-1);
+[X, Y] = transformGrid(X, Y, xscale, yshift);
+in = inpolygon(X,Y,[0 0 N*xscale N*xscale],[0 (N-1) (N-1) 0]);
+X = X(in);
+Y = Y(in);
 
 % Random shift
 dev = get_option(varargin, 'dev', 0, 'double');
 if (dev > 0)
-    X = X + dev*(1-2*rand(N));
-    Y = Y + dev*(1-2*rand(N));
+    n = length(X);
+    X = X + dev*(1-2*rand(n,1));
+    Y = Y + dev*(1-2*rand(n,1));
 end
 
-% Prior Grain
-[Xp, Yp] = getPoints(min(min(X)), max(max(X)), min(min(Y)), max(max(Y)));
-ind = {[1 2 4 5]; [2 3 6 4]; [5 4 6]};
 
-in = cell(1,3);
-in_xy = cell(1,3);
-for i = 1:3
-    in{i} = inpolygon(X,Y,Xp(ind{i}),Yp(ind{i}));
-    in_xy{i} = [Xp(ind{i}),Yp(ind{i})];
-end
+%% Prior Grain
+% Generate grid
+[Xp, Yp] = meshgrid(-1:1:Np);
+Xp = (Xp/(Np-1)*1.1-0.05)*(N-1);
+Yp = (Yp/(Np-1)*1.1-0.05)*(N-1);
 
-if any(in{1}.*in{2}.*in{3})
-    error('one grain in to prior');
+[Xp, Yp] = transformGrid(Xp, Yp, xscale, yshift*((N-1)/(Np-1)));
+
+[v,c] = voronoin([Xp(:), Yp(:)]); 
+
+% Debug information
+% figure;
+% for i = 1:length(c) 
+%     hold on; patch(v(c{i},1),v(c{i},2),'w');
+%     hold on; scatter(Xp(i), Yp(i),5,'k');
+% end
+% hold off;
+
+% Catch product grains
+in = cell(1,length(c));
+in_xy = cell(1,length(c));
+for i = 1:length(c)
+    if all(c{i}~=1)
+        ind = inpolygon(X,Y,v(c{i},1),v(c{i},2));
+        if any(ind)
+            in{i} = ind;
+            in_xy{i} = [v(c{i},1),v(c{i},2)];
+%             hold on; scatter(X(in{i}), Y(in{i}),5,'r','filled');
+        end
+    end
 end
-    
+ind = cellfun(@length, in);
+in = in(ind > 0);
+in_xy = in_xy(ind > 0);
+
+
+%% Plotting
 % Plot the mesh, including cell borders
 if check_option(varargin, 'display')
     figure;
     [vx,vy] = voronoi(X(:),Y(:));
     patch(vx,vy,'k');
+    
+    [vxp,vyp] = voronoi(Xp(:),Yp(:));
+    hold on; patch(vxp,vyp,'r');
+    
     axis equal;
     axis([min(min(X)) max(max(X)) min(min(Y)) max(max(Y))]), zoom on;
-    
-    figure;
-    for i = 1:length(ind)
-        patch(Xp(ind{i}),Yp(ind{i}),i);
-    end
-    axis equal;
-    axis([min(min(X)) max(max(X)) min(min(Y)) max(max(Y))]), zoom on;
-    
 end
 end
 
-function [X, Y] = getPoints(X1, X2, Y1, Y2)
-%
-%   5*****6
-%   *\***/*
-%   **\*/**
-%   ***4***
-%   ***|***
-%   1**2**3
 
-Xc = (X2+X1)/2;
-Yc = (Y2+Y1)/2;
+function [X1, Y1] = transformGrid(X, Y, xscale, yshift)
 
-X = [X1 Xc X2 Xc X1 X2];
-Y = [Y1 Y1 Y1 Yc Y2 Y2];
+n = size(X,1);
+X1 = X * xscale;
+if mod(n,2) == 0
+    Y1 = Y + repmat([0 yshift],[n,n/2]);
+else
+    Ya = [repmat([0 yshift],[n,(n-1)/2]) zeros(n,1)];
+    Y1 = Y + Ya;
+end
+
 end

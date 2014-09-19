@@ -1,7 +1,8 @@
 close all;
 N = 32;
+Np = 3;
 
-[X, Y, in] = gridPriorGrains(N, sqrt(3)/2, 0.5, 'dev', 0.8);
+[X, Y, in] = gridPriorGrains(N, Np, sqrt(3)/2, 0.5, 'dev', 0.8);
 ebsd = Grid2EBSD(X,Y, 20, 'prior', in);
 
 grains = getGrains(ebsd, 0.1*degree, 0, 'unitcell');
