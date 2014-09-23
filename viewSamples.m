@@ -4,7 +4,11 @@ function out = viewSamples( samples, regions, rxy, skip, tasklist, varargin)
 %   samples on part by Y.
 %
 % Syntax
-%   viewSamples( samples, regions, rxy, skip, thr, mgsum, epsilon, tasklist, varargin)
+%   out = viewSamples( samples, regions, rxy, skip, tasklist, varargin)
+%
+% Output
+%   out - output data from all sample&region
+%           example: ({{'s1', {'p1', 10, 'p2', 35} } ,{'s2', {'p1', 12, 'p2', 37} }})
 %
 % Input
 %   samples   - cell array with sample ids (chars)
@@ -28,6 +32,9 @@ function out = viewSamples( samples, regions, rxy, skip, tasklist, varargin)
 % 26.03.14  Remove 'saveres' input, now use setpref. Remake parts to
 %           regions, more general. Remove 'gtasklist', now custom tasks
 %           saved in task list.
+% 21.09.14  Markup.
+
+out = {};
 
 n1 = length(samples);
 n2 = length(regions);
@@ -116,6 +123,8 @@ for i = 1:length(samples)
         region = 0;
     end
                 
-    out = viewAll(sid, rid, region, ebsd, tasklist, varargin1{:});
+    out1 = viewAll(sid, rid, region, ebsd, tasklist, varargin1{:});
+    
+    out = [out, {{rid, out1}}];
 
 end

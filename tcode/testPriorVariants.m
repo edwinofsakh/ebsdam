@@ -1,17 +1,20 @@
+% Reconstruction parent for different number of variants
+% Test reconstruction algorithm
+
 %% Settings
-% Anglar deviation of children orientations
-dev = 2*degree;
+% Variants parameters
+n = 1; % number of statistic loop
+vmin = 23; % min variant number
+vmax = 24; % max variant number
+dev = 2*degree; % Anglar deviation of product orientations
+ORm = getOR('KS'); % Orientation relation matrix
 
-ORm = getOR('KS');
-
+% Reconstruction parameters
 thr = 5*degree;
 Nv  = 3;
 w0  = 5*degree;
 PRm = 1.4;
 
-n = 1;
-vmin = 23;
-vmax = 24;
 
 %% Prepare
 ma = zeros(1,vmax);
@@ -25,8 +28,10 @@ ss = symmetry('-1');
 
 % Statistic loop
 for j = 1:n
+    % Generate random orientation
     o1 = orientation('Euler', rand*pi/2, rand*pi/2, rand*pi/2, cs, ss);
     
+    % For one loop
     if (n == 1)
         disp(['Euler = ' num2str(fix(Euler(o1)/degree*100)/100)]);
         disp('Test...');

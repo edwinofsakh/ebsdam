@@ -1,9 +1,12 @@
 function out = viewProps( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSD,INUSL>
-%Draw maps and hisdtogram for properties in the list
-%	Draw maps and hisdtogram for properties in the list
+% Draw maps and histogram for properties in the list
+%	Draw maps and histogram for properties in the list
 %
 % Syntax
-%   viewProps( sid, rid, region, ebsd, tasks, varargin )
+%   out = viewProps( sid, rid, region, ebsd, tasks, varargin )
+%
+% Output
+%   out - not used
 %
 % Input
 %   sid      - sample id: 's01', 's02', 's03', 's04', 't01', 'p01', 'p02'
@@ -31,11 +34,11 @@ for i = 1:length(plist)
         viewSingleProp(sid, rid, ebsd, pname, saveres);
     end
 end
+end
 
 
 function viewSingleProp( sid, rid, ebsd, prop, saveres )
-%Draw property maps and histogram
-%   Draw property maps and histogram
+% Draw property maps and histogram
 %
 % Input
 %   sid     - sample id: 's01', 's02', 's03', 's04' , 't01'
@@ -82,3 +85,5 @@ disp(['  ' upper(prop) '   ']);
 disp( num2str([xout', n']) );
 bar(xout, n);
 saveimg( saveres, 1, OutDir, sid, ['hist_' prop], 'png', comment );
+
+end

@@ -20,6 +20,7 @@ function [ebsd_f, ori0] = Grid2EBSD(X, Y, S, varargin)
 %               'center'    - crop center area
 %               'area'      - set area like [minX, maxX, minY, maxY];
 %   display - plot mesh
+%   removeCloseOri - recalc close orientations
 %
 % Example
 %   ebsd_f = Grid2EBSD(X, Y, 20, getOR(KS), varargin);
@@ -45,6 +46,10 @@ else
     ebsd = set(ebsd,'y',Y(:));
 end
 
+ebsd = set(ebsd,'phaseMap',1);
+ebsd = set(ebsd,'phase',ones(length(ebsd),1));
+ebsd = set(ebsd,'CS',symmetry('m-3m', 'mineral','Fe'));
+    
 % Rotate data
 plotx2east;
 
@@ -111,34 +116,58 @@ end
 
 function [ebsd, ori0] = preparePriorGrains(X,Y, prior, varargin)
 
-    M = length(prior);
+M = length(prior);
 
-    cs = symmetry('m-3m');
-    ss = symmetry('-1');
+cs = symmetry('m-3m');
+ss = symmetry('-1');
 
-    a = 90*degree*rand(M,3);
-    ori0 = orientation('Euler', a(:,1), a(:,2), a(:,3), cs, ss);
-        
-    if (isdebug)
-        display(ori0);
+a = 90*degree*rand(M,3);
+ori0 = orientation('Euler', a(:,1), a(:,2), a(:,3), cs, ss);
+
+rc = get_option(varargin, 'removeCloseOri', 0, 'double');
+if (rc ~= 0)
+    ori0 = removeCloseOri(ori0, rc);
+end
+
+if (isdebug)
+    display(ori0);
+end
+
+ORm = get_option(varargin, 'OR',  0, 'double');
+dev = get_option(varargin, 'dev', 0, 'double');
+
+a = [];
+for i = 1:M
+    oi = find(prior{i});
+
+    ni = length(oi);
+
+    ori0a = getVariants(ori0(i), inv(ORm), cs);
+    ind = randi(24, 1, length(oi));
+    o = ori0a(ind);
+
+    ori(oi) = setOriDev(o, dev);
+    a = [a angle(ori(oi).\reshape(o,1,[]))/degree];
+end
+
+hist(a);
+
+ebsd = EBSD(ori,cs,ss);
+ebsd = set(ebsd,'x',X(:));
+ebsd = set(ebsd,'y',Y(:));
+end
+
+
+function [ori] = removeCloseOri(ori0, rc)
+ori = ori0;
+
+cs = symmetry('m-3m');
+ss = symmetry('-1');
+
+for i = 2:length(ori)
+    while (angle(ori(1:i-1)\ori(i)) < rc)
+        a = 90*degree*rand(1,3);
+        ori{i} = orientation('Euler', a(1), a(2), a(3), cs, ss);
     end
-    
-    ORm = get_option(varargin, 'OR',  0, 'double');
-    dev = get_option(varargin, 'dev', 0, 'double');
-
-    for i = 1:M
-        oi = find(prior{i});
-        
-        ni = length(oi);
-        
-        ori0a = getVariants(ori0(i), inv(ORm), cs);
-        ind = randi(24, 1, length(oi));
-        o = ori0a(ind);
-        
-        ori(oi) = setOriDev(o, dev);
-    end
-
-    ebsd = EBSD(ori,cs,ss);
-    ebsd = set(ebsd,'x',X(:));
-    ebsd = set(ebsd,'y',Y(:));
+end
 end

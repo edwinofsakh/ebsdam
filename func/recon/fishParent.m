@@ -7,7 +7,8 @@ function [op] = fishParent(ebsd, ORmat, cr, sid, rid, w1, vv, w2, PRmin)
 %
 
 %% Preparation
-outdir = checkDir('fish','res', 1);
+saveres = getpref('ebsdam','saveResult');
+outdir  = checkDir(sid,'parent', saveres);
 comment = getComment();
 
 prefix = [sid '_' rid];
@@ -30,7 +31,7 @@ end
 % opposite, so 'md' is used.
 
 
-[ebsd_f, vm, q] = simpleFilter(ebsd, cr);
+[ebsd_f, vm, q, par] = simpleFilter(ebsd, cr);
 
 % Plot normalized properties
 if (isfulldebug)
@@ -87,7 +88,7 @@ clear grains ebsd ebsd_f;
 % For success reconstruction plot real and calculation children orientation
 if (isa(opf, 'orientation'))
     CS = symmetry('m-3m');
-    [oo, ooi] = getVariants(opf, getOR('M1'), CS);
+    [oo, ooi] = getVariants(opf, ORmat, CS);
     
     figure;
     plotAllOrientations(o,   'MarkerColor', 'b'); hold on;

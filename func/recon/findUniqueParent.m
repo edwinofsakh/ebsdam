@@ -114,7 +114,7 @@ ma = angle(op\op);
 if check_option(varargin, 'onlyFirst')
     [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(1, ma, op, opi, wf, n, np, nv, w0);
 else
-    [Pp, rci, rvi, ppo, Ds] =      CheckParents(   ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin);
+    [Pp, rci, rvi, ppo, Ds] =      CheckParents(   ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin, VNmin, ori, ORmat, CS);
 end
 
 % P = (sum(mm < w0) - mv)/n;
@@ -177,6 +177,14 @@ end
 
 function [bool, PR] = checkRatio(PS, PRmin, Pmin, vn, VNmin)
 % Calculate the ratio of parent probabilities
+%
+% Input
+%   PS      - probabilities
+%   PRmin   - minimal probability ratio
+%   Pmin    - minimal probability value
+%   vn      - number of variants
+%   VNmin   - minimal number of variants
+
 if (PS(2) ~= 0)
     PR = PS(1)/PS(2);
 else
@@ -223,7 +231,7 @@ end
 g = g(1:n);
 end
 
-function [Pp, rci, rvi, ppo, Ds] = CheckParents(ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin)
+function [Pp, rci, rvi, ppo, Ds] = CheckParents(ma, op, opi, wf, n, np, nv, w0, PRmin, Pmin, VNmin, ori, ORmat, CS)
 % !!!Important: May have problem this symmetry (not checked). Let's think:
 % if all children are from one parent orientation. We can reconstructe
 % parent orientation with resepect to symmetry.
@@ -237,13 +245,17 @@ function [Pp, rci, rvi, ppo, Ds] = CheckParents(ma, op, opi, wf, n, np, nv, w0, 
 %
 % Input
 %   ma  - misorientation between possible parents
-%   op  - orientation between possible parents
+%   op  - orientation of possible parents
 %   opi - possible parents index (see getVariants)
 %   wf  - normalized wiegth function
 %   n   - number of orientation 
 %   np  - number of parents
 %   nv  - number of varinats
 %   w0  - maximal deviation between parents
+%   VNmin   - minimal number of variants
+%   ori     - set of child orienations
+%   ORmat   - orientation relation matrix (from alpha to gamma)
+%   CS      - crystal symmetry
 
 if (0)
     % Probability of potential parents
@@ -279,7 +291,10 @@ else
         ppo = ppo(IX);
         Ds  = Ds(IX);
 
-        [goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin);
+        opf = mean(ppo{1});
+        vnum0 = checkVariants(opf, ORmat, CS, ori(rci{1}));
+        vn = length(unique(vnum0));
+        [goodProbRatio, PR] = checkRatio(Ps, PRmin, Pmin, vn, VNmin);
 
         if goodProbRatio
             if (Ps(1) > Pmax)
@@ -321,7 +336,7 @@ function [Pp, rci, rvi, ppo, Ds] = CheckFirstParents(i, ma, op, opi, wf, n, np, 
 % 
 % Input
 %   ma  - misorientation between possible parents
-%   op  - orientation between possible parents
+%   op  - orientation of possible parents
 %   opi - possible parents index (see getVariants)
 %   wf  - weigth function
 %   n   - number of orientation 

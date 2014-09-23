@@ -11,7 +11,7 @@ function paint_boundary( grains, OR_name, drawExt)
 % History
 % 06.03.13  Move to MTEX 3.3.2: replace 'color' to 'linecolor'.
 
-[~,~,dis,~] = calcKOG_new(OR_name);
+[~,~,dis,~] = calcKOG3(OR_name);
 dis = dis(1:end);
 
 figure();

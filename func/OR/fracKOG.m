@@ -13,6 +13,7 @@ function [frac, ma, a, aa, div] = fracKOG(grains, epsilon, ORdata, allbnd)
 %   grains  - MTEX grains set (use getGrains or calcGrains)
 %   epsilon - KOG threshold
 %   ORdata  - data for orienarion relationship, specify KOG
+%   allbnd  - '1' use all boundaries, '0' use only close boundaries
 %
 % History
 % 26.10.12  Original implementation.

@@ -4,13 +4,16 @@ function saveResultData( filename, varargin )
 % Syntax
 %   saveData( filename, varargin );
 %
-% Output
-%
 % Input
-%   see function 'save'
+%   filename - name of file for saving result
+%   varargin - set of variables for saving (not names like in func 'save')
 %
+% Example
+%   saveData( "result01.mat", v1, v2, v3 );
+% 
 % History
 % 13.08.14  Original implementation
+% 20.09.14  Fix description
 
 outdir = [getpref('ebsdam','output_dir') '\data'];
 

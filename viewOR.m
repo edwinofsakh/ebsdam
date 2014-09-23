@@ -1,9 +1,12 @@
 function out = viewOR( sid, rid, region, ebsd, tasks, varargin )
-%View information about Orientation Relationship.
+% View information about Orientation Relationship.
 %   View information about Orientation Relationship.
 %
 % Syntax
-%   viewOR( sid, rid, region, ebsd, tasks, varargin)
+%   out = viewOR( sid, rid, region, ebsd, tasks, varargin)
+%
+% Output
+%   out - output data {'optOR', optORm}
 %
 % Input
 %   sid      - sample id: 's01', 's02', 's03', 's04', 't01', 'p01', 'p02'

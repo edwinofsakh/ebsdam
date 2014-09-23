@@ -1,9 +1,12 @@
 function out = viewGrains( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
-%View information about grain structure of EBSD.
+% View information about grain structure of EBSD.
 %   View information about grain structure of EBSD.
 %
 % Syntax
-%   viewGrains( sid, rid, region, ebsd, tasks, varargin)
+%   out = viewGrains( sid, rid, region, ebsd, tasks, varargin)
+%
+% Output
+%   out - not used
 %
 % Input
 %   sid      - sample id: 's01', 's02', 's03', 's04', 't01', 'p01', 'p02'
@@ -25,6 +28,7 @@ function out = viewGrains( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
 % 16.04.13  Separate degree and radian 'thr'.
 % 26.04.14  New input system. 'THRD', 'MGS', 'EPSD' - from 'varargin'.
 % 05.04.14  New output system. Replace 'best_OR' to 'optOR'.
+% 22.09.14  Add 'getRegionParam' for 'optOR'.
 
 out = {};
 
@@ -55,6 +59,9 @@ hi = 40;
 
 % Best OR, 0 - to find optimal
 optOR = get_option(varargin, 'optOR', 'KS');
+if isa(optOR, 'cell')
+    optOR = getRegionParams( rid, optOR, 'singleArray' );
+end
 
 % % Sample information
 % sinfo = ['\fontsize{8}Sample:"' sid '".'...

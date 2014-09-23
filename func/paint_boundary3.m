@@ -52,14 +52,13 @@ switch drawType
         in(in_b) = 1;        
     case 'hi-lo'
         in(a < 35) = 1;
+    case 'far'
+        in(1) = 1; %just skip
     otherwise
         error('Invalid drawing type');
 end
 in = logical(in);
 
-% color_in = [ 0.9, 0.9, 0.9];
-% color_out = [ 0.7, 0.7, 0.7];
-    
 mycolormap = zeros(23,3);
 
 mycolormap(in,:) = repmat(color_in,sum(in),1);
@@ -67,21 +66,30 @@ mycolormap(~in,:) = repmat(color_out,sum(~in),1);
     
 figure();
 
-if (drawExt)
-    plotBoundary(grains, 'linecolor','k','linewidth',lw,'antipodal','ext');
+if (strcmpi(drawType,'far'))
+    plotBoundary(grains,'property',dis,'nearest','nodegree',...
+        'linewidth',lw, 'delta', 90, 'antipodal','ext');
+    colormap(1-gray);
+    brighten(-0.8);
+    
 else
-    plotBoundary(grains, 'linecolor','k','linewidth',lw,'antipodal');
-end;
+    
+    if (drawExt)
+        plotBoundary(grains, 'linecolor','k','linewidth',lw,'antipodal','ext');
+    else
+        plotBoundary(grains, 'linecolor','k','linewidth',lw,'antipodal');
+    end;
 
-if (strcmp(drawExt,'ext'))
-    hold on, plotBoundary(grains,'property',dis,'nearest','nodegree',...
-        'linewidth',lw, 'delta', d, 'antipodal','ext');
-else
-    hold on, plotBoundary(grains,'property',dis,'nearest','nodegree',...
-        'linewidth',lw, 'delta', d, 'antipodal');
+    if (strcmp(drawExt,'ext'))
+        hold on, plotBoundary(grains,'property',dis,'nearest','nodegree',...
+            'linewidth',lw, 'delta', d, 'antipodal','ext');
+    else
+        hold on, plotBoundary(grains,'property',dis,'nearest','nodegree',...
+            'linewidth',lw, 'delta', d, 'antipodal');
+    end
+
+    colormap(mycolormap);
+
+    hold off;
 end
-
-colormap(mycolormap);
-
-hold off;
 end

@@ -1,9 +1,12 @@
 function out = viewSizes( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
-%View information  about grain structure of EBSD.
+% View information  about grain structure of EBSD.
 %   Draw orientation maps
 %
 % Syntax
-%   viewSizes( sid, rid, region, ebsd, tasks, varargin )
+%   out = viewSizes( sid, rid, region, ebsd, tasks, varargin )
+%
+% Output
+%   out - output data {'grainSize', ags}
 %
 % Input
 %   sid      - sample id: 's01', 's02', 's03', 's04', 't01', 'p01', 'p02'
@@ -13,15 +16,15 @@ function out = viewSizes( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
 %   tasks    - list of tasks
 %
 % Options:
-% 'hierarchy'
-% 'removeBad'
-% 'smoothGrain'
-% 'removeBoxGrain'
-% 'extBoundary' - for boundary length and intersect methods
-% 'rndIntersect'
-% 'numIntersect'
-% 'noIntersect'
-% 'LengthCor'
+%   'hierarchy'
+%   'removeBad'
+%   'smoothGrain'
+%   'removeBoxGrain'
+%   'extBoundary' - for boundary length and intersect methods
+%   'rndIntersect'
+%   'numIntersect'
+%   'noIntersect'
+%   'LengthCor'
 %
 % History
 % 07.12.12  Add description of the function. Rename 'ma' to 'thr', 's' to
@@ -32,9 +35,9 @@ function out = viewSizes( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
 % 18.03.14  Remove coefficient in intersect method.
 % 26.04.14  New input system. 'THRD', 'MGS', 'EPSD' - from 'varargin'.
 % 05.04.14  New output system.
+% 22.09.14  Markup.
 
 %% Preparation
-% thr = thrd*degree;
 
 saveres = getpref('ebsdam','saveResult');
 

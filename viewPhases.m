@@ -1,9 +1,12 @@
 function out = viewPhases( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL,INUSD>
-%Draw phase map and individual oreantation map for phase
+% Draw phase map and individual oreantation map for phase
 %   Draw phase map and individual oreantation map for phase
 %
 % Syntax
-%   viewPhases( sid, rid, region, ebsd, tasks, varargin )
+%   out = viewPhases( sid, rid, region, ebsd, tasks, varargin )
+%
+% Output
+%   out - not used
 %
 % Input
 %   sid     - sample id: 's01', 's02', 's03', 's04' , 't01'
@@ -36,7 +39,7 @@ figure();
 plotspatial(ebsd,'property','phase');
 saveimg( saveres, 1, OutDir, sid, [rid '_phases'], 'png', comment );
 
-% Get phases
+% get phases
 phases = get(ebsd,'minerals');
 
 for i = 1:length(phases)

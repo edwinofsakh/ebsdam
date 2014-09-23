@@ -1,5 +1,5 @@
 function out = viewMaps( sid, rid, region, ebsd, tasks, varargin )
-%Draw orientation maps.
+% Draw orientation maps.
 %   Draw orientation maps
 %   sid - sample id: 's01', 's02', 's03', 's04' , 't01'
 %   ebsd - EBSD data if 0, try load useing function "[sid '_load']"
@@ -9,7 +9,7 @@ function out = viewMaps( sid, rid, region, ebsd, tasks, varargin )
 %   out = viewGrains( sid, rid, region, ebsd, tasks, varargin)
 %
 % Output
-%   out     - not used
+%   out - not used
 % 
 % Input
 %   sid      - sample id: 's01', 's02', 's03', 's04', 't01', 'p01', 'p02'

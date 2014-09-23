@@ -14,7 +14,7 @@ ticks = {'V2', 'V3-V5', 'V4', 'V6', 'V7', 'V8', 'V9-V19', 'V10-14', 'V11-V13', '
 
 
 % Reorder for OR variants. Even variant must be mupliple by matrix [1 0 0; 0 -1 0; 0 0 -1] for
-% matching with plae/direction matrix
+% matching with plan/direction matrix
 ind = [1 15 17 7 9 23, 10 8 21 14 4 19, 2 24 13 6 20 11, 18 16 5 22 12 3];
 
 end
