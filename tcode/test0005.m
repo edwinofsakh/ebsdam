@@ -1,3 +1,5 @@
+% Replaced by OptimizeOR2
+% Obsolete
 function [M, E1,E2,E3, i,j,k] = test0005(tasks, varargin)
 
 varargin = [varargin tasks];
