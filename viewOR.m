@@ -38,9 +38,9 @@ if ~check_option(varargin, 'thrd')
     fprintf(f_rep, 'Use default THRD value (%d).\r\n', thrd);
 end
 
-eps2d = get_option(varargin, 'eps2d', 4, 'double')*degree;
+eps2d = get_option(varargin, 'eps2d', 8, 'double');
 eps2  = eps2d*degree;
-fprintf(f_rep, 'EPS2D value (%d).\r\n', eps2d);
+fprintf(f_rep, 'EPS2D value: %d.\r\n', eps2d);
 
 % Add tasks to variables array
 varargin = [varargin tasks {'reportFile', f_rep}];
@@ -83,8 +83,15 @@ aa = angle(mori)/degree;
 figure('Name','Non specific boundaries distribution'); hist(aa(b > eps2),64);
 saveimg( saveres, 1, OutDir, prefix, 'non_spec', 'png', comment);
 
-
+[~,ORm] = getOR(optORm);
 getVarAngles(optORm);
+
+a1 = angle(Miller(1,1,1), ORm * Miller(0,1,1))/degree
+a2 = angle(Miller(-1,0,1), ORm * Miller(-1,-1,1))/degree
+
+fprintf(f_rep, 'Angle between planes: %d.\r\n', a1);
+fprintf(f_rep, 'Angle between directions: %d.\r\n', a2);
+
 
 fclose(f_rep);
 end

@@ -48,7 +48,7 @@ else
     ORname = 'CON';
     param = get_option(varargin, 'continue');
     
-    [phi1, Phi, phi2] = getRegionParams( rid, param );
+    [phi1, Phi, phi2] = getRegionParams(sid, rid, param );
 end
 
 % Only distance to KOG histogram
@@ -194,6 +194,9 @@ dd = unique([perms([1 0 0]);perms([1 1 0]); 1 1 1;...
 step = stepIter(1);
 eps  = epsIter(1);
 
+fprintf(1,'new iter - step %f in degree, eps - %f in degree\r\n', step/degree, eps/degree);
+fprintf(f_rep,'new iter - step %f in degree, eps - %f in degree\r\n', step/degree, eps/degree);
+            
 dx1 = phi1;
 dy1 = Phi;
 dz1 = phi2;
@@ -242,8 +245,8 @@ while (flag && k < 1000)
             iter = iter+1;
             step = stepIter(iter+1);
             eps  = epsIter(iter+1);
-            fprintf(1,'new iter - step %f in degree\n', step/degree);
-            fprintf(f_rep,'new iter - step %f in degree\r\n', step/degree);
+            fprintf(1,'new iter - step %f in degree, eps - %f in degree\r\n', step/degree, eps/degree);
+            fprintf(f_rep,'new iter - step %f in degree, eps - %f in degree\r\n', step/degree, eps/degree);
         else
             flag = 0;
         end
@@ -274,6 +277,10 @@ end
 function c = crit(a)
     c = sqrt(sum(a.*a))/length(a);
 end
+
+% function c = crit(a)
+%     c = sum(abs(a))/length(a);
+% end
 
 function OR = setOR(phi1, Phi, phi2, varargin) %#ok<DEFNU>
 

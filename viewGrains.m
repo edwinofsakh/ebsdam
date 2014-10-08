@@ -60,7 +60,7 @@ hi = 40;
 % Best OR, 0 - to find optimal
 optOR = get_option(varargin, 'optOR', 'KS');
 if isa(optOR, 'cell')
-    optOR = getRegionParams( rid, optOR, 'singleArray' );
+    optOR = getRegionParams(sid, rid, optOR, 'singleArray' );
 end
 
 % % Sample information
