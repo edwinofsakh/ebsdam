@@ -23,14 +23,14 @@ varargin = [varargin tasks];
 
 ORmat = get_option(varargin, 'optOR', getOR('KS'));
 if isa(ORmat, 'cell')
-    ORmat = getRegionParams( rid, ORmat, 'singleArray' );
+    ORmat = getRegionParams(sid, rid, ORmat, 'singleArray' );
 end
 ORmat = getOR(ORmat);
 
 if ~check_option(tasks, 'realRecon')
     param = get_option(tasks,'ParentRecParam', [0.4, 2, 6, 5, 1.5]);
 
-    [ cr, w1, vv, w2, PRmin ] = getRegionParams( rid, param );
+    [ cr, w1, vv, w2, PRmin ] = getRegionParams(sid, rid, param );
 
     op = fishParent(ebsd, ORmat, cr, sid, rid, w1, vv, w2, PRmin);
     out = {'prnOri', mean(op)};

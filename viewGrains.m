@@ -60,7 +60,7 @@ hi = 40;
 % Best OR, 0 - to find optimal
 optOR = get_option(varargin, 'optOR', 'KS');
 if isa(optOR, 'cell')
-    optOR = getRegionParams( rid, optOR, 'singleArray' );
+    optOR = getRegionParams(sid, rid, optOR, 'singleArray' );
 end
 
 % % Sample information
@@ -94,6 +94,10 @@ doHistMeanMis       = get_option(varargin,'doHistMeanMis',        0);
 doHistMeanMisSmall  = get_option(varargin,'doHistMeanMisSmall',   0);
 doHistNearKOG       = get_option(varargin,'doHistNearKOG',        0);
 doHistNearKOGAll    = get_option(varargin,'doHistNearKOGAll',     0);
+
+% Others
+doPlotKAM           = get_option(varargin,'doPlotKAM',            0);
+doPlotTwin          = get_option(varargin,'doPlotTwin',           0);
 
 %% Preparation
 % File name prefix
@@ -319,6 +323,20 @@ if doHistNearKOGAll
     HistNearKOG(grains, epsd, optOR, 1, saveres, OutDir, prefixk, 'fKOGa', comment)
 end
 
+% Plot KAM
+if doPlotKAM
+    plotKAM(grains);
+    saveimg( saveres, 1, OutDir, prefixg, 'KAM', 'png', comment);
+end
+
+% Plot twin boundary
+if doPlotTwin
+    plotBoundary(grains1,'color','k');
+    hold on, plotBoundary(grains1,'property',CSL(3),'delta',2*degree,...
+      'linecolor','b','linewidth',2);
+    hold off;
+    saveimg( saveres, 1, OutDir, prefixg, 'twin', 'png', comment);
+end
 % 
 % figure();
 % f = fracKOG(grains, epsd, 'KS');

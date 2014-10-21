@@ -125,6 +125,6 @@ for i = 1:length(samples)
                 
     out1 = viewAll(sid, rid, region, ebsd, tasklist, varargin1{:});
     
-    out = [out, {{rid, out1}}];
+    out = [out, {{sid, rid, out1}}];
 
 end

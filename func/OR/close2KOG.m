@@ -1,6 +1,4 @@
-function [a, ind1, ind2] = close2KOG(mori, kog, varargin)
-
-epsilon = get_option(varargin, 'epsilon', 10*degree, 'double');
+function [a, ind1, ind2, b] = close2KOG(mori, kog, epsilon)
 
 b = angle_outer(kog,mori);
 [b,ind] = min(b,[],1);

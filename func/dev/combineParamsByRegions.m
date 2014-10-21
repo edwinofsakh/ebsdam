@@ -1,7 +1,7 @@
 function [ out ] = combineParamsByRegions( param )
 % Combine outpur parameters by region for using as input.
-% Convert from {{'s1', {'p1', 10, 'p2', 35} } ,{'s2', {'p1', 12, 'p2', 37} }}
-% to {'p1', {{'r1', 10},{'r2', 12}}, 'p2', {{'r1', 35},{'r2', 37}}}
+% Convert from {{'s1', 'r1', {'p1', 10, 'p2', 35} } ,{'s1', 'r2', {'p1', 12, 'p2', 37} }}
+% to {'p1', {{'s1', 'r1', 10},{'s1', 'r2', 12}}, 'p2', {{'s1', 'r1', 35},{'s1', 'r2', 37}}}
 %
 % Syntax
 %   [ out ] = combineParamsByRegions( param )
@@ -18,10 +18,11 @@ function [ out ] = combineParamsByRegions( param )
 out = {};
 
 if isa(param, 'cell')
-    rid = cellfun(@(x) x(1),param);
+    sid = cellfun(@(x) x(1),param);
+    rid = cellfun(@(x) x(2),param);
     
     a = param{1};
-    vars1 = a{2};
+    vars1 = a{3};
     if (mod(length(vars1),2) ~= 0)
         error('Bad array!');
     end
@@ -29,8 +30,8 @@ if isa(param, 'cell')
         outi = {};
         for j = 1:length(rid)
             a = param{j};
-            varsj = a{2};
-            outi = [outi, {{rid{j}, varsj{i+1}}}];
+            varsj = a{3};
+            outi = [outi, {{sid{j}, rid{j}, varsj{i+1}}}];
         end
         out = [out, {varsj{i}, outi}];
     end
