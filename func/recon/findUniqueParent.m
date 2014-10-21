@@ -17,7 +17,7 @@ function [Pmax, PR, opf, gind, op, vnum] = findUniqueParent(ori0, wf0, ORmat, th
 % 
 % Input
 %   ori0    - set of orienations
-%   wf0     - wiegth function
+%   wf0     - weigth function
 %   ORmat   - orientation relation matrix (from alpha to gamma)
 %   thr     - orientation integration threshold in radian
 %   Nv      - minimal number of variant
