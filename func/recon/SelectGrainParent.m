@@ -1,4 +1,4 @@
-function oup = SelectGrainParent( sid, thrd, mgs, ORname )
+function oup = selectGrainParent( sid, thrd, mgs, ORname )
 % Find parent orientation for selected grains and it's neighbors
 %   Try to find parent orientation for grains and it's neighbors. Grain 
 %   selected on full grains map.

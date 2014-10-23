@@ -26,3 +26,4 @@ end
 
 setpref('ebsdam','caching', 1);
 setpref('ebsdam','saveResult', 1);
+setpref('ebsdam', 'maxProbParents', 2000);

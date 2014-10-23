@@ -1,6 +1,32 @@
 function [ ebsd_cut, lineXY ] = selectEBSD( sid, ebsd, phase, lineXY, saveres, prefix )
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+% Select region of EBSD data 
+%
+% Syntax
+%   [ ebsd_cut, lineXY ] = selectEBSD( sid, ebsd, phase, lineXY, saveres, prefix )
+%
+% Output
+%   ebsd_cut    - cutted EBSD data
+%   lineXY      - polygon coordinates
+%
+% Input
+%   sid         - sample id
+%   ebsd        - ebsd data
+%   phase       - 
+%
+% Options
+%   ***     - ***
+%
+% Example
+%   ***
+%
+% See also
+%   ***
+%
+% Used in
+%   ***
+%
+% History
+% 12.04.13  Original implementation
 
 %% Load EBSD
 % Load EBSD data

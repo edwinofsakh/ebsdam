@@ -26,3 +26,10 @@ getVarinatNumber(type, data, varargin);
 
 HistNearKOG(grains, epsilon, optOR, allbnd, saveres, OutDir, prefixk, desc, comment);
 
+%%
+[ ebsd_cut, lineXY ] = selectEBSD( 's04', 0, 'Fe', 0, 0, 'a' );
+
+%%
+saveResult('off');
+[ op, lineXY ] = parent4polygon( 's04', 2, 3, getOR('M1'), lineXY, 0, 3 );
+
