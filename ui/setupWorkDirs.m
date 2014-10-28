@@ -67,6 +67,7 @@ end
 
 fwrite(fid, ['setpref(''ebsdam'',''caching'',1);' 10]); % newline = 10 (0x0A)
 fwrite(fid, ['setpref(''ebsdam'',''saveResult'',1);' 10]); % newline = 10 (0x0A)
+fwrite(fid, ['setpref(''ebsdam'', ''maxProbParents'', 2000)' 10]);% newline = 10 (0x0A);
 % Close settings file
 fclose(fid);
 

@@ -48,7 +48,15 @@ vnum = 0;
 VNmin = Nv;
 
 % Normalize weight function
+if (numel(wf0) == 1 && wf0 == 0)
+	wf0 = ones(1,length(ori0));
+end
 wf0  = wf0/sum(wf0);
+
+% Check ORmat
+if (numel(ORmat) ~= 9)
+    error('Bad OR matrix');
+end
 
 % Check number of variants. Now only number of domains.
 n0 = length(ori0);
@@ -91,7 +99,7 @@ nv = length(CS);
 np = length(op);
 
 % Prevent out of memory
-if length(op) > 1500
+if length(op) > getpref('ebsdam', 'maxProbParents')
     fprintf('Too much probable parent\n'); return;
 end
 

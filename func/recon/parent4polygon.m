@@ -77,12 +77,12 @@ plotpdf(o0,Miller(1,0,0),'antipodal','MarkerSize',3);
 %% Orientation relation
 % ORmat = getOR (ORname); % alpha to gamma
 
-[Pmax, PR, oup, gind] = findUniqueParent(o0, ORmat, w1, Nv, w0, PRm);
+[Pmax, PR, oup, gind] = findUniqueParent(o0, 0, ORmat, w1, Nv, w0, PRm, 'combineClose');
 
 Pmax
 PR
 
-if (1 || oup ~= 0)
+if (isa(oup, 'orientation'))
     hold on; plotpdf(oup,Miller(1,0,0),'antipodal','MarkerSize',2, 'MarkerColor','r');
     v = getVariants(oup, inv(ORmat), get(oup,'CS'));
     hold on; plotpdf(v,Miller(1,0,0),'antipodal','MarkerSize',2, 'MarkerColor','g');
