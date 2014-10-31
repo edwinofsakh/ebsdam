@@ -36,11 +36,6 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 % 12.04.13  Original implementation?
 % 05.10.14  Add epsilon array.
 
-optORm = 1;
-optOR = [31.903782 9.229378 14.503782];
-
-return;
-
 % Decide start new search or continue old
 if (~check_option(varargin, 'continue'))
     ORname = get_option(varargin, 'start', 'KS', 'char');
