@@ -6,6 +6,9 @@ switch(type)
         str = exportEuler(data, style);
     case 'matrix'
         str = exportMatrix(data, style);
+    case 'ori'
+        eul = Euler(data);
+        str = exportEuler(eul/degree, style);
     otherwise
         error('Unknown type.')
 end
