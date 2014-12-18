@@ -101,7 +101,12 @@ switch (ORname)
         error('Unknown orientation relation: %s', ORname);
 end
 
-o = orientation('matrix', A, CS,CS);
+% % Orthogonalise matrix
+% Q = A*((A')*A)^(-0.5);
+% 
+% o = orientation('matrix', Q, CS,CS);
+
+[A, o] = mtr2OR(A);
 
 % r = symmetrise(o);
 % 
@@ -144,8 +149,13 @@ function [A, o] = mtr2OR(A)
 
 CS = symmetry('m-3m');
 
-o = orientation('matrix', A, CS,CS);
+% Orthogonalise matrix
+Q = A*((A')*A)^(-0.5);
 
+o = orientation('matrix', Q, CS,CS);
+% EA = Euler(o);
+
+% [A, o] = euler2OR(EA);
 end
 
 function [A, o] = euler2OR(EA)
