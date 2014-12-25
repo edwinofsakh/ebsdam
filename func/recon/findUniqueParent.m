@@ -98,19 +98,14 @@ nv = length(CS);
 [op, opi] = getVariants(ori, ORmat, CS);
 np = length(op);
 
-% Prevent out of memory
-if length(op) > getpref('ebsdam', 'maxProbParents')
-    fprintf('Too much probable parent\n'); return;
-end
-
-
 %% Calculation of probabilities of potential parents
 
 % Angle between potential parents
 %  aaa = repmat(op, 1, np);
 %  bbb = repmat(reshape(op,1,np), np,1);
 %  ma = angle(aaa,bbb);
-ma = angle(op\op);
+
+ma = smartAngle(op);
 
 % Check potential parents
 %   Pp  - probability of parent
@@ -180,6 +175,35 @@ end
 
 % Debug information
 dprintf(1,'%d-%d-%3.1f\n', n, Pmax, PR);
+end
+
+
+function ma = smartAngle(op)
+% Prevent out of memory
+if length(op) > getpref('ebsdam', 'maxProbParents')
+    fprintf('Too much probable parent\n');
+    
+    ma = [];
+    
+    n0 = getpref('ebsdam', 'maxProbParents');
+    n1 = length(op);
+    n = ceil(n1*n1/(n0*n0));
+    ni = ceil(n1/n);
+    is = 1;
+    ie = ni;
+    for i = 1:n
+        ind = is:ie;
+        mai = angle(op(ind)\op);
+        ma = [ma; mai]; %#ok<AGROW>
+        is = is + ni;
+        ie = ie + ni;
+        if (ie > n1)
+            ie = n1;
+        end
+    end
+else
+    ma = angle(op\op);
+end
 end
 
 
