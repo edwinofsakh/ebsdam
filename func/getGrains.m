@@ -62,7 +62,7 @@ end
 %     grains = load_struct.grains;
 % else
     % Detect grains
-    grainsf = calcGrains(ebsd, 'threshold',thr, 'antipodal', 'angletype','disorientation',varargin{:});
+    grainsf = calcGrains(ebsd, 'threshold',thr, 'antipodal', 'angletype','disorientation','unitcell',varargin{:});
 
     if (mgs > 0)
         grainsl = grainsf(grainSize(grainsf) > mgs);
