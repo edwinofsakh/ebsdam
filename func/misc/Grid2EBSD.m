@@ -1,4 +1,4 @@
-function [ebsd_f, ori0] = Grid2EBSD(X, Y, S, varargin)
+function [ebsd_f, ori0, ebsd, ebsd0] = Grid2EBSD(X, Y, S, varargin)
 % Transform grain grid to EBSD map. 
 %
 % Syntax
@@ -36,7 +36,7 @@ ori0 = 0;
 % Prepare orientation data
 prior = get_option(varargin, 'prior', 0);
 if (iscell(prior) && ~isempty(prior))
-    [ebsd, ori0] = preparePriorGrains(X,Y, prior, varargin{:});
+    [ebsd, ori0, ebsd0] = preparePriorGrains(X,Y, prior, varargin{:});
 else
     if isempty(prior) || ~isequal(prior,0)
         warning('Bad prior grain data. Generate standard grains.') %#ok<WNTAG>
@@ -44,6 +44,7 @@ else
     ebsd = calcEBSD(SantaFe,length(X(:)));
     ebsd = set(ebsd,'x',X(:));
     ebsd = set(ebsd,'y',Y(:));
+    ebsd0 = ebsd;
 end
 
 ebsd = set(ebsd,'phaseMap',1);
@@ -114,43 +115,60 @@ warea = [cx-s cx+s cy-s cy+s];
 
 end
 
-function [ebsd, ori0] = preparePriorGrains(X,Y, prior, varargin)
+function [ebsd, ori0, ebsd0] = preparePriorGrains(X,Y, prior, varargin)
+%
+% X - grains centers
+% Y - grains centers
+% prior - prior grains map
 
+% Number of prior grains
 M = length(prior);
 
+% Symmetry
 cs = symmetry('m-3m');
 ss = symmetry('-1');
 
+% Random orientation for prior grains
 a = 90*degree*rand(M,3);
 ori0 = orientation('Euler', a(:,1), a(:,2), a(:,3), cs, ss);
 
+% Remove close prior orientation
 rc = get_option(varargin, 'removeCloseOri', 0, 'double');
 if (rc ~= 0)
     ori0 = removeCloseOri(ori0, rc);
 end
 
+% Debug information
 if (isdebug)
     display(ori0);
 end
 
+% Get parameters
 ORm = get_option(varargin, 'OR',  0, 'double');
 dev = get_option(varargin, 'dev', 0, 'double');
 
+% 
 a = [];
 for i = 1:M
+    % Indices of grains 
     oi = find(prior{i});
 
-    ni = length(oi);
+%     ni = length(oi);
 
-    ori0a = getVariants(ori0(i), inv(ORm), cs);
+    ori0a(oi) = ori0(i); %#ok<AGROW>
+    ori0v = getVariants(ori0(i), inv(ORm), cs);
     ind = randi(24, 1, length(oi));
-    o = ori0a(ind);
+    o = ori0v(ind);
 
-    ori(oi) = setOriDev(o, dev);
+    ori(oi) = setOriDev(o, dev); %#ok<AGROW>
     a = [a angle(ori(oi).\reshape(o,1,[]))/degree];
 end
 
 hist(a);
+
+ebsd0 = EBSD(ori0a,cs,ss);
+ebsd0 = set(ebsd0,'x',X(:));
+ebsd0 = set(ebsd0,'y',Y(:));
 
 ebsd = EBSD(ori,cs,ss);
 ebsd = set(ebsd,'x',X(:));

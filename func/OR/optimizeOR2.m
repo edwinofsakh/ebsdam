@@ -32,6 +32,7 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 %   'stepIter'    - [2 1 0.5 0.1]*degree
 %   'maxIter'     - 3
 %   'epsilon'     - [10 5 5 2]*degree
+%
 % History
 % 12.04.13  Original implementation?
 % 05.10.14  Add epsilon array.

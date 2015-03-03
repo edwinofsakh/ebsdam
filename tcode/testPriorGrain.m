@@ -8,7 +8,7 @@ close all;
 N = 16; % Size of product grains grid
 Np = 4; % Size of parent grains grid
 
-sdev = 0.6;      % Spatial deviation (1 close to distance between grain centers)
+sdev = 0.2;      % Spatial deviation (1 close to distance between grain centers)
 odev = 0*degree; % Orientation deviation in degree
 
 ORmat = getOR('KS'); % Orientation relation
@@ -24,7 +24,7 @@ PRm  = 1.4;
 
 %% Create test sample
 if (1)
-    [X, Y, in, in_xy] = gridPriorGrains(N, Np, sqrt(3)/2, 0.5, 'dev', sdev);
+    [X, Y, in, in_xy, in0, in0_xy] = gridPriorGrains(N, Np, sqrt(3)/2, 0.5, 'dev', sdev);
     [ebsd, ori0] = Grid2EBSD(X,Y, 20, 'OR', ORmat, 'prior', in, 'crop', 'none', 'dev', odev, 'removeCloseOri', 5*degree);
     plotpdf(ori0,Miller(1,0,0), 'antipodal', 'MarkerSize',4);
 
