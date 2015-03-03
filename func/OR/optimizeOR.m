@@ -1,5 +1,5 @@
 function [best_OR, x,f, ma1, ma2] = optimizeOR( sid, part, ebsd, grains, save, thrd, mgs, epsd )
-% Find optimal orientation relationship for list
+% Find optimal orientation relationship for predefined list.
 %   Draw orientation maps
 %
 % Syntax

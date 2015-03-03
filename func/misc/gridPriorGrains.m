@@ -1,4 +1,4 @@
-function [X, Y, in, in_xy] = gridPriorGrains(N, Np, xscale, yshift, varargin)
+function [X, Y, in, in_xy, in0, in0_xy] = gridPriorGrains(N, Np, xscale, yshift, varargin)
 % Generate list of coordinates of grains' centers.
 %   1. Create map of product grains.
 %   2. Create boundary of parent grains.
@@ -29,14 +29,20 @@ function [X, Y, in, in_xy] = gridPriorGrains(N, Np, xscale, yshift, varargin)
 % History
 % 21.11.13  Original implementation
 % 20.07.14  Add polygon coordinates for output
+% 02.03.15  Add grains bourdaries coordinates output
 
 %% Product grains
-% Generate grid
-[X, Y] = meshgrid(0:1:N-1);
+% Generate poor grid and transform it to hex (or other)
+a = 2;
+[X, Y] = meshgrid(0-a:1:N-1+a);
 [X, Y] = transformGrid(X, Y, xscale, yshift);
-in = inpolygon(X,Y,[0 0 N*xscale N*xscale],[0 (N-1) (N-1) 0]);
-X = X(in);
-Y = Y(in);
+
+% Save indices of interesting points
+ini = inpolygon(X,Y,[0 0 N*xscale N*xscale],[0 (N-1) (N-1) 0]);
+
+% Reorder
+X = X(:);
+Y = Y(:);
 
 % Random shift
 dev = get_option(varargin, 'dev', 0, 'double');
@@ -45,6 +51,33 @@ if (dev > 0)
     X = X + dev*(1-2*rand(n,1));
     Y = Y + dev*(1-2*rand(n,1));
 end
+
+% Calc boundaries of grains
+[v0,c0] = voronoin([X(:), Y(:)]); 
+
+
+% in = inpolygon(X,Y,[0 0 N*xscale N*xscale],[0 (N-1) (N-1) 0]);
+% Get interesting points after shifting
+Xi = X(ini);
+Yi = Y(ini);
+
+% Catch grains
+in0 = cell(1,length(c0));
+in0_xy = cell(1,length(c0));
+for i = 1:length(c0)
+    if all(c0{i}~=1)
+        ind = inpolygon(Xi,Yi,v0(c0{i},1),v0(c0{i},2));
+        if any(ind)
+            in0{i} = ind;
+            in0_xy{i} = [v0(c0{i},1),v0(c0{i},2)];
+%             hold on; scatter(X(in0{i}), Y(in0{i}),5,'r','filled');
+%             patch(v0(c0{i},1),v0(c0{i},2),'r');
+        end
+    end
+end
+ind = cellfun(@length, in0);
+in0 = in0(ind > 0);
+in0_xy = in0_xy(ind > 0);
 
 
 %% Prior Grain
