@@ -68,30 +68,40 @@ plotAngDist(mori, 60, saveres, OutDir, prefix1, 'ang', 'All boundary misorientat
 
 fprintf(f_rep, 'Total number of extern boundaries: %u.\r\n', length(mori));
 
-optORm = optimizeOR2(mori, sid, rid, varargin{:});
+if (check_option(varargin, 'eps_curve') && check_option(varargin, 'start'))
+    ORname = get_option(varargin, 'start', 'KS', 'char');
+    ORmat = getOR(ORname);
+    OR = orientation('matrix', ORmat, symmetry('m-3m'), symmetry('m-3m'));
+    [phi1, Phi, phi2] = Euler(OR);
+    kog = getKOG(phi1, Phi, phi2);
 
-out = {'optOR', optORm};
+    
+    a{i}   = close2KOG(mori, kog, eps);
+else
+    optORm = optimizeOR2(mori, sid, rid, varargin{:});
 
-%
-bestKOG = getKOGmtr(optORm, symmetry('m-3m'));
-[~, ~, ~,b] = close2KOG(mori, bestKOG, eps2);
+    out = {'optOR', optORm};
 
-%%
-fprintf(f_rep, 'Number of non specific boundaries: %u.\r\n', sum(b < eps2));
-fprintf(f_rep, 'Number of specific boundaries: %u.\r\n',     sum(b > eps2));
-aa = angle(mori)/degree;
-figure('Name','Non specific boundaries distribution'); hist(aa(b > eps2),64);
-saveimg( saveres, 1, OutDir, prefix, 'non_spec', 'png', comment);
+    %
+    bestKOG = getKOGmtr(optORm, symmetry('m-3m'));
+    [~, ~, ~,b] = close2KOG(mori, bestKOG, eps2);
 
-[~,ORm] = getOR(optORm);
-getVarAngles(optORm);
+    %
+    fprintf(f_rep, 'Number of non specific boundaries: %u.\r\n', sum(b < eps2));
+    fprintf(f_rep, 'Number of specific boundaries: %u.\r\n',     sum(b > eps2));
+    aa = angle(mori)/degree;
+    figure('Name','Non specific boundaries distribution'); hist(aa(b > eps2),64);
+    saveimg( saveres, 1, OutDir, prefix, 'non_spec', 'png', comment);
 
-a1 = angle(Miller(1,1,1), ORm * Miller(0,1,1))/degree
-a2 = angle(Miller(-1,0,1), ORm * Miller(-1,-1,1))/degree
+    [~,ORm] = getOR(optORm);
+    getVarAngles(optORm);
 
-fprintf(f_rep, 'Angle between planes: %d.\r\n', a1);
-fprintf(f_rep, 'Angle between directions: %d.\r\n', a2);
+    a1 = angle(Miller(1,1,1), ORm * Miller(0,1,1))/degree
+    a2 = angle(Miller(-1,0,1), ORm * Miller(-1,-1,1))/degree
 
+    fprintf(f_rep, 'Angle between planes: %d.\r\n', a1);
+    fprintf(f_rep, 'Angle between directions: %d.\r\n', a2);
+end
 
 fclose(f_rep);
 end
