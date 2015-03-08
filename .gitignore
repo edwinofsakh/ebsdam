@@ -1,4 +1,4 @@
 *.mat
 *.asv
-EBSDAM_settings.m
+.\EBSDAM_settings.m
 .\Taylor
