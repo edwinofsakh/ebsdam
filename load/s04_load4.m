@@ -13,7 +13,7 @@ function [ ebsd ] = s04_load4( varargin )
 %% Settings
 
 % File name
-fname = '.\Exp FTIM\X100-2_4.txt';
+fname = fullfile('.', 'Exp FTIM', 'X100-2_4.txt');
 
 % Specify crystal and specimen symmetry
 cs = {...

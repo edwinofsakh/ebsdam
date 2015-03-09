@@ -20,10 +20,11 @@ function savedist(x, f, title, saveres, wtype, outdir, prefix, desc, comment)
 % 23.11.12  Original implementation
 %           Function description
 % 14.04.13  Add saveing of comment
+% 09.02.15  Move to Linux
 
 % Save distribition to disk
 if saveres
-    fname = [outdir '\' prefix '_' desc '.csv'];
+    fname = fullfile(outdir, [prefix '_' desc '.csv']);
     [fid, err] = fopen(fname, wtype);
     fprintf(fid, '%s; \r\n', comment);
     fprintf(fid, '%s; \r\n', title);

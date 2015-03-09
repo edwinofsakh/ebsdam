@@ -18,12 +18,16 @@ function out = viewOR( sid, rid, region, ebsd, tasks, varargin )
 % History
 % 26.03.14  Original implementation.
 % 05.04.14  New output system.
+% 09.02.15  Move to Linux.
+%           Add epsilon curve.
+
+out = {};
 
 % Prepare output file
 saveres = getpref('ebsdam','saveResult');
 OutDir = checkDir(sid, 'OR', 1);
 prefix = [sid '_' rid '_OR'];
-f_rep = fopen([OutDir '\' prefix '_report.txt'], 'a');
+f_rep = fopen(fullfile(OutDir, [prefix '_report.txt']), 'a');
 comment = getComment();
 fprintf(f_rep, '\n\n---- New session ---- (%s) %s\r\n', comment, datestr(now, 'dd/mm/yyyy HH:MM:SS'));
 
@@ -68,15 +72,27 @@ plotAngDist(mori, 60, saveres, OutDir, prefix1, 'ang', 'All boundary misorientat
 
 fprintf(f_rep, 'Total number of extern boundaries: %u.\r\n', length(mori));
 
-if (check_option(varargin, 'eps_curve') && check_option(varargin, 'start'))
+if (check_option(varargin, 'epsCurve') && check_option(varargin, 'start'))
     ORname = get_option(varargin, 'start', 'KS', 'char');
     ORmat = getOR(ORname);
     OR = orientation('matrix', ORmat, symmetry('m-3m'), symmetry('m-3m'));
     [phi1, Phi, phi2] = Euler(OR);
     kog = getKOG(phi1, Phi, phi2);
 
+    epsa = [1 2 3 4 5 8 12 20 30 40 60]*degree;
+    a = cell(1,length(epsa));
+    n = zeros(1,length(epsa));
     
-    a{i}   = close2KOG(mori, kog, eps);
+    for i=1:length(epsa)
+        a{i} = close2KOG(mori, kog, epsa(i));
+        n(i) = length(a{i});
+    end
+    
+    plot(epsa/degree,n/length(mori), '-o', 'lineWidth', 1, 'MarkerSize', 4,'MarkerFaceColor', 'b');
+    xlabel('epsilon in degree');
+    ylabel('KOG fraction');
+    title(['Optimal epsilon for ' sid '_' rid]);
+    
 else
     optORm = optimizeOR2(mori, sid, rid, varargin{:});
 

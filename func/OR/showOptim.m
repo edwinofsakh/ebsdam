@@ -17,14 +17,15 @@ function [M, E1,E2,E3, i,j,k] = showOptim(varargin)
 %
 % History
 % 09.04.14  Recomment
+% 09.02.15 Move to Linux
 
 outdir = getpref('ebsdam','output_dir');
 fname = get_option(varargin, 'fname', 'result.mat', 'char');
 
 if check_option(varargin, 'loadAngles')
-    S = load([outdir '\optim\' fname], 'M', 'A', 'N', 'E1', 'E2', 'E3', 'ORname');
+    S = load(fullfile(outdir, 'optim', fname), 'M', 'A', 'N', 'E1', 'E2', 'E3', 'ORname');
 else
-    S = load([outdir '\optim\' fname], 'M', 'N', 'E1', 'E2', 'E3', 'ORname');
+    S = load(fullfile(outdir, 'optim', fname), 'M', 'N', 'E1', 'E2', 'E3', 'ORname');
 end
 
 ORname = S.ORname; %#ok<NASGU>

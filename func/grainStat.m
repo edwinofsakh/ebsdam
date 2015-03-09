@@ -14,7 +14,8 @@ function [err] = grainStat( grains, saveres, odir, prefix )
 %   prefix  - file name prefix
 %
 % History
-% 07.12.12 Add description of the function. Add size info and EBSD steps.
+% 07.12.12  Add description of the function. Add size info and EBSD steps.
+% 09.02.15  Move to Linux
 
 % Get area and size information
 ar = area(grains);
@@ -34,7 +35,7 @@ disp(['N grains      :' num2str(numel(grains))]);
 
 % Save stat to disk
 if saveres
-    fname = [odir '\' prefix '_area_stat.csv'];
+    fname = fullfile(odir, [prefix '_area_stat.csv']);
     [fid, err] = fopen(fname,'w');
     if (fid ~= -1)
         fprintf(fid, '%s;;\r\n', 'Grains area statistic');

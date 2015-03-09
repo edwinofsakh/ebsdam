@@ -36,6 +36,7 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 % History
 % 12.04.13  Original implementation?
 % 05.10.14  Add epsilon array.
+% 09.02.15  Move to Linux
 
 % Decide start new search or continue old
 if (~check_option(varargin, 'continue'))
@@ -154,9 +155,9 @@ outdir = getpref('ebsdam','output_dir');
 fname = get_option(varargin, 'fileName', 'result', 'char');
 
 if check_option(varargin, 'saveAngles')
-    save([outdir '\optim\' sid '-' rid '_' fname '.mat'], 'M','A','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
+    save(fullfile(outdir, 'optim', [sid '-' rid '_' fname '.mat']), 'M','A','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
 else
-    save([outdir '\optim\' sid '-' rid '_' fname '.mat'], 'M','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
+    save(fullfile(outdir, 'optim', [sid '-' rid '_' fname '.mat']), 'M','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
 end
 
 [mM,I] = min( M(:));

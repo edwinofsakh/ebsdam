@@ -1,11 +1,14 @@
 function htmlreport(name, action, varargin)
+%
+% History
+% 09.02.15 Move to Linux
 
 global reportfile
 
 switch action
     case 'start'
         odir = getpref('ebsdam','output_dir');
-        fname = [odir '\rep_' name '.html'];
+        fname = fullfile(odir, ['rep_' name '.html']);
 
         reportfile = fopen(fname, 'w');
 

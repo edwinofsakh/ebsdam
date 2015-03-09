@@ -18,9 +18,10 @@ function savexy( x, y, saveres, odir, prefix, fname, ltitle, comment )
 % History
 % 03.12.12  Original implementation
 % 14.04.13  Add saveing of comment
+% 09.02.15  Move to Linux
 
     if saveres
-        fname = [odir '\' prefix '_' fname '.csv'];
+        fname = fullfile(odir, [prefix '_' fname '.csv']);
         [fid, err] = fopen(fname,'w');
         if (fid ~= -1)
             

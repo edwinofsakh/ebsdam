@@ -24,13 +24,14 @@ function [filename] = saveimg( saveres, fclose, outdir, prefix, desc, ext, comme
 % 14.04.13  Add saveing of image comment
 % 07.10.13  Problem with 'saveres'. Add patch for normal working.
 % 19.11.13  Return file name
+% 09.02.15  Move to Linux
 
 % Set defualt extension
 if (ext == 0)
     ext = 'png';
 end
 
-filename = [outdir '\' prefix '_' desc '.' ext];
+filename = fullfile(outdir, [prefix '_' desc '.' ext]);
 
 % Save image to disk
 if (saveres == 1 || getpref('ebsdam', 'saveResult') == 1)

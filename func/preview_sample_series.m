@@ -19,6 +19,7 @@ function preview_sample_series(series_name, start)
 %
 % History
 % 12.04.13  Original implementation
+% 09.02.15  Move to Linux
 
 
 % Get list of all samples 
@@ -56,7 +57,7 @@ end
 if (strncmp(filename,series_name, n) && st)
     [~,name,~] = fileparts(filename);
     try
-        filename = [outdir '\_' name '.png'];
+        filename = fullfile(outdir, ['_' name '.png']);
         if (~exist(filename, 'file'))
             ebsd = eval(name);
             figure;

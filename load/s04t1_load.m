@@ -14,7 +14,7 @@ function [ ebsd ] = s04t1_load( varargin )
 
 % File name
 DataDir = getpref('ebsdam','data_dir');
-matfile = [DataDir '.\Exp FTIM\s04t1.mat'];
+matfile = fullfile(DataDir, '.', 'Exp FTIM', 's04t1.mat');
 
 if exist(matfile,'file')
     % Load saveing data

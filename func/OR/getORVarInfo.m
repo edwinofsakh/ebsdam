@@ -18,6 +18,7 @@ function [ OR, ORr, V, CP, B, in_cp, out_cp, in_b, out_b ] = getORVarInfo( )
 % 15.11.12 Original implementation
 % 21.11.12 Add comments.
 % 22.11.12 Add cacheing
+% 09.02.15 Move to Linux
 
 % Settings
 doPlotting = 0;
@@ -26,7 +27,7 @@ doPlotting = 0;
 CacheDir = getpref('ebsdam','cache_dir');
 
 % Name of MAT file with saveing variables 
-matfile = [CacheDir '\VarInfo.mat'];
+matfile = fullfile(CacheDir, 'VarInfo.mat');
 
 % Information about variants from paper
 variants = {...
