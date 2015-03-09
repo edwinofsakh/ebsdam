@@ -13,7 +13,7 @@ function [ ebsd ] = p06_load( varargin )
 %% Settings
 
 % File name
-fname = '.\Prometey\11-5_50\11_50.ang';
+fname = fullfile('.', 'Prometey', '11-5_50','11_50.ang');
 
 % Specify crystal and specimen symmetry
 cs = symmetry('m-3m','mineral','Fe'); % crystal symmetry phase ferrite

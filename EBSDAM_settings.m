@@ -20,6 +20,11 @@ switch PCname
         setpref('ebsdam','output_dir','F:\Projects\TextureStudy\EBSD\res0001\out');
         setpref('ebsdam','cache_dir','F:\Projects\TextureStudy\EBSD\res0001\cache');
         setpref('ebsdam','doc_dir','F:\Projects\TextureStudy\EBSD\res0001\doc');
+    case 'edwin-latitude-3440'
+        setpref('ebsdam','data_dir','~/Work/EBSD/data');
+        setpref('ebsdam','output_dir','~/Work/EBSD/out');
+        setpref('ebsdam','cache_dir','~/Work/EBSD/cache');
+        setpref('ebsdam','doc_dir','~/Work/EBSD/doc');
     otherwise
         disp('Setup directories!');
 end

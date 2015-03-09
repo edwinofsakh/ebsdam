@@ -13,7 +13,7 @@ function [ ebsd ] = p03_load( varargin )
 %% Settings
 
 % File name
-fname = '.\Prometey\Prometey_03-2.txt';
+fname = fullfile('.', 'Prometey', 'Prometey_03-2.txt');
 
 % Specify crystal and specimen symmetry
 cs = {...

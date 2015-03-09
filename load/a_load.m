@@ -26,6 +26,10 @@ switch type
         rad = 1;
         colnames = { 'Euler 1' 'Euler 2' 'Euler 3' 'x' 'y' 'IQ' 'CI' 'Phase' 'SEM' 'Fit'};
         colnum = 1:10;
+    case 'prometeyS'
+        rad = 0;
+        colnames = { 'Euler 1' 'Euler 2' 'Euler 3' 'Phase' 'CI' 'Fit' 'IQ' 'SEM' 'x' 'y'};
+        colnum = 1:10;
     case 'ftim'
         rad = 0;
         colnames = { 'Phase' 'x' 'y' 'Euler 1' 'Euler 2' 'Euler 3' 'CI' 'IQ'};
@@ -48,8 +52,8 @@ dataDir = getpref('ebsdam','data_dir');
 cacheDir = getpref('ebsdam','cache_dir');
 
 % Name of MAT file with saveing variables 
-matfile = [cacheDir '\' fname '.mat'];
-datafile = [dataDir '\' fname];
+matfile = fullfile(cacheDir, [fname '.mat']);
+datafile = fullfile(dataDir, fname);
 
 if exist(matfile,'file') && isCaching
     % Load saveing data
