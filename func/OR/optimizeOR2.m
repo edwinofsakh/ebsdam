@@ -19,6 +19,7 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 %   'continue', [phi1 Phi phi2] - continue old search starting from angles in radian
 %   'firstView'   - only plot distance from KOG histogram
 %   'stepSearch'  - stepping method 
+%   'freeSearch'  - derivative-free optimization
 %   'areaSearch'  - area method
 %   'fullSearch', ang  - search in full angle space, use with 'areaSearch', 
 %                      set step size 'ang' in degree
@@ -40,7 +41,7 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 
 % Decide start new search or continue old
 if (~check_option(varargin, 'continue'))
-    ORname = get_option(varargin, 'start', 'KS', 'char');
+    ORname = get_option(varargin, 'start', 'KS');
     ORmat = getOR(ORname);
     OR = orientation('matrix', ORmat, symmetry('m-3m'), symmetry('m-3m'));
     [phi1, Phi, phi2] = Euler(OR);
@@ -57,6 +58,12 @@ if check_option(varargin, 'firstView')
     a = close2KOG(mori, kog, 70*degree);
     figure; hist(a,64);
     pause(2);
+    return;
+end
+
+% Derivative-free optimization
+if check_option(varargin, 'freeSearch')
+    [optORm, optOR] = freeOROptim(mori, sid, rid, phi1, Phi, phi2, ORname, varargin{:});
     return;
 end
 
@@ -260,6 +267,123 @@ fprintf(f_rep,'Total number of steps - %d\r\n', k);
 
 fprintf(1,    'Final: [%f %f %f]*degree\n',   dx1/degree, dy1/degree, dz1/degree);
 fprintf(f_rep,'Final: [%f %f %f]*degree\r\n', dx1/degree, dy1/degree, dz1/degree);
+
+% Plot histogram for best OR
+kog = getKOG(dx1, dy1, dz1, varargin{:});
+ang = close2KOG(mori, kog, eps);
+figure('Name','Final IVM deviation'); hist(ang,64);
+saveimg( saveres, 1, OutDir, prefix, 'dev_final', 'png', comment);
+
+% Prepare results
+optORm = normalizeOR('ori', {dx1, dy1, dz1});
+optOR = [dx1, dy1, dz1]/degree;
+end
+
+
+
+function [optORm, optOR] = freeOROptim(mori, sid, rid, phi1, Phi, phi2, ORname, varargin) %#ok<INUSL>
+% 'saveAngles'
+% 'continue'
+% 'fullSearch'
+% 'searchRange'
+% 'start'
+% 'epsilon'
+
+% Preparation
+saveres = getpref('ebsdam','saveResult');
+OutDir = checkDir(sid, 'OR', 1);
+prefix = [sid '_' rid '_OR'];
+comment = getComment();
+
+f_rep = get_option(varargin, 'reportFile', 1);
+
+fprintf(1,     'Start optimization\n');
+fprintf(f_rep, 'Start optimization\r\n');
+
+% stepIter = get_option(varargin, 'stepIter', [ 2 1 0.5 0.1]*degree, 'double');
+% maxIter  = get_option(varargin,  'maxIter',             3        , 'double');
+epsIter  = get_option(varargin,  'epsilon', [10 5   5   4]*degree, 'double');
+
+% dd = unique([perms([1 0 0]);perms([1 1 0]); 1 1 1;...
+%     perms([-1 0 0]);perms([-1 1 0]);perms([-1 -1 0]);...
+%     perms([-1 1 1]);perms([-1 -1 1]); -1 -1 -1],'rows');
+
+% First iteration
+% step = stepIter(1);
+eps  = epsIter(1);
+
+% fprintf(1,    'new iter - step %f in degree, eps - %f in degree\n',   step/degree, eps/degree);
+% fprintf(f_rep,'new iter - step %f in degree, eps - %f in degree\r\n', step/degree, eps/degree);
+            
+dx1 = phi1;
+dy1 = Phi;
+dz1 = phi2;
+kog = getKOG(dx1, dy1, dz1, varargin{:});
+a   = close2KOG(mori, kog, eps);
+
+figure('Name','Initial IVM deviation'); hist(a,64);
+saveimg( saveres, 1, OutDir, prefix, 'dev_initial', 'png', comment);
+
+ac = crit(a);
+fprintf(1,    'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\n',   dx1/degree, dy1/degree, dz1/degree, ac, length(a));
+fprintf(f_rep,'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\r\n', dx1/degree, dy1/degree, dz1/degree, ac, length(a));
+
+x0(1) = dx1;
+x0(2) = dy1;
+x0(3) = dz1;
+
+[x,fval] = fminsearch(@(x)crit(close2KOG(mori, getKOG(x(1),x(2),x(3)), eps)),x0, optimset('Display', 'iter', 'PlotFcns', @optimplotx))
+
+dx1 = x(1);
+dy1 = x(2);
+dz1 = x(3);
+
+% flag = 1;
+% iter = 0;
+% k = 0;
+% 
+% while (flag && k < 1000)
+%     a = zeros(1, size(dd,1));
+%     n = zeros(1, size(dd,1));
+%     for i = 1:size(dd,1)
+%         dx2 = dx1 + dd(i,1)*step;
+%         dy2 = dy1 + dd(i,2)*step;
+%         dz2 = dz1 + dd(i,3)*step;
+%         kog = getKOG(dx2, dy2, dz2, varargin{:});
+%         ang = close2KOG(mori, kog, eps);
+%         n(i) = length(ang);
+%         a(i) = crit(ang);
+%     end
+%     
+%     [am,j] = min(a);
+%     
+%     if am < ac
+%         dx1 = dx1 + dd(j,1)*step;
+%         dy1 = dy1 + dd(j,2)*step;
+%         dz1 = dz1 + dd(j,3)*step;
+%         ac = a(j);
+%         an = n(j);
+%         fprintf(1,    'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\n',   dx1/degree, dy1/degree, dz1/degree, ac, an);
+%         fprintf(f_rep,'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\r\n', dx1/degree, dy1/degree, dz1/degree, ac, an);
+%     else
+%         if (iter < maxIter)
+%             iter = iter+1;
+%             step = stepIter(iter+1);
+%             eps  = epsIter(iter+1);
+%             fprintf(1,    'new iter - step %f in degree, eps - %f in degree\n',   step/degree, eps/degree);
+%             fprintf(f_rep,'new iter - step %f in degree, eps - %f in degree\r\n', step/degree, eps/degree);
+%         else
+%             flag = 0;
+%         end
+%     end
+%     k = k+1;
+% end
+% 
+% fprintf(1,    'Total number of steps - %d\n',   k);
+% fprintf(f_rep,'Total number of steps - %d\r\n', k);
+% 
+% fprintf(1,    'Final: [%f %f %f]*degree\n',   dx1/degree, dy1/degree, dz1/degree);
+% fprintf(f_rep,'Final: [%f %f %f]*degree\r\n', dx1/degree, dy1/degree, dz1/degree);
 
 % Plot histogram for best OR
 kog = getKOG(dx1, dy1, dz1, varargin{:});
