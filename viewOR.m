@@ -67,13 +67,22 @@ ebsd = simpleFilter(ebsd, 0.1);
 grains = getGrains(ebsd, thr, mgs);
 
 %% Calculation
-mori = calcBoundaryMisorientation(grains, 'ext');
+if ~check_option(varargin, 'meanMisorientation')
+    mori = calcBoundaryMisorientation(grains, 'ext');
+else
+    ori = get(grains,'meanOrientation');
+    [~,pairs] = neighbors(grains);
+    A = ori(pairs(:,1));
+    B = ori(pairs(:,2));
+    mori = (A.\B);
+end
+
 plotAngDist(mori, 60, saveres, OutDir, prefix1, 'ang', 'All boundary misorientation' );
 
 fprintf(f_rep, 'Total number of extern boundaries: %u.\r\n', length(mori));
 
 if (check_option(varargin, 'epsCurve') && check_option(varargin, 'start'))
-    ORname = get_option(varargin, 'start', 'KS', 'char');
+    ORname = get_option(varargin, 'start', 'KS');
     ORmat = getOR(ORname);
     OR = orientation('matrix', ORmat, symmetry('m-3m'), symmetry('m-3m'));
     [phi1, Phi, phi2] = Euler(OR);
@@ -88,10 +97,15 @@ if (check_option(varargin, 'epsCurve') && check_option(varargin, 'start'))
         n(i) = length(a{i});
     end
     
+    disp(num2str([epsa'/degree n']));
+    disp(length(mori));
+    
     plot(epsa/degree,n/length(mori), '-o', 'lineWidth', 1, 'MarkerSize', 4,'MarkerFaceColor', 'b');
+    ylim([0 1]);
     xlabel('epsilon in degree');
     ylabel('KOG fraction');
-    title(['Optimal epsilon for ' sid '_' rid]);
+    title(['Optimal epsilon for ' sid '\_' rid]);
+    saveimg( saveres, 1, OutDir, prefix, ['eps_curve_' nameOR(ORname)], 'png', comment);
     
 else
     optORm = optimizeOR2(mori, sid, rid, varargin{:});

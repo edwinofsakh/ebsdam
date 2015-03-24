@@ -54,10 +54,35 @@ end
 
 % Only distance to KOG histogram
 if check_option(varargin, 'firstView')
+    % Preparation
+    saveres = getpref('ebsdam','saveResult');
+    OutDir = checkDir(sid, 'OR', 1);
+    prefix = [sid '_' rid '_OR'];
+    comment = getComment();
+%     saveimg( saveres, 1, OutDir, prefix, 'opt_dev', 'png', comment);
+
+    % Calculation
     kog = getKOG(phi1, Phi, phi2, varargin{:});
-    a = close2KOG(mori, kog, 70*degree);
-    figure; hist(a,64);
-    pause(2);
+    a = close2KOG(mori, kog, 10*degree);
+    
+    save(fullfile(OutDir, [prefix 'KOG_dev_data.mat']), 'a');
+    
+    st = 0.2;
+    ed = 0:st:10;
+    figure('Name', 'Deviation from KOG'); n = histc(a,ed);
+    bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+    saveimg( saveres, 1, OutDir, prefix, 'KOG_dev', 'png', comment);
+    
+    figure('Name', 'Deviation from KOG (cumulative)');
+    bar(ed(1:end-1)+st/2,cumsum(n(1:end-1)/length(mori)),'BarWidth',1); ylim([0 1])
+    saveimg( saveres, 1, OutDir, prefix, 'KOG_dev_cum', 'png', comment);
+    n
+%     pause;
+
+
+    % Prepare results
+    optORm = normalizeOR('ori', {phi1, Phi, phi2});
+    optOR = [phi1, Phi, phi2]/degree;
     return;
 end
 
@@ -386,16 +411,27 @@ dz1 = x(3);
 % fprintf(f_rep,'Final: [%f %f %f]*degree\r\n', dx1/degree, dy1/degree, dz1/degree);
 
 % Plot histogram for best OR
-kog = getKOG(dx1, dy1, dz1, varargin{:});
-ang = close2KOG(mori, kog, eps);
-figure('Name','Final IVM deviation'); hist(ang,64);
-saveimg( saveres, 1, OutDir, prefix, 'dev_final', 'png', comment);
+% kog = getKOG(dx1, dy1, dz1, varargin{:});
+% ang = close2KOG(mori, kog, eps);
+% figure('Name','Final IVM deviation'); hist(ang,64);
+% saveimg( saveres, 1, OutDir, prefix, 'dev_final', 'png', comment);
 
+plotKOGDeviation(mori, dx1, dy1, dz1, eps, 'Final IVM deviation', 'dev_final', saveres, OutDir, prefix, comment);
+    
 % Prepare results
 optORm = normalizeOR('ori', {dx1, dy1, dz1});
 optOR = [dx1, dy1, dz1]/degree;
 end
 
+
+function plotKOGDeviation(mori, phi1, Phi, phi2, eps, title, name, saveres, OutDir, prefix, comment)
+
+    % Plot histogram for best OR
+    kog = getKOG(phi1, Phi, phi2);
+    ang = close2KOG(mori, kog, eps);
+    figure('Name',title); hist(ang,64);
+    saveimg( saveres, 1, OutDir, prefix, name, 'png', comment);
+end
 
 
 function iv = setInterval(x,dx,n)
