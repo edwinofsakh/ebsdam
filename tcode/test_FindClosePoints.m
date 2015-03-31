@@ -1,5 +1,7 @@
-%% Find pattern
+ebsd = ak06_load();
+ebsd = cutEBSD(ebsd, 0,0, 100,100);
 
+%% Find pattern
 patterns = [];
 for k = 1:1
     % get coordinates
@@ -12,7 +14,7 @@ for k = 1:1
     MY = max(Y);
     
     i = randi(length(X),1);
-    a = 0.3;
+    a = 1;
     
     while ((X(i) - mX) <= 2*a || (Y(i) - mY) <= 2*a) || ((MX - X(i)) <= 2*a || (MY - Y(i)) <= 2*a)
         i = randi(length(X),1);
@@ -47,19 +49,19 @@ X2 = MX-X > 1.5*a;
 Y1 = Y-mY > 1.5*a;
 Y2 = MY-Y > 1.5*a;
 
-iind = find(X1&X2&Y1&Y2);
+in_ind = find(X1&X2&Y1&Y2);
 
-iind2 = repmat(patterns',length(iind),1) + repmat(iind,1,length(patterns));
+iind2 = repmat(patterns',length(in_ind),1) + repmat(in_ind,1,length(patterns));
 
 scatter(X,Y,5,'sb');
 hold on;
 scatter(X(iind2(:)),Y(iind2(:)),5,'sr');
 
-%%
+%% Process all orientation
 o = get(ebsd,'orientation');
 c = fix(length(patterns)/2)+1;
 
-for i = 1:length(iind)
+for i = 1:length(in_ind)
     ind = iind2(i,:);
     j = ind(c);
     o0 = o(j);
@@ -69,6 +71,28 @@ for i = 1:length(iind)
     dX = X(ind)-X(j);
     dY = Y(ind)-Y(j);
 end
+
+%% Process all orientation
+
+
+c = mat2cell(o(iind2), ones(1,length(in_ind)), length(pt));
+om = repmat(Eori,length(in_ind),1);
+
+s = fix(length(in_ind)/20);
+
+length(in_ind)
+for i = 1:length(in_ind)
+    [om(i), d(i)] = mean(c{i});
+    if (mod(i,s) == 0)
+        i
+    end
+end
+
+%%
+ebsd2 = ebsd;
+o2 = o;
+o2(in_ind) = om;
+ebsd2 = set(ebsd2, 'rotations', o2);
 
 %%
 A = repmat(patterns',length(X),1);
