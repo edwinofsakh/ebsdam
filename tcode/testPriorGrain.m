@@ -9,7 +9,7 @@ N = 16; % Size of product grains grid
 Np = 4; % Size of parent grains grid
 
 sdev = 0.2;      % Spatial deviation (1 close to distance between grain centers)
-odev = 0*degree; % Orientation deviation in degree
+odev = 1*degree; % Orientation deviation in degree
 
 ORmat = getOR('KS'); % Orientation relation
 
@@ -23,7 +23,7 @@ w2   = 3*degree;
 PRm  = 1.4;
 
 %% Create test sample
-if (1)
+if ~existResultData('testPriorGrain_save011')
     [X, Y, in, in_xy, in0, in0_xy] = gridPriorGrains(N, Np, sqrt(3)/2, 0.5, 'dev', sdev);
     [ebsd, ori0] = Grid2EBSD(X,Y, 20, 'OR', ORmat, 'prior', in, 'crop', 'none', 'dev', odev, 'removeCloseOri', 5*degree);
     plotpdf(ori0,Miller(1,0,0), 'antipodal', 'MarkerSize',4);
@@ -35,6 +35,13 @@ if (1)
 else
     [S, ebsd, ori0, grains] = loadResultData('testPriorGrain_save01', 'ebsd', 'ori0', 'grains');
 end
+
+%% Add noise
+ori = get(ebsd, 'orientation');
+ori2 = setOriDev(ori, 0.5*degree);
+ebsd2 = set(ebsd,'rotations',ori2);
+
+clear ori ori2
 
 %% Processing
 
