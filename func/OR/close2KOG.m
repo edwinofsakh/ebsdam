@@ -1,4 +1,5 @@
 function [a, ind1, ind2, b] = close2KOG(mori, kog, epsilon)
+% Find misorientation close to KOG
 
 b = angle_outer(kog,mori);
 [b,ind] = min(b,[],1);
