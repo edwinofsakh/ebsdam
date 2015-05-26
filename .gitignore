@@ -1,2 +1,5 @@
 *.mat
 *.asv
+*~
+EBSDAM_settings.m
+Taylor/
