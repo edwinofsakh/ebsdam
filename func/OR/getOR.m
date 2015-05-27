@@ -44,6 +44,7 @@ function [ A, o ] = getOR( ORdata )
 %% History
 %  16.10.12 Transpose KS, M1(old V1)
 %  01.04.13 Add some comments. Check orientation operation.
+%  27.05.15 Change order in euler2OR. Normalize at first.
 
 if isa(ORdata, 'char')
 	[ A, o ] = name2OR(ORdata);
@@ -162,7 +163,7 @@ function [A, o] = euler2OR(EA)
 
 CS = symmetry('m-3m');
 
-o = orientation('euler', EA(1),EA(2),EA(3), CS,CS);
-
 A = normalizeOR('ori', {EA});
+
+o = orientation('matrix', A, CS,CS);
 end

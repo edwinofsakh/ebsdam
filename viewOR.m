@@ -126,11 +126,10 @@ else
     [~,ORm] = getOR(optORm);
     getVarAngles(optORm);
 
-    a1 = angle(Miller(1,1,1), ORm * Miller(0,1,1))/degree
-    a2 = angle(Miller(-1,0,1), ORm * Miller(-1,-1,1))/degree
+    [CPP, CPD] = calcCP_dev(ORm);
 
-    fprintf(f_rep, 'Angle between planes: %d.\r\n', a1);
-    fprintf(f_rep, 'Angle between directions: %d.\r\n', a2);
+    fprintf(f_rep, 'Angle between planes: %d.\r\n', CPP);
+    fprintf(f_rep, 'Angle between directions: %d.\r\n', CPD);
 end
 
 fclose(f_rep);
