@@ -63,7 +63,7 @@ if check_option(varargin, 'firstView')
 
     % Calculation
     kog = getKOG(phi1, Phi, phi2, varargin{:});
-    a = close2KOG(mori, kog, 10*degree);
+    [a,~,~,b,b0,ind] = close2KOG(mori, kog, 10*degree);
     
     save(fullfile(OutDir, [prefix 'KOG_dev_data.mat']), 'a');
     
@@ -77,6 +77,25 @@ if check_option(varargin, 'firstView')
     bar(ed(1:end-1)+st/2,cumsum(n(1:end-1)/length(mori)),'BarWidth',1); ylim([0 1])
     saveimg( saveres, 1, OutDir, prefix, 'KOG_dev_cum', 'png', comment);
     n
+    
+    % Full
+    st = 0.5;
+    ed = 0:st:30;
+    figure('Name', 'Deviation from KOG (Full)'); n = histc(b/degree,ed);
+    bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+    
+    for i = 1:23
+        figure('Name', ['Deviation from KOG (Full) V' int2str(i)]); n = histc(b0(i,:)/degree,ed);
+        bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+        saveimg( saveres, 1, OutDir, prefix, ['KOG_V' int2str(i)], 'png', comment);
+    end
+    
+    for i = 1:23
+        bs = b(ind == i)/degree;
+        figure('Name', ['Deviation from KOG (Selected) V' int2str(i)]); n = histc(bs,ed);
+        bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+        saveimg( saveres, 1, OutDir, prefix, ['KOG_selV' int2str(i)], 'png', comment);
+    end
 %     pause;
 
 
@@ -84,6 +103,15 @@ if check_option(varargin, 'firstView')
     optORm = normalizeOR('ori', {phi1, Phi, phi2});
     optOR = [phi1, Phi, phi2]/degree;
     return;
+end
+
+% Remove far mori
+if check_option(varargin, 'removeFar')
+    kog = getKOG(phi1, Phi, phi2, varargin{:});
+    [~, ind1, ~, ~] = close2KOG(mori, kog, 5*degree);
+    mori0 = mori;
+    mori = mori(ind1);
+    mori = mori(randi(length(mori),8000,1));
 end
 
 % Derivative-free optimization
