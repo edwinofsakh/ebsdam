@@ -41,7 +41,7 @@ else
     if isempty(prior) || ~isequal(prior,0)
         warning('Bad prior grain data. Generate standard grains.') %#ok<WNTAG>
     end
-    ebsd = calcEBSD(SantaFe,length(X(:)));
+    ebsd = calcEBSD(uniformODF(symmetry('m-3m'),symmetry('-1')),length(X(:)));
     ebsd = set(ebsd,'x',X(:));
     ebsd = set(ebsd,'y',Y(:));
     ebsd0 = ebsd;

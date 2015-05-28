@@ -79,23 +79,23 @@ if check_option(varargin, 'firstView')
     n
     
     % Full
-    st = 0.5;
+    st = 1;
     ed = 0:st:30;
     figure('Name', 'Deviation from KOG (Full)'); n = histc(b/degree,ed);
     bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
     
-    for i = 1:23
-        figure('Name', ['Deviation from KOG (Full) V' int2str(i)]); n = histc(b0(i,:)/degree,ed);
-        bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
-        saveimg( saveres, 1, OutDir, prefix, ['KOG_V' int2str(i)], 'png', comment);
-    end
-    
-    for i = 1:23
-        bs = b(ind == i)/degree;
-        figure('Name', ['Deviation from KOG (Selected) V' int2str(i)]); n = histc(bs,ed);
-        bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
-        saveimg( saveres, 1, OutDir, prefix, ['KOG_selV' int2str(i)], 'png', comment);
-    end
+%     for i = 1:23
+%         figure('Name', ['Deviation from KOG (Full) V' int2str(i)]); n = histc(b0(i,:)/degree,ed);
+%         bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+%         saveimg( saveres, 1, OutDir, prefix, ['KOG_V' int2str(i)], 'png', comment);
+%     end
+%     
+%     for i = 1:23
+%         bs = b(ind == i)/degree;
+%         figure('Name', ['Deviation from KOG (Selected) V' int2str(i)]); n = histc(bs,ed);
+%         bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+%         saveimg( saveres, 1, OutDir, prefix, ['KOG_selV' int2str(i)], 'png', comment);
+%     end
 %     pause;
 
 
