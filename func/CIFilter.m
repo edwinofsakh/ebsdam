@@ -1,25 +1,21 @@
-function [ ebsd_f, par, vm, q ] = simpleFilter( ebsd, cr, varargin)
-% Simple filtration
+function [ ebsd_f, par, vm, q ] = CIFilter( ebsd, cr)
+% EBSD CI filtration
 %
 % Syntax
-%   [ ebsd_f, vm, q ] = simpleFilter( ebsd, cr )
+%   [ ebsd_f, vm, q ] = CIFilter( ebsd, cr )
 %
 % Output
-%   ebsd_f  - ***
+%   ebsd_f  - Filtered EBSD data
 %
 % Input
 %   ebsd    - EBSD data
 %   cr      - filtration criteria
 %
-% Options
-%   par     - parameter for filtration
-%   dir     - direction of parameter: 0 - more is better, 1 - less is better
-%
 % Example
-%   ebsd = simpleFilter( ebsd, 0.1, 'par', {'ci'}, 'dir', [0]);
+%   ebsd = CIFilter( ebsd, 0.1);
 %
 % History
-% 12.04.13  Original implementation
+% 08.06.15  Original implementation
 
 v = cell(1,3);
 vm = cell(1,3);
@@ -27,8 +23,8 @@ vm = cell(1,3);
 h = zeros(1,3);
 l = zeros(1,3);
 
-par = get_option(varargin, 'par', {'iq','ci','fit'});
-dir = get_option(varargin, 'dir', [   0,   0,    1]);
+par = {'ci'};
+dir = [   0];
 
 ind = [];
 for k = 1:length(par)

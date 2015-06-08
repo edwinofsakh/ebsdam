@@ -35,7 +35,7 @@ if ~check_option(tasks, 'realRecon')
     op = fishParent(ebsd, ORmat, cr, sid, rid, w1, vv, w2, PRmin);
     out = {'prnOri', mean(op)};
 else 
-    param = get_option(tasks,'ParentRecParam', [0.2, 3*degree, 6, 1.4, 4*degree, 6*degree, 0*degree, 10*degree,]);
+    param = get_option(tasks,'ParentRecParam', [0.1, 3*degree, 6, 1.4, 4*degree, 6*degree, 0*degree, 10*degree,]);
     options = get_option(tasks,'ParentRecParam', {'NeighborsOrder', 1, 'onlyFirst', 'combineClose', 'NOuseWeightFunc', 'refineOri'});
     
     cr    = param(1);
@@ -47,7 +47,7 @@ else
     w12   = param(7);
     w2    = param(8);
     
-    ebsd = simpleFilter(ebsd, cr);
+    ebsd = CIFilter(ebsd, cr);
     
     grains = getGrains(ebsd, 2*degree, 2);
 

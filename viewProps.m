@@ -57,16 +57,17 @@ ebsd = checkEBSD(sid, ebsd, 'Fe');
 
 comment = getComment();
 
-% plot property
-figure();
-plot(ebsd, 'property',prop);
-colorbar;
-saveimg( saveres, 1, OutDir, sid, [rid '_map_' prop], 'png', comment );
+% % plot property
+% figure();
+% plot(ebsd, 'property',prop);
+% colorbar;
+% saveimg( saveres, 1, OutDir, sid, [rid '_map_' prop], 'png', comment );
 
 % plot property in gray
 figure();
 plot(ebsd, 'property',prop);
 colormap(gray);
+colorbar;
 saveimg( saveres, 1, OutDir, sid, [rid '_map_' prop '_gray'], 'png', comment );
 
 % plot property in gray without axis

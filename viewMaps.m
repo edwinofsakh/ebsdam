@@ -87,15 +87,7 @@ end
 if doODF
     varargin = addTaskVars(doODF, varargin);
     
-    if ~ischar(sid)
-        warning('Use general sample symmetry.'); %#ok<WNTAG>
-    else
-        isCaching = getpref('ebsdam','caching');
-        setpref('ebsdam','caching',0);
-        ebsd = checkEBSD(sid, 0, 'Fe', 'odf');
-        setpref('ebsdam','caching',isCaching);
-        ebsd = getRegion(ebsd, region);
-    end
+    ebsd = set(ebsd,'SS', symmetry('222'));
 
     if (check_option(varargin, 'calcKernel'))
         grains = calcGrains(ebsd);

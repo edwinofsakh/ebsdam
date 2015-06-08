@@ -61,7 +61,7 @@ comment = getComment();
 % Prepare EBSD region
 ebsd = checkEBSD(sid, ebsd, 'Fe');
 ebsd = getRegion(ebsd, region);
-ebsd = simpleFilter(ebsd, 0.1);
+ebsd = CIFilter(ebsd, 0.1);
 
 % Prepare grains
 grains = getGrains(ebsd, thr, mgs);
