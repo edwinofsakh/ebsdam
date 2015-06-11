@@ -1,4 +1,4 @@
-function [ ebsd ] = a_load( fname, cs, ss, type, hdr, flipx, flipy )
+function [ ebsd ] = load_patterns( fname, cs, ss, type, hdr, flipx, flipy )
 %Pattern for loading Prometey's EBSD data (Euler angle in radians)
 %   Universal loading pattern for Prometey's data. Prometey usually use
 %   '.ang' files.
@@ -13,7 +13,7 @@ function [ ebsd ] = a_load( fname, cs, ss, type, hdr, flipx, flipy )
 %   ebsd    - ebsd data
 %
 % Syntax
-%   [ ebsd ] = a_load( fname, cs, ss, type, hdr, flipx, flipy )
+%   [ ebsd ] = load_patterns( fname, cs, ss, type, hdr, flipx, flipy )
 %
 % History
 % 29.10.12  Original implementation
