@@ -123,10 +123,9 @@ else
     figure('Name','Non specific boundaries distribution'); hist(aa(b > eps2),64);
     saveimg( saveres, 1, OutDir, prefix, 'non_spec', 'png', comment);
 
-    [~,ORm] = getOR(optORm);
     getVarAngles(optORm);
 
-    [CPP, CPD] = calcCP_dev(ORm);
+    [CPP, CPD] = calcCP_dev(optORm);
 
     fprintf(f_rep, 'Angle between planes: %d.\r\n', CPP);
     fprintf(f_rep, 'Angle between directions: %d.\r\n', CPD);

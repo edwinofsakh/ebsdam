@@ -355,7 +355,7 @@ fprintf(f_rep, 'Start optimization\r\n');
 
 % stepIter = get_option(varargin, 'stepIter', [ 2 1 0.5 0.1]*degree, 'double');
 % maxIter  = get_option(varargin,  'maxIter',             3        , 'double');
-epsIter  = get_option(varargin,  'epsilon', [10 5   5   4]*degree, 'double');
+epsIter  = get_option(varargin,  'epsilon', 8*degree, 'double');
 
 % dd = unique([perms([1 0 0]);perms([1 1 0]); 1 1 1;...
 %     perms([-1 0 0]);perms([-1 1 0]);perms([-1 -1 0]);...

@@ -34,8 +34,7 @@ n = numel(X);
 CPP = zeros(1,n);
 CPD = zeros(1,n);
 for i = 1:n
-	[~,o] = getOR([X(i) Y(i) Z(i)]*degree);
-	[CPP(i),CPD(i)] = calcCP_dev(o);
+	[CPP(i),CPD(i)] = calcCP_dev([X(i) Y(i) Z(i)]*degree);
 end
 
 figure();

@@ -1,4 +1,4 @@
-function [CPP, CPD] = calcCP_dev(ORm)
+function [CPP, CPD] = calcCP_dev(OR)
 % Calculation deviation from CPP and CPD
 %   Calculation deviation from CPP and CPD after phase transformation in
 %   steel. ORm matrix transform \_alpha direction and plane to \_gamma.
@@ -16,7 +16,7 @@ function [CPP, CPD] = calcCP_dev(ORm)
 % History
 % 27.05.15  Original implementation
 
-CPP = angle(Miller(1,1,1), ORm * Miller(0,1,1))/degree;
-CPD = angle(Miller(-1,0,1), ORm * Miller(-1,-1,1))/degree;
-
+[~,ORo] = getOR(OR);
+CPP = angle(Miller(1,1,1), ORo * Miller(0,1,1))/degree;
+CPD = angle(Miller(-1,0,1), ORo * Miller(-1,-1,1))/degree;
 end
