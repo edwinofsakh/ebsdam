@@ -42,6 +42,7 @@ if ~check_option(varargin, 'thrd')
     fprintf(f_rep, 'Use default THRD value (%d).\r\n', thrd);
 end
 
+% For non specific boundaries
 eps2d = get_option(varargin, 'eps2d', 8, 'double');
 eps2  = eps2d*degree;
 fprintf(f_rep, 'EPS2D value: %d.\r\n', eps2d);

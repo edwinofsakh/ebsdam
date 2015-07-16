@@ -1,17 +1,17 @@
-function [filename] = saveimg( saveres, fclose, outdir, prefix, desc, ext, comment )
+function [filename] = saveimg( saveres, closeFig, outdir, prefix, desc, ext, comment )
 % Save image to disk
 %   Save image to output directory on disk, with specific name. Can close
 %   figure.
 %
 % Syntax
-%   saveimg( saveres, fclose, outdir, prefix, desc, ext, comment )
+%   saveimg( saveres, isfclose, outdir, prefix, desc, ext, comment )
 %
 % Output
 %   filename- name of the file where the image was saved
 %
 % Input
 %   saveres - save results to disk (1 - yes, 0 - no)
-%   fclose  - close all figure after saving (1 - yes, 0 - no)
+%   closeFig- close all figure after saving (1 - yes, 0 - no)
 %   outdir  - output directory
 %   prefix  - file name prefix
 %   desc    - file name description
@@ -37,7 +37,7 @@ filename = fullfile(outdir, [prefix '_' desc '.' ext]);
 if (saveres == 1 || getpref('ebsdam', 'saveResult') == 1)
     savefigure(filename);
     % Close all figure
-    if(fclose)
+    if(closeFig)
         close all;
     end
     

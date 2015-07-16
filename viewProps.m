@@ -21,6 +21,7 @@ function out = viewProps( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSD,I
 % 14.04.13  Add saveing of comment.
 % 26.03.14  New input system. 'THRD', 'MGS', 'EPSD' - from 'varargin'.
 % 05.04.14  New output system.
+% 18.06.15  Fix error. Add region id for histogram file prefix.
 
 out = {};
 
@@ -85,6 +86,6 @@ figure('Name',[upper(prop) ' histogram'],'NumberTitle','off');
 disp(['  ' upper(prop) '   ']);
 disp( num2str([xout', n']) );
 bar(xout, n);
-saveimg( saveres, 1, OutDir, sid, ['hist_' prop], 'png', comment );
+saveimg( saveres, 1, OutDir, sid, [rid '_hist_' prop], 'png', comment );
 
 end
