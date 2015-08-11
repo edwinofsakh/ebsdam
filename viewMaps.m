@@ -47,8 +47,12 @@ doOriMap     = get_option(tasks,'doOriMap',      0);
 doPoleMap    = get_option(tasks,'doPoleMap',     0);
 doODF        = get_option(tasks,'doODF',         0);
 
-nn = {'1','2','3'};
-vv = {xvector,yvector,zvector};
+un = get_option(varargin, 'EBSD_vectorsName', {'1','2','3'});
+ud = get_option(varargin, 'EBSD_vectorsDir', {xvector,yvector,zvector});
+
+vn = get_option(varargin, 'IPDF_vectorsName', {'1','2','3'});
+vd = get_option(varargin, 'IPDF_vectorsDir', {xvector,yvector,zvector});
+mm = get_option(varargin, 'PDF_indices', [Miller(1,0,0),Miller(1,1,0),Miller(1,1,1)]);
 
 %% Mark region
 if doRgnMap
@@ -63,23 +67,23 @@ end
 if doOriMap
     for i = 1:3
         figure();
-        plot(ebsd, 'antipodal', 'r',vv{i});
-        saveimg( saveres, 1, OutDir, sid, [rid '_map_' nn{i}], 'png', comment );
+        plot(ebsd, 'antipodal', 'r',ud{i});
+        saveimg( saveres, 1, OutDir, sid, [rid '_map_' un{i}], 'png', comment );
     end
 end
 
 if doPoleMap
     % Pole figure
-    plotpdf(ebsd('Fe'),[Miller(1,0,0),Miller(1,1,0),Miller(1,1,1)],'antipodal','silent','FontSize',8, 'MarkerSize', 1);
+    plotpdf(ebsd('Fe'),mm ,'antipodal', 'silent', 'FontSize', 8, 'MarkerSize', 1);
     annotate([xvector,yvector,zvector],'BackgroundColor','w');
-    saveimg(saveres, 1, OutDir, sid, [rid '_pdf'], 'png', comment);
+    saveimg(saveres, 1, OutDir, sid, [rid '_pdf_orig'], 'png', comment);
 
     % Inverse pole figure
     for i = 1:3
         figure;
-        plotipdf(ebsd('Fe'),vv{i}, 'antipodal', 'MarkerSize', 0.5, 'MarkerColor', 'k');
+        plotipdf(ebsd('Fe'),vd{i}, 'antipodal', 'MarkerSize', 0.5, 'MarkerColor', 'k');
         annotate([Miller(1,0,0),Miller(1,1,0),Miller(1,1,1),Miller(1,1,2)],'all','labeled');
-        saveimg(saveres, 1, OutDir, sid, [rid '_ipdf_orig_' nn{i}], 'png', comment);
+        saveimg(saveres, 1, OutDir, sid, [rid '_ipdf_orig_' vn{i}], 'png', comment);
     end
 end
 
@@ -99,13 +103,19 @@ if doODF
 
     odf = calcODF(ebsd('Fe'),'kernel',psi);
 
+    % Pole figure
+    figure;
+    plotpdf(odf, mm, 'antipodal', 'MarkerSize', 2, 'Complete');
+    annotate([xvector,yvector,zvector],'BackgroundColor','w');
+    saveimg(saveres, 1, OutDir, sid, [rid '_pdf'], 'png', comment);
+    
     % Inverse pole figure
     for i = 1:3
         figure;
-        plotipdf(odf,vv{i}, 'antipodal', 'MarkerSize', 2);
+        plotipdf(odf,vd{i}, 'antipodal', 'MarkerSize', 2);
         annotate([Miller(1,0,0),Miller(1,1,0),Miller(1,1,1),Miller(1,1,2)],'all','labeled');
         colorbar;
-        saveimg(saveres, 1, OutDir, sid, [rid '_ipdf_' nn{i}], 'png', comment);
+        saveimg(saveres, 1, OutDir, sid, [rid '_ipdf_' vn{i}], 'png', comment);
     end
 
     % Plot ODF
