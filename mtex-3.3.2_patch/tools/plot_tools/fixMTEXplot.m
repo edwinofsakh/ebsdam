@@ -15,6 +15,10 @@ if ~strcmpi(get(fig,'type'),'figure')
   varargin = set_default_option(varargin,'noresize');
 end
 
+% !!! SP
+fs = get(ax, 'FontSize');
+set(ax, 'FontSize', get_option(varargin, 'FontSize', fs));
+
 old_fig_units = get(fig,'units');
 old_ax_units = get(ax,'units');
 set(fig,'units','pixels');
@@ -63,6 +67,7 @@ end
 if ~isappdata(fig,'gridoff')
     grid on;
 end
+% !!! end
 
 fig_pos = get(fig,'position');
 

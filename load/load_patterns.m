@@ -22,6 +22,14 @@ function [ ebsd ] = load_patterns( fname, cs, ss, type, hdr, flipx, flipy )
 
 % Type of data loading
 switch type
+    case 'test2'
+        rad = 0;
+        colnames = { 'Euler 1' 'Euler 2' 'Euler 3' 'Phase' 'x' 'y'};
+        colnum = 1:6;
+    case 'test1'
+        rad = 0;
+        colnames = { 'Euler 1' 'Euler 2' 'Euler 3' 'Phase' 'x' 'y' 'iq' 'ci'};
+        colnum = 1:8;
     case 'prometey'
         rad = 1;
         colnames = { 'Euler 1' 'Euler 2' 'Euler 3' 'x' 'y' 'IQ' 'CI' 'Phase' 'SEM' 'Fit'};

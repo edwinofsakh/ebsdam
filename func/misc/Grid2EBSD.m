@@ -20,7 +20,7 @@ function [ebsd_f, ori0, ebsd, ebsd0] = Grid2EBSD(X, Y, S, varargin)
 %               'center'    - crop center area
 %               'area'      - set area like [minX, maxX, minY, maxY];
 %   display - plot mesh
-%   removeCloseOri - recalc close orientations
+%   removeCloseOri - recalc close prior orientations
 %
 % Example
 %   ebsd_f = Grid2EBSD(X, Y, 20, getOR(KS), varargin);
@@ -47,10 +47,16 @@ else
     ebsd0 = ebsd;
 end
 
-ebsd = set(ebsd,'phaseMap',1);
-ebsd = set(ebsd,'phase',ones(length(ebsd),1));
-ebsd = set(ebsd,'CS',symmetry('m-3m', 'mineral','Fe'));
-    
+if check_option(varargin, 'twoPhase')
+    ebsd = set(ebsd,'phaseMap',[1 2]);
+    ebsd = set(ebsd,'phase',randi(2, length(ebsd),1));
+    ebsd = set(ebsd,'CS',{symmetry('m-3m', 'mineral','Fe'), symmetry('m-3m', 'mineral','Au')});    
+else
+    ebsd = set(ebsd,'phaseMap',1);
+    ebsd = set(ebsd,'phase',ones(length(ebsd),1));
+    ebsd = set(ebsd,'CS',symmetry('m-3m', 'mineral','Fe'));
+end
+
 % Rotate data
 plotx2east;
 
@@ -89,6 +95,11 @@ end
 
 % Fill EBSD data
 ebsd_f = fill(ebsd,warea,1/S);
+
+if check_option(varargin, 'addProperties')
+    ebsd_f = set(ebsd_f,'IQ',rand(length(ebsd_f),1));
+    ebsd_f = set(ebsd_f,'CI',0.21*rand(length(ebsd_f),1));
+end
 
 % Display EBSD map
 if check_option(varargin, 'display')
