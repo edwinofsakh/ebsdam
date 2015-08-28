@@ -16,7 +16,7 @@ function [ ebsd ] = checkEBSD( sid, ebsd, phase, varargin )
 % 26.04.14 Always check phase
 
 % Load data
-if ~isa(ebsd, 'ebsd')
+if ~isa(ebsd, 'EBSD')
     ebsd = eval([sid '_load( varargin{:})']);
 end
 

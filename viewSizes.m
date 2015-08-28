@@ -36,6 +36,7 @@ function out = viewSizes( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
 % 26.04.14  New input system. 'THRD', 'MGS', 'EPSD' - from 'varargin'.
 % 05.04.14  New output system.
 % 22.09.14  Markup.
+% 09.02.15  Move to Linux
 
 %% Preparation
 
@@ -70,7 +71,7 @@ end
 
 function ags = GrainSize4DifAngle( sid, rid, ebsd, saveres, thrd, mgs, outdir, prefix, varargin)
 % Output diectory for temporary grains map
-outdirsec = checkDir(sid, 'sizes\sec', saveres, varargin{:});
+outdirsec = checkDir(sid, fullfile('sizes','sec'), saveres, varargin{:});
 
 comment = getComment();
 
@@ -177,7 +178,7 @@ else
     saveimg( 1, 1, outdir, prefix, 'sec', 'png', comment );
 
     % Generate grain map image filename
-    fname =  [outdir '\' prefix '_sec.png'];
+    fname =  fullfile(outdir, [prefix '_sec.png']);
 
     % Get ebsd data size for calculate image resolation (um per pixel)
     [~,~,~,~,sx,sy] = getStep(get(grains, 'ebsd'));

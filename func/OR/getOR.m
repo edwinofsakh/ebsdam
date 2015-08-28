@@ -44,6 +44,7 @@ function [ A, o ] = getOR( ORdata )
 %% History
 %  16.10.12 Transpose KS, M1(old V1)
 %  01.04.13 Add some comments. Check orientation operation.
+%  27.05.15 Change order in euler2OR. Normalize at first.
 
 if isa(ORdata, 'char')
 	[ A, o ] = name2OR(ORdata);
@@ -77,6 +78,10 @@ switch (ORname)
     A = [ 0.7071   0.6969   0.1196;
          -0.7071   0.6969   0.1196;
           0       -0.1691   0.9856; ];
+    case 'GT' % ?
+    A = [ 0.7258   0.6743   0.1363;
+         -0.6871   0.7204   0.0948;
+         -0.0342  -0.1625   0.9861; ];
     case 'M1' % +
    	A = [ 0.7174   0.6837   0.1340;
          -0.6952   0.7150   0.0742;
@@ -101,7 +106,12 @@ switch (ORname)
         error('Unknown orientation relation: %s', ORname);
 end
 
-o = orientation('matrix', A, CS,CS);
+% % Orthogonalise matrix
+% Q = A*((A')*A)^(-0.5);
+% 
+% o = orientation('matrix', Q, CS,CS);
+
+[A, o] = mtr2OR(A);
 
 % r = symmetrise(o);
 % 
@@ -144,15 +154,20 @@ function [A, o] = mtr2OR(A)
 
 CS = symmetry('m-3m');
 
-o = orientation('matrix', A, CS,CS);
+% Orthogonalise matrix
+Q = A*((A')*A)^(-0.5);
 
+o = orientation('matrix', Q, CS,CS);
+% EA = Euler(o);
+
+% [A, o] = euler2OR(EA);
 end
 
 function [A, o] = euler2OR(EA)
 
 CS = symmetry('m-3m');
 
-o = orientation('euler', EA(1),EA(2),EA(3), CS,CS);
-
 A = normalizeOR('ori', {EA});
+
+o = orientation('matrix', A, CS,CS);
 end

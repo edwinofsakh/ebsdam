@@ -14,8 +14,9 @@ function saveResultData( filename, varargin )
 % History
 % 13.08.14  Original implementation
 % 20.09.14  Fix description
+% 09.02.15  Move to Linux
 
-outdir = [getpref('ebsdam','output_dir') '\data'];
+outdir = fullfile(getpref('ebsdam','output_dir'), 'data');
 
 if ~exist(outdir, 'dir')
     mkdir(outdir);
@@ -28,7 +29,7 @@ if nargin > 1
         S.(inputname(i)) = varargin{i-1};
     end
     
-    save([outdir '\' filename], '-struct','S');
+    save(fullfile(outdir, filename), '-struct','S');
 end
 
 end

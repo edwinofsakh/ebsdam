@@ -45,7 +45,7 @@ func = {@viewMaps, @viewPhases, @viewProps, @viewOR, @viewGrains, @viewSizes, @v
 %% Processing
 
 % load data
-if ~isa(ebsd, 'ebsd')
+if ~isa(ebsd, 'EBSD')
     ebsd = eval([sid '_load( varargin{:})']);
 end
 

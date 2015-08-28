@@ -32,8 +32,6 @@ function out = viewGrains( sid, rid, region, ebsd, tasks, varargin ) %#ok<INUSL>
 
 out = {};
 
-varargin = [varargin tasks];
-
 % Check vars
 if check_option(varargin, 'mgs')
     mgs = get_option(varargin, 'mgs');
@@ -69,35 +67,35 @@ end
 
 %% Tasklist
 % Grains map
-doGrainsMap     = get_option(varargin,'doGrainsMap',      0);
-doGrainsMapAll  = get_option(varargin,'doGrainsMapAll',   0);
-doGrainsMapLrg  = get_option(varargin,'doGrainsMapLrg',   0);
+doGrainsMap     = get_option(tasks,'doGrainsMap',      0);
+doGrainsMapAll  = get_option(tasks,'doGrainsMapAll',   0);
+doGrainsMapLrg  = get_option(tasks,'doGrainsMapLrg',   0);
 
 % Boundary map
-doBndHighOnly   = get_option(varargin,'doBndHighOnly',    0);
-doBndHighAngle  = get_option(varargin,'doBndHighAngle',   0);
-doBndKOG        = get_option(varargin,'doBndKOG',         0);
-doBndKOGPkg     = get_option(varargin,'doBndKOGPkg',      0);
-doBndKOGBain    = get_option(varargin,'doBndKOGBain',     0);
-doBndIntFull    = get_option(varargin,'doBndIntFull',     0);
-doBndInt        = get_option(varargin,'doBndInt',         0);
-doBndExtRange   = get_option(varargin,'doBndExtRange',    0);
-doBndAllRange   = get_option(varargin,'doBndAllRange',    0);
-doBndAngle      = get_option(varargin,'doBndAngle',       0);
+doBndHighOnly   = get_option(tasks,'doBndHighOnly',    0);
+doBndHighAngle  = get_option(tasks,'doBndHighAngle',   0);
+doBndKOG        = get_option(tasks,'doBndKOG',         0);
+doBndKOGPkg     = get_option(tasks,'doBndKOGPkg',      0);
+doBndKOGBain    = get_option(tasks,'doBndKOGBain',     0);
+doBndIntFull    = get_option(tasks,'doBndIntFull',     0);
+doBndInt        = get_option(tasks,'doBndInt',         0);
+doBndExtRange   = get_option(tasks,'doBndExtRange',    0);
+doBndAllRange   = get_option(tasks,'doBndAllRange',    0);
+doBndAngle      = get_option(tasks,'doBndAngle',       0);
 
 % Misoreintation distribution
-doHistMis2Mean      = get_option(varargin,'doHistMis2Mean',       0);
-doHistAllBndMis     = get_option(varargin,'doHistAllBndMis',      0);
-doHistAllBndMisSmall= get_option(varargin,'doHistAllBndMisSmall', 0);
-doHistMis           = get_option(varargin,'doHistMis',            0);
-doHistMeanMis       = get_option(varargin,'doHistMeanMis',        0);
-doHistMeanMisSmall  = get_option(varargin,'doHistMeanMisSmall',   0);
-doHistNearKOG       = get_option(varargin,'doHistNearKOG',        0);
-doHistNearKOGAll    = get_option(varargin,'doHistNearKOGAll',     0);
+doHistMis2Mean      = get_option(tasks,'doHistMis2Mean',       0);
+doHistAllBndMis     = get_option(tasks,'doHistAllBndMis',      0);
+doHistAllBndMisSmall= get_option(tasks,'doHistAllBndMisSmall', 0);
+doHistMis           = get_option(tasks,'doHistMis',            0);
+doHistMeanMis       = get_option(tasks,'doHistMeanMis',        0);
+doHistMeanMisSmall  = get_option(tasks,'doHistMeanMisSmall',   0);
+doHistNearKOG       = get_option(tasks,'doHistNearKOG',        0);
+doHistNearKOGAll    = get_option(tasks,'doHistNearKOGAll',     0);
 
 % Others
-doPlotKAM           = get_option(varargin,'doPlotKAM',            0);
-doPlotTwin          = get_option(varargin,'doPlotTwin',           0);
+doPlotKAM           = get_option(tasks,'doPlotKAM',            0);
+doPlotTwin          = get_option(tasks,'doPlotTwin',           0);
 
 %% Preparation
 % File name prefix

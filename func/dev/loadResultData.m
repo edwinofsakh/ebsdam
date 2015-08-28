@@ -1,4 +1,4 @@
-function [S, varargout] = loadResultData( filename, varargin )
+function [S, varargout] = loadResultData( fname, varargin )
 % Load data to output directory
 %
 % Syntax
@@ -12,10 +12,11 @@ function [S, varargout] = loadResultData( filename, varargin )
 %
 % History
 % 13.08.14  Original implementation
+% 09.02.15  Move to Linux
 
-outdir = [getpref('ebsdam','output_dir') '\data'];
+fpath = fullfile(getpref('ebsdam','output_dir'), 'data', fname);
 
-S = load([outdir '\' filename], varargin{:});
+S = load(fpath, varargin{:});
 
 if nargout > nargin
 	error('Bad');

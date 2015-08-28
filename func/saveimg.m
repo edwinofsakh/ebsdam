@@ -1,17 +1,17 @@
-function [filename] = saveimg( saveres, fclose, outdir, prefix, desc, ext, comment )
+function [filename] = saveimg( saveres, closeFig, outdir, prefix, desc, ext, comment )
 % Save image to disk
 %   Save image to output directory on disk, with specific name. Can close
 %   figure.
 %
 % Syntax
-%   saveimg( saveres, fclose, outdir, prefix, desc, ext, comment )
+%   saveimg( saveres, isfclose, outdir, prefix, desc, ext, comment )
 %
 % Output
 %   filename- name of the file where the image was saved
 %
 % Input
 %   saveres - save results to disk (1 - yes, 0 - no)
-%   fclose  - close all figure after saving (1 - yes, 0 - no)
+%   closeFig- close all figure after saving (1 - yes, 0 - no)
 %   outdir  - output directory
 %   prefix  - file name prefix
 %   desc    - file name description
@@ -24,19 +24,20 @@ function [filename] = saveimg( saveres, fclose, outdir, prefix, desc, ext, comme
 % 14.04.13  Add saveing of image comment
 % 07.10.13  Problem with 'saveres'. Add patch for normal working.
 % 19.11.13  Return file name
+% 09.02.15  Move to Linux
 
 % Set defualt extension
 if (ext == 0)
     ext = 'png';
 end
 
-filename = [outdir '\' prefix '_' desc '.' ext];
+filename = fullfile(outdir, [prefix '_' desc '.' ext]);
 
 % Save image to disk
 if (saveres == 1 || getpref('ebsdam', 'saveResult') == 1)
     savefigure(filename);
     % Close all figure
-    if(fclose)
+    if(closeFig)
         close all;
     end
     

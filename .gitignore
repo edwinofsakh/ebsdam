@@ -1,2 +1,6 @@
 *.mat
 *.asv
+*~
+EBSDAM_settings.m
+Taylor/
+load/*load.m

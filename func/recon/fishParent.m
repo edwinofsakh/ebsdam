@@ -31,7 +31,7 @@ end
 % opposite, so 'md' is used.
 
 
-[ebsd_f, vm, q, par] = simpleFilter(ebsd, cr);
+[ebsd_f, vm, q, par] = CIFilter(ebsd, cr);
 
 % Plot normalized properties
 if (isfulldebug)

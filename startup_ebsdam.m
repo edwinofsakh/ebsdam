@@ -49,9 +49,9 @@ disp([upper('Startup ') EBSDAMversion]);
 if install_ebsdam(mpath,basepath), return; end;
 
 % Additional dirs
-dirs = {'\func', '\func\dev', '\func\recon', '\func\misc', '\func\OR', '\func\third_party',...
-    '\load', '\tcode', '\ui'};
-dirs = cellfun(@(x) [basepath x], dirs, 'UniformOutput', false);
+dirs = {{'func'}, {'func' 'dev'}, {'func' 'recon'}, {'func' 'misc'}, {'func' 'OR'}, {'func' 'third_party'},...
+    {'load'}, {'tcode'}, {'ui'}};
+dirs = cellfun(@(p) fullfile(basepath,p{:}), dirs, 'uniformoutput', false);
 addpath(dirs{:},'-end');
 
 %rmpref('ebsdam');

@@ -18,27 +18,38 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 %   'start', ORid - start from 'ORid', argument for getOR(ORid), defualt 'KS'
 %   'continue', [phi1 Phi phi2] - continue old search starting from angles in radian
 %   'firstView'   - only plot distance from KOG histogram
-%   'stepSearch'  - stepping method 
-%   'areaSearch'  - area method
-%   'fullSearch', ang  - search in full angle space, use with 'areaSearch', 
-%                      set step size 'ang' in degree
-%   'searchRange', ang - search range in degree for area method
-%   'searchSteps', stp - number of step for area method
-%   'saveAngles'  - save array of distance angle to nearset KOG for all misorientations
-%   'epsilon'     - distance angle to nearset KOG threshold, should be high
-%                       at first iteration, and low at last.
-%   'fileName'    - name of file for saving results
 %
-%   'stepIter'    - [2 1 0.5 0.1]*degree
-%   'maxIter'     - 3
-%   'epsilon'     - [10 5 5 2]*degree
+%   'stepSearch'  - (task) stepping method
+%       'maxIter'       - number of iteration
+%       'stepIter'      - step size for each iteration
+%       'epsIter'       - epsilon (IVM selction threshold) for each iteration
+%       'reportFile'    - handler to report file
+%
+%   'freeSearch'  - (task) derivative-free optimization
+%       'epsilon'       - IVM selection threshold
+%       'reportFile'    - handler to report file
+%
+%   'areaSearch'  - (task) area method
+%       'fileName'      - name of file for reault saving
+%       'saveAngles'    - save list of deviations from IVM for each point
+%       'fullSearch'    - view full space from 0 to pi/2
+%       'searchRange'   - search range in radian for all Euler angles (if 'fullSearch' isn't set)
+%       'searchSteps'   - search range in radian for all Euler angles (if 'fullSearch' isn't set)
+%       'epsilon'       - IVM selection threshold
+%
 % History
 % 12.04.13  Original implementation?
 % 05.10.14  Add epsilon array.
+% 09.02.15  Move to Linux
+% 19.08.15  Start makeup. Make list of options.
+% 28.08.15  Small writting of freeSearch. Edit comments.
+
+optORm = [];
+optOR  = [];
 
 % Decide start new search or continue old
 if (~check_option(varargin, 'continue'))
-    ORname = get_option(varargin, 'start', 'KS', 'char');
+    ORname = get_option(varargin, 'start', 'KS');
     ORmat = getOR(ORname);
     OR = orientation('matrix', ORmat, symmetry('m-3m'), symmetry('m-3m'));
     [phi1, Phi, phi2] = Euler(OR);
@@ -51,10 +62,69 @@ end
 
 % Only distance to KOG histogram
 if check_option(varargin, 'firstView')
+    % Preparation
+    saveres = getpref('ebsdam','saveResult');
+    OutDir = checkDir(sid, 'OR', 1);
+    prefix = [sid '_' rid '_OR'];
+    comment = getComment();
+%     saveimg( saveres, 1, OutDir, prefix, 'opt_dev', 'png', comment);
+
+    % Calculation
     kog = getKOG(phi1, Phi, phi2, varargin{:});
-    a = close2KOG(mori, kog, 70*degree);
-    figure; hist(a,64);
-    pause(2);
+    [a,~,~,b,b0,ind] = close2KOG(mori, kog, 10*degree);
+    
+    save(fullfile(OutDir, [prefix '_KOG_dev_data.mat']), 'a');
+    
+    st = 0.2;
+    ed = 0:st:10;
+    figure('Name', 'Deviation from KOG'); n = histc(a,ed);
+    bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+    saveimg( saveres, 1, OutDir, prefix, 'KOG_dev', 'png', comment);
+    
+    figure('Name', 'Deviation from KOG (cumulative)');
+    bar(ed(1:end-1)+st/2,cumsum(n(1:end-1)/length(mori)),'BarWidth',1); ylim([0 1])
+    saveimg( saveres, 1, OutDir, prefix, 'KOG_dev_cum', 'png', comment);
+    n
+    
+    % Full
+    st = 1;
+    ed = 0:st:30;
+    figure('Name', 'Deviation from KOG (Full)'); n = histc(b/degree,ed);
+    bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+    
+%     for i = 1:23
+%         figure('Name', ['Deviation from KOG (Full) V' int2str(i)]); n = histc(b0(i,:)/degree,ed);
+%         bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+%         saveimg( saveres, 1, OutDir, prefix, ['KOG_V' int2str(i)], 'png', comment);
+%     end
+%     
+%     for i = 1:23
+%         bs = b(ind == i)/degree;
+%         figure('Name', ['Deviation from KOG (Selected) V' int2str(i)]); n = histc(bs,ed);
+%         bar(ed(1:end-1)+st/2,n(1:end-1)/length(mori),'BarWidth',1);
+%         saveimg( saveres, 1, OutDir, prefix, ['KOG_selV' int2str(i)], 'png', comment);
+%     end
+%     pause;
+
+
+    % Prepare results
+    optORm = normalizeOR('ori', {phi1, Phi, phi2});
+    optOR = [phi1, Phi, phi2]/degree;
+    return;
+end
+
+% Remove far mori
+if check_option(varargin, 'removeFar')
+    kog = getKOG(phi1, Phi, phi2, varargin{:});
+    [~, ind1, ~, ~] = close2KOG(mori, kog, 5*degree);
+    mori0 = mori;
+    mori = mori(ind1);
+    mori = mori(randi(length(mori),8000,1));
+end
+
+% Derivative-free optimization
+if check_option(varargin, 'freeSearch')
+    [optORm, optOR] = freeOROptim(mori, sid, rid, phi1, Phi, phi2, ORname, varargin{:});
     return;
 end
 
@@ -95,13 +165,16 @@ end
 
 
 function [mM, Eo, fname]  = areaOROptim(mori, sid, rid, phi1, Phi, phi2, ORname, varargin) %#ok<INUSL>
-% 'saveAngles'
-% 'continue'
-% 'fullSearch'
-% 'searchRange'
-% 'searchRange'
-% 'start'
-% 'epsilon'
+% Calculate average deviation from IVM for part of Euler space
+%   To visualize results use 'showOptim' function
+%
+% Parameters
+%   'fileName'      - name of file for reault saving
+%   'saveAngles'    - save list of deviations from IVM for each point
+%   'fullSearch'    - view full space from 0 to pi/2
+%   'searchRange'   - search range in radian for all Euler angles (if 'fullSearch' isn't set)
+%   'searchSteps'   - search range in radian for all Euler angles (if 'fullSearch' isn't set)
+%   'epsilon'       - IVM selection threshold
 
 eps = get_option(varargin, 'epsilon', 10*degree, 'double');
     
@@ -153,9 +226,9 @@ outdir = getpref('ebsdam','output_dir');
 fname = get_option(varargin, 'fileName', 'result', 'char');
 
 if check_option(varargin, 'saveAngles')
-    save([outdir '\optim\' sid '-' rid '_' fname '.mat'], 'M','A','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
+    save(fullfile(outdir, 'optim', [sid '-' rid '_' fname '.mat']), 'M','A','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
 else
-    save([outdir '\optim\' sid '-' rid '_' fname '.mat'], 'M','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
+    save(fullfile(outdir, 'optim', [sid '-' rid '_' fname '.mat']), 'M','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
 end
 
 [mM,I] = min( M(:));
@@ -166,12 +239,13 @@ end
 
 
 function [optORm, optOR] = stepOROptim(mori, sid, rid, phi1, Phi, phi2, ORname, varargin) %#ok<INUSL>
-% 'saveAngles'
-% 'continue'
-% 'fullSearch'
-% 'searchRange'
-% 'start'
-% 'epsilon'
+% Optimize OR using stepping method
+%
+% Parameters
+%   'maxIter'       - number of iteration
+%   'stepIter'      - step size for each iteration
+%   'epsIter'       - epsilon (IVM selction threshold) for each iteration
+%   'reportFile'    - handler to report file
 
 % Preparation
 saveres = getpref('ebsdam','saveResult');
@@ -185,8 +259,8 @@ fprintf(1,     'Start optimization\n');
 fprintf(f_rep, 'Start optimization\r\n');
 
 stepIter = get_option(varargin, 'stepIter', [ 2 1 0.5 0.1]*degree, 'double');
-maxIter  = get_option(varargin,  'maxIter',             3        , 'double');
-epsIter  = get_option(varargin,  'epsilon', [10 5   5   4]*degree, 'double');
+maxIter  = get_option(varargin,  'maxIter',             4        , 'double');
+epsIter  = get_option(varargin,  'epsIter', [10 5   5   4]*degree, 'double');
 
 dd = unique([perms([1 0 0]);perms([1 1 0]); 1 1 1;...
     perms([-1 0 0]);perms([-1 1 0]);perms([-1 -1 0]);...
@@ -213,8 +287,8 @@ fprintf(1,    'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\n',   dx1/degree
 fprintf(f_rep,'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\r\n', dx1/degree, dy1/degree, dz1/degree, ac, length(a));
         
 flag = 1;
-iter = 0;
-k = 0;
+iter = 1;
+k = 1;
 
 while (flag && k < 1000)
     a = zeros(1, size(dd,1));
@@ -242,8 +316,8 @@ while (flag && k < 1000)
     else
         if (iter < maxIter)
             iter = iter+1;
-            step = stepIter(iter+1);
-            eps  = epsIter(iter+1);
+            step = stepIter(iter);
+            eps  = epsIter(iter);
             fprintf(1,    'new iter - step %f in degree, eps - %f in degree\n',   step/degree, eps/degree);
             fprintf(f_rep,'new iter - step %f in degree, eps - %f in degree\r\n', step/degree, eps/degree);
         else
@@ -270,6 +344,67 @@ optORm = normalizeOR('ori', {dx1, dy1, dz1});
 optOR = [dx1, dy1, dz1]/degree;
 end
 
+
+
+function [optORm, optOR] = freeOROptim(mori, sid, rid, phi1, Phi, phi2, ORname, varargin) %#ok<INUSL>
+% Optimaze OR using MATLAB builtin  function fminsearch.
+%   Find minimum of unconstrained multivariable function using
+%   derivative-free method.
+%
+% Parameters
+%   'epsilon'       - IVM selection threshold
+%   'reportFile'    - handler to report file
+
+% Preparation
+saveres = getpref('ebsdam','saveResult');
+OutDir = checkDir(sid, 'OR', 1);
+prefix = [sid '_' rid '_OR'];
+comment = getComment();
+
+f_rep = get_option(varargin, 'reportFile', 1);
+
+fprintf(1,     'Start optimization\n');
+fprintf(f_rep, 'Start optimization\r\n');
+
+eps = get_option(varargin,  'epsilon', 8*degree, 'double');
+            
+kog = getKOG(phi1, Phi, phi2, varargin{:});
+a   = close2KOG(mori, kog, eps);
+
+figure('Name','Initial IVM deviation'); hist(a,64);
+saveimg( saveres, 1, OutDir, prefix, 'dev_initial', 'png', comment);
+
+ac = crit(a);
+fprintf(1,    'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\n',   phi1/degree, Phi/degree, phi2/degree, ac, length(a));
+fprintf(f_rep,'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\r\n', phi1/degree, Phi/degree, phi2/degree, ac, length(a));
+
+x0 = [phi1, Phi, phi2];
+
+[x,~] = fminsearch(@(x)crit(close2KOG(mori, getKOG(x(1),x(2),x(3)), eps)),x0,...
+    optimset('Display', 'iter', 'PlotFcns', @optimplotx));
+
+phi1 = x(1);
+Phi = x(2);
+phi2 = x(3);
+
+plotKOGDeviation(mori, phi1, Phi, phi2, eps, 'Final IVM deviation', 'dev_final', saveres, OutDir, prefix, comment);
+    
+% Prepare results
+optORm = normalizeOR('ori', {phi1, Phi, phi2});
+optOR = [phi1, Phi, phi2]/degree;
+end
+
+% ***************
+% Additional function
+
+function plotKOGDeviation(mori, phi1, Phi, phi2, eps, title, name, saveres, OutDir, prefix, comment)
+
+    % Plot histogram for best OR
+    kog = getKOG(phi1, Phi, phi2);
+    ang = close2KOG(mori, kog, eps);
+    figure('Name',title); hist(ang,64);
+    saveimg( saveres, 1, OutDir, prefix, name, 'png', comment);
+end
 
 
 function iv = setInterval(x,dx,n)

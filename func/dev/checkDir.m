@@ -18,14 +18,15 @@ function [ outdir ] = checkDir( sid, dirname, saveres, varargin)
 %
 % History
 % 23.11.12  Add function description
+% 09.02.15  Move to Linux
 
 % Make output directory name
 outdir = getpref('ebsdam','output_dir');
 
 if (~check_option(varargin, 'flatsave'))
-    outdir = [outdir '\img\' sid '\' dirname];
+    outdir = fullfile(outdir, 'img', sid, dirname);
 else
-    outdir = [outdir '\img\' dirname];
+    outdir = fullfile(outdir, 'img', dirname);
 end
 
 % Make directory if results will be saved to disk

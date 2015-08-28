@@ -24,7 +24,7 @@ for iy = 0:iymax
     for ix = 0:ixmax
         ebsd_c = cutEBSD(ebsd, ix*st,iy*st,ss,ss);
         
-        ebsd_cf = simpleFilter( ebsd_c, cr )
+        ebsd_cf = CIFilter( ebsd_c, cr )
 
         o = get(ebsd_cf, 'orientation')
         plotAllOrientations(o);

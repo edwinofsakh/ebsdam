@@ -1,4 +1,4 @@
 p = path();
-path(p,'.\func');
+path(p,fullfile('.', 'func'));
 p = path();
-path(p,'.\load');
+path(p,fullfile('.', 'load'));

@@ -1,4 +1,4 @@
-function [reorder, group, ticks] = JapanOrder()
+function [reorder, group, ticks, ind] = JapanOrder()
 
 % Reorder 23 pairs of variants (from V2/V1 to V24/V1) to Japanese style
 reorder = [...
@@ -16,5 +16,12 @@ ticks = {'V2', 'V3-V5', 'V4', 'V6', 'V7', 'V8', 'V9-V19', 'V10-14', 'V11-V13', '
 % Reorder for OR variants. Even variant must be mupliple by matrix [1 0 0; 0 -1 0; 0 0 -1] for
 % matching with plan/direction matrix
 ind = [1 15 17 7 9 23, 10 8 21 14 4 19, 2 24 13 6 20 11, 18 16 5 22 12 3];
+
+% Manual check. For equal with original matrix even variant must be
+% mulpitle to 'M' see below.
+ind2 = [1 15 17 7 9 23, 10 8 21 14 4 19, 2 24 13 6 20 11, 18 16 5 22 15 3]; %#ok<NASGU>
+
+% M = [1 0 0; 0 -1 0; 0 0 -1]; %#ok<NASGU>
+% o2(2:2:24) = rotation(o1(2:2:24))*rotation('matrix',M);
 
 end

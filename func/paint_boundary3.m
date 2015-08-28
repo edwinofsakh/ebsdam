@@ -64,10 +64,10 @@ mycolormap = zeros(23,3);
 mycolormap(in,:) = repmat(color_in,sum(in),1);
 mycolormap(~in,:) = repmat(color_out,sum(~in),1);
     
-figure();
+% figure();
 
 if (strcmpi(drawType,'far'))
-    plotBoundary(grains,'property',dis,'nearest','nodegree',...
+    plotBoundary(grains,'property',dis,'NOnearest','nodegree',...
         'linewidth',lw, 'delta', 90, 'antipodal','ext');
     colormap(1-gray);
     brighten(-0.8);

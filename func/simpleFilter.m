@@ -1,5 +1,5 @@
 function [ ebsd_f, par, vm, q ] = simpleFilter( ebsd, cr, varargin)
-% Simple filtrarion
+% Simple filtration
 %
 % Syntax
 %   [ ebsd_f, vm, q ] = simpleFilter( ebsd, cr )
@@ -16,7 +16,7 @@ function [ ebsd_f, par, vm, q ] = simpleFilter( ebsd, cr, varargin)
 %   dir     - direction of parameter: 0 - more is better, 1 - less is better
 %
 % Example
-%   ebsd = simpleFilter( ebsd, 0.1, 'par', {'ci'}, [0]);
+%   ebsd = simpleFilter( ebsd, 0.1, 'par', {'ci'}, 'dir', [0]);
 %
 % History
 % 12.04.13  Original implementation
