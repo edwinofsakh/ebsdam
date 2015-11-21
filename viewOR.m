@@ -141,7 +141,7 @@ end
 if checkTask(doOptimization)
     vars = extractTask(doOptimization);
     optORm = optimizeOR2(mori, sid, rid, 'reportFile', f_rep, vars{:});
-    optORm = getOR('KS');
+%     optORm = getOR('KS');
 
     out = {'optOR', optORm};
 

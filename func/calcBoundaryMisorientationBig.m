@@ -13,7 +13,7 @@ for i = 1:length(pairs)
     else
         mori = [mori; mori0]; %#ok<AGROW>
     end
-    if (progressStatus(i,length(pairs),10))
+    if (progressStatus(i,length(pairs),100))
         fprintf(1,'.');
     end
 end

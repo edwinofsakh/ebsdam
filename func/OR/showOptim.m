@@ -36,8 +36,9 @@ E2 = S.E2;
 E3 = S.E3;
 
 if check_option(varargin, 'loadAngles')
-    A = S.A; %#ok<NASGU>
-%     M = cellfun(@(x) sqrt(sum(x.*x))/length(x), A);
+    A = S.A;
+    crit = get_option(varargin, 'closeness', 'sqrt');
+    M = cellfun(@(x) IVM_closeness(x, 'type', crit), A);
 end
 
 % <<<!!! Rewrite witout testing
@@ -57,17 +58,22 @@ hM = max( M(:));
 [i,j,k] = ind2sub(size(M),I);
 n = size(E1,1);
 
+[i,j,k]
+[E1(i,j,k) E2(i,j,k) E3(i,j,k)]/degree
+
 % Cut high distance
 if check_option(varargin, 'cutHigh')
     M(M > 2*mM) = 2*mM;
 end
 
-% Boundary slide and optimial slide
-figure;
+% hist(A{i,j,k},64);
+
+% Boundary slide and optimal slide
+figure('Name', 'Optimal slides');
 slice(E1/degree,E2/degree,E3/degree,M,...
-    [E1(1,1,1) E1(1,fix(n/2),1) E1(1,end,1)]/degree,...
-    E2(i,1,1)/degree,...
-    [E3(1,1,1) E3(1,1,fix(n/2)) E3(1,1,end)]/degree);
+    [E1(1,1,1) E1(i,j,k) E1(1,end,1)]/degree,...
+    E2(i,j,k)/degree,...
+    [E3(1,1,1) E3(i,j,k) E3(1,1,end)]/degree);
 xlabel('phi1'); ylabel('Phi'); zlabel('phi2');
 axis equal;
 
@@ -78,7 +84,7 @@ yd = repmat(reshape(E2(:,1,1), [n 1])/degree,[1 n]);
 zd1 = repmat(reshape(E3(1,1,:), [1 n])/degree,[n 1]);
 zd2 = repmat(reshape(E3(1,1,end:-1:1), [1 n])/degree,[n 1]);
 
-figure;
+figure('Name', 'Regulat slides');;
 slice(E1/degree,E2/degree,E3/degree,M,xd,yd,zd1); hold on;
 slice(E1/degree,E2/degree,E3/degree,M,[],E2(i,1,1)/degree,[]); hold on;
 slice(E1/degree,E2/degree,E3/degree,M,xd,yd,zd2); hold on;
@@ -93,18 +99,18 @@ i2 = repmat([1:n],  [n 1]);
 ind = [i2(:),i1,i1];
 ind = sub2ind(size(M), ind(:,1), ind(:,2), ind(:,3));
 M1 = reshape(M(ind), [n n]);
-figure;
+figure('Name', 'Some contour 01');
 contour(M1,v);
 colormap(hot); colorbar;
 
 ind = [i2(:),i1(end:-1:1),i1];
 ind = sub2ind(size(M), ind(:,1), ind(:,2), ind(:,3));
 M1 = reshape(M(ind), [n n]);
-figure;
+figure('Name', 'Some contour 02');
 contour(M1,v);
 colormap(hot); colorbar;
 
-figure;
+figure('Name', 'Some contour 03');
 contour(reshape(M(i,:,:),[n n]),v);
 colormap(hot); colorbar;
 

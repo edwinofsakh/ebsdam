@@ -1,4 +1,4 @@
-function plotAngDist( mori, lmt, saveres, odir, prefix, fname, ltitle, varargin )
+function plotAngDist( mori, lmt1, saveres, odir, prefix, fname, ltitle, varargin )
 % Plot angle distribution
 %   Plot angle distribution for misorientation and save data disk
 %
@@ -7,7 +7,7 @@ function plotAngDist( mori, lmt, saveres, odir, prefix, fname, ltitle, varargin 
 %
 % Input
 %   mori - misorientation
-%   lmt  - limit angle, in degree
+%   lmt1  - limit angle, in degree
 %   saveres - see main function
 %   odir - output directory
 %   prefix - file name prefix
@@ -17,15 +17,16 @@ function plotAngDist( mori, lmt, saveres, odir, prefix, fname, ltitle, varargin 
 % History
 % 19.03.13  Separate from 'viewGrains'.
 % 14.04.13  Add saveing of comment.
+% 16.09.15  Add low angle limit.
 
     comment = getComment();
     
     % Get angle less then limit
     ang = angle(mori)/degree;
-    ang = ang(ang < lmt);
+    ang = ang(ang < lmt1);
     
     % Select histogram step
-    if lmt > 35
+    if lmt1 > 35
         d = 2;
     else
         d = 0.5;
@@ -33,7 +34,8 @@ function plotAngDist( mori, lmt, saveres, odir, prefix, fname, ltitle, varargin 
     
     % Plot histogram
     figure();
-    edges = d:d:lmt;
+    lmt0 = 1;
+    edges = lmt0:d:lmt1;
     [n, bin] = histc(ang,edges);
     
     if check_option(varargin, 'normLowAngles')

@@ -24,10 +24,12 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 %       'stepIter'      - step size for each iteration
 %       'epsIter'       - epsilon (IVM selction threshold) for each iteration
 %       'reportFile'    - handler to report file
+%       'closeness'     - criterion of closeness to IVM
 %
 %   'freeSearch'  - (task) derivative-free optimization
 %       'epsilon'       - IVM selection threshold
 %       'reportFile'    - handler to report file
+%       'closeness'     - criterion of closeness to IVM
 %
 %   'areaSearch'  - (task) area method
 %       'fileName'      - name of file for reault saving
@@ -36,6 +38,7 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 %       'searchRange'   - search range in radian for all Euler angles (if 'fullSearch' isn't set)
 %       'searchSteps'   - search range in radian for all Euler angles (if 'fullSearch' isn't set)
 %       'epsilon'       - IVM selection threshold
+%       'closeness'     - criterion of closeness to IVM
 %
 % History
 % 12.04.13  Original implementation?
@@ -43,6 +46,7 @@ function [optORm, optOR] = optimizeOR2(mori, sid, rid, varargin)
 % 09.02.15  Move to Linux
 % 19.08.15  Start makeup. Make list of options.
 % 28.08.15  Small writting of freeSearch. Edit comments.
+% 28.09.15  Separete IVM closeness criterion
 
 optORm = [];
 optOR  = [];
@@ -145,8 +149,8 @@ if check_option(varargin, 'areaSearch')
     c = 0;
     while f
         varargin = delete_option(varargin, 'fileName');
-        varargin = [varargin 'fileName' [fname '0'] 'continue' Eo]; %#ok<AGROW>
-        [mM2, Eo, fname] = areaOROptim(mori, sid, rid, phi1, Phi, phi2, ORname, varargin{:});
+        varargin = [varargin 'fileName' [fname '0']]; %#ok<AGROW>
+        [mM2, Eo, fname] = areaOROptim(mori, sid, rid, Eo(1), Eo(2), Eo(3), ORname, varargin{:});
         if (mM2 == mM1) && (c == 0)
             varargin = delete_option(varargin, 'searchRange');
             varargin = [varargin 'searchRange' 1*degree]; %#ok<AGROW>
@@ -177,6 +181,7 @@ function [mM, Eo, fname]  = areaOROptim(mori, sid, rid, phi1, Phi, phi2, ORname,
 %   'epsilon'       - IVM selection threshold
 
 eps = get_option(varargin, 'epsilon', 10*degree, 'double');
+crit = get_option(varargin, 'closeness', 'sqrt');
     
 if check_option(varargin, 'fullSearch')
     da = get_option(varargin, 'fullSearch', 5*degree,'double');
@@ -210,20 +215,28 @@ end
 % figure;
 % OR = setOR(E1,E2,E3, varargin{:});
 % plotAllOrientations(OR(:), 'max', 17, 'complete');
-    
+
+fprintf('Number of elements to calculation: %i\n', numel(E1));
+
 for i = 1:numel(E1)
     kog = getKOG(E1(i), E2(i), E3(i), varargin{:});
     a = close2KOG(mori, kog, eps);
-    M(i) = crit(a);
+    M(i) = IVM_closeness(a, 'type', crit);
     N(i) = length(a);
     
     if check_option(varargin, 'saveAngles')
         A{i} = a;
     end
+    fprintf(1, '.');
 end
+fprintf(1, '\n');
 
 outdir = getpref('ebsdam','output_dir');
 fname = get_option(varargin, 'fileName', 'result', 'char');
+
+if ~exist(fullfile(outdir, 'optim'), 'dir')
+    mkdir(fullfile(outdir, 'optim'));
+end
 
 if check_option(varargin, 'saveAngles')
     save(fullfile(outdir, 'optim', [sid '-' rid '_' fname '.mat']), 'M','A','N','ORname', 'sid', 'rid', 'E1', 'E2', 'E3');
@@ -254,6 +267,7 @@ prefix = [sid '_' rid '_OR'];
 comment = getComment();
 
 f_rep = get_option(varargin, 'reportFile', 1);
+crit = get_option(varargin, 'closeness', 'sqrt');
 
 fprintf(1,     'Start optimization\n');
 fprintf(f_rep, 'Start optimization\r\n');
@@ -282,7 +296,7 @@ a   = close2KOG(mori, kog, eps);
 figure('Name','Initial IVM deviation'); hist(a,64);
 saveimg( saveres, 1, OutDir, prefix, 'dev_initial', 'png', comment);
 
-ac = crit(a);
+ac = IVM_closeness(a, 'type', crit);
 fprintf(1,    'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\n',   dx1/degree, dy1/degree, dz1/degree, ac, length(a));
 fprintf(f_rep,'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\r\n', dx1/degree, dy1/degree, dz1/degree, ac, length(a));
         
@@ -300,7 +314,7 @@ while (flag && k < 1000)
         kog = getKOG(dx2, dy2, dz2, varargin{:});
         ang = close2KOG(mori, kog, eps);
         n(i) = length(ang);
-        a(i) = crit(ang);
+        a(i) = IVM_closeness(ang, 'type', crit);
     end
     
     [am,j] = min(a);
@@ -362,6 +376,7 @@ prefix = [sid '_' rid '_OR'];
 comment = getComment();
 
 f_rep = get_option(varargin, 'reportFile', 1);
+crit = get_option(varargin, 'closeness', 'sqrt');
 
 fprintf(1,     'Start optimization\n');
 fprintf(f_rep, 'Start optimization\r\n');
@@ -374,13 +389,13 @@ a   = close2KOG(mori, kog, eps);
 figure('Name','Initial IVM deviation'); hist(a,64);
 saveimg( saveres, 1, OutDir, prefix, 'dev_initial', 'png', comment);
 
-ac = crit(a);
+ac = IVM_closeness(a, 'type', crit);
 fprintf(1,    'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\n',   phi1/degree, Phi/degree, phi2/degree, ac, length(a));
 fprintf(f_rep,'phi1 = %f; Phi = %f; phi2 = %f; dm = %f; n = %u;\r\n', phi1/degree, Phi/degree, phi2/degree, ac, length(a));
 
 x0 = [phi1, Phi, phi2];
 
-[x,~] = fminsearch(@(x)crit(close2KOG(mori, getKOG(x(1),x(2),x(3)), eps)),x0,...
+[x,~] = fminsearch(@(x)IVM_closeness(close2KOG(mori, getKOG(x(1),x(2),x(3)), eps), 'type', crit),x0,...
     optimset('Display', 'iter', 'PlotFcns', @optimplotx));
 
 phi1 = x(1);
@@ -411,14 +426,6 @@ function iv = setInterval(x,dx,n)
     iv = x-dx:dx/n:x+dx;
 end
 
-
-function c = crit(a)
-    c = sqrt(sum(a.*a))/length(a);
-end
-
-% function c = crit(a)
-%     c = sum(abs(a))/length(a);
-% end
 
 function OR = setOR(phi1, Phi, phi2, varargin) %#ok<DEFNU>
 
